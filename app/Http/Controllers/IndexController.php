@@ -1,0 +1,171 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Models\MeetingInfo;
+use Models\fellowship;
+use Models\verse;
+use Models\more_youtube;
+use Models\news;
+use DB;
+
+//2017/06/26 新增action_photo資料表，將活動照片連結存放近來
+use App\Repositories\ActionPhotosRepository;
+use App\Repositories\MoreYoutubeRepository;
+use App\Repositories\NewsRepository;
+
+class IndexController extends Controller
+{
+    public $navFellowship ;
+    public $dtPhoto_action;
+    public $dtMoreYoutube;
+    public $dtNews;
+
+    public function __construct(ActionPhotosRepository $ActionPhotosRepository,MoreYoutubeRepository $MoreYoutubeRepository,NewsRepository $NewsRepository)
+    {   
+        $this->dtPhoto_action=$ActionPhotosRepository;
+        $this->dtMoreYoutube=$MoreYoutubeRepository;
+        $this->dtNews=$NewsRepository;
+        //  $content =fellowship::all();
+         
+        //  $i=0;
+
+        // foreach($content as $dtFellowship)
+        // {
+        //   $dtfellow[$i++]=$dtFellowship->NAME;//$test->getTableWhere();
+
+        // }
+
+        // $encode_test=json_encode($dtfellow);
+        // $decode_test=json_decode($encode_test);
+        // $navFellowship=$encode_test;
+        // \Debugbar::info($decode_test);
+        // \Debugbar::info($encode_test);
+        //$json_string = json_encode($arr); 
+
+    }
+
+    //
+    public function index()
+    {
+       $dtfellowship =fellowship::all();
+       $dtVerse=verse::all()->where('id','1');
+          // \Debugbar::info($dtVerse);
+       $photo_link = $this->dtPhoto_action->getAll();
+
+       $NewVideo=$this->dtMoreYoutube->getNewVideo();
+
+       $WidgetNews=$this->dtNews->getWidgetNews();
+       \Debugbar::info($WidgetNews);
+        // $i=0;
+
+        // foreach($dtfellowship as $dtFellowship)
+        // {
+        //   $dtfellow[$i++]=$dtFellowship->NAME;//$test->getTableWhere();
+
+        // }
+
+        // $encode_test=json_encode($dtfellow);
+        // $decode_test=json_decode($encode_test);
+        // $navFellowship=$encode_test;
+
+        //\Debugbar::info($dtfellowship);
+
+        return view('home.index')->with('dtfellowship',$dtfellowship)->with('dtVerse',$dtVerse)->with('photo_link',$photo_link)->with('NewVideo',$NewVideo)->with('WidgetNews',$WidgetNews);
+    }
+
+    public function more_youtube()
+    {
+        $dtfellowship =fellowship::all();
+
+        $dtmore_youtube = more_youtube::orderBy('video_date','desc')->paginate(9);
+
+        $count = 0;
+
+        foreach ($dtmore_youtube as $key) {
+            # code...
+        $Html_youtube[$count]= '<iframe class="embed-responsive-item" src="'.$key->link.'" frameborder="0" allowfullscreen></iframe>';
+        $count++;
+        }
+        return view('more.more_youtube',compact('dtfellowship'),compact('dtmore_youtube'));        // return view('more.more_youtube')->with('dtmore_youtube',$dtmore_youtube);
+
+    }
+
+    /*
+    點選導覽列的團契生活，到資料庫抓取Blade檔案名稱
+    與存放在哪個目錄下，再把它給串接起來
+    */
+    public function fellowship($id)
+    {
+        //取得View的名稱
+        $dtfellowship =fellowship::all();
+        $BladeName=$dtfellowship->where('id',$id);
+        foreach($BladeName as $value)
+        {
+            $Name=$value->PARA_1;
+            $Catalog = $value->PARA_2;
+        }
+
+        $fellowship_info=DB::select('SELECT * FROM fellowships a 
+                            INNER join fellowship_d b
+                            on a.PARA_1=b.id
+                            where a.id=?', [$id]);
+
+        foreach($fellowship_info as $value)
+        {
+            $page_title=$value->name;
+        }
+
+        \Debugbar::info($fellowship_info);
+
+        $View=$Catalog.'.'.$Name;
+        return view('fellowship.fellowship_info')->with('dtfellowship',$dtfellowship)->with('fellowship_info',$fellowship_info)->with('page_title',$page_title);
+    }
+
+    public function news()
+    {
+        $query=news::all();
+        $dtfellowship =fellowship::all();
+        return view('news.news',compact('query'),compact('dtfellowship'));
+    }
+
+    public function news_d()
+    {
+        $dtfellowship =fellowship::all();
+        return view('news.news_d',compact('dtfellowship'));
+    }
+
+    public function addtest()
+    {
+        $name = $_POST['name'];
+        $address = $_POST['address'];
+        $contact = $_POST['contact'];
+        $active = $_POST['active'];
+     
+        $sql = "INSERT INTO members (name, contact, address, active) VALUES ('$name', '$contact', '$address', '$active')";
+        $query = $connect->query($sql);
+     
+        if($query === TRUE) {           
+            $validator['success'] = true;
+            $validator['messages'] = "Successfully Added";      
+        } else {        
+            $validator['success'] = false;
+            $validator['messages'] = "Error while adding the member information";
+        }
+     
+        // close the database connection
+        $connect->close();
+     
+        echo json_encode($validator);
+
+    }
+    public function GetNavigation()
+    {
+         $dtfellowship =fellowship::all();
+                 \Debugbar::info($dtfellowship);
+        return view('inc.navigation')->with('dtfellowship',$dtfellowship);
+    }
+}
+
+

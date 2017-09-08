@@ -1,0 +1,95 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Models\dtControl;
+use Input;
+use DB;
+
+use App\Repositories\MoreYoutubeRepository;
+use App\Repositories\fellowshipRepository;
+use App\Repositories\codtbldRepository;
+
+class MoreYoutubeController extends Controller
+{
+	private $videos;
+	private $fellowship;
+    private $codtbld;
+
+    public function __construct(fellowshipRepository $fellowshipRepository,MoreYoutubeRepository $MoreYoutubeRepository,codtbldRepository $codtbldRepository)
+    {
+        $this->fellowship=$fellowshipRepository;
+        $this->videos=$MoreYoutubeRepository;
+        $this->codtbld=$codtbldRepository;
+        // $this->categories = Category::where('parent_id', '=', 0)->get();
+    }
+
+    public function MA_MoreYoutube()
+    {   
+        $dtVideoType = $this->codtbld->getWhere('video');
+        $item=collect(['choice'=>'請選擇']);
+        // $item->push('新增年份');
+        foreach ($dtVideoType as $key) {
+            # code...
+            // $item->push($key->title);
+            $item[$key->cod_id]=$key->cod_val;
+        }
+        $ItemAll=$item->all();
+
+
+    	$dtVideos=$this->videos->getOrderByPageing(9);
+    	 //Debug專用
+         \Debugbar::info( $dtVideos );
+
+    	$dtFellowship=$this->fellowship->getAll();
+    	return view('DataMaintain.MA_SundayVideo')->with('dtfellowship',$dtFellowship)->with('dtvideos',$dtVideos )->with('ItemAll',$ItemAll);
+    }
+
+    public function DeleteItem(Request $request)
+    {
+        return $this->videos->delete($request->id);
+    }
+
+    public function EditItem(Request $request)
+    {
+         // \Debugbar::info($request->id);
+        \Debugbar::info($request->video_type);
+        $Result= $this->videos->save($request);
+        if($Result['ServerNo']=='200')
+        {
+            return response ()->json ( ['ServerNo'=>$Result['ServerNo'],'data'=>$Result['data'],'message'=>$Result['message'] ]);
+        }
+        else
+        {
+             return response ()->json ( ['ServerNo'=>$Result['ServerNo'],'message'=>$Result['message']]);
+        }
+       
+    }
+
+    public function InsertItem(Request $request)
+    {
+         $Result=$this->videos->save($request);
+         // \Debugbar::info($request->theme);
+        
+        if($Result['ServerNo']=='200')
+        {  
+            return back()->with('success', $Result['message']);
+        }else
+        {
+            return back()->with('fails', $Result['message'][0]);
+        }
+    }
+
+    public function show($video_type)
+    {
+
+        $dtmore_youtube=$this->videos->getVideoOrderByPageing(9,$video_type);
+         //Debug專用
+         \Debugbar::info( $dtmore_youtube );
+
+        $dtFellowship=$this->fellowship->getAll();
+        return view('more.more_youtube')->with('dtfellowship',$dtFellowship)->with('dtmore_youtube',$dtmore_youtube );
+    }
+
+}
