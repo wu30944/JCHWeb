@@ -18,14 +18,39 @@ class GetMenu
     {
         //view()->share('comData',$this->getMenu());
         $request->attributes->set('comData_menu', $this->getMenu());
-        $request->attributes->set('test_menu', $this->testMenu());
+        $request->attributes->set('DataMatain_menu', $this->testMenu());
         return $next($request);
     }
 
     function testMenu()
     {
+        Cache::flush();
         $data = [];
-        $data['top'] = ['test1','test2','test3'];
+        $data['top'] = [];
+        $openArr = [];
+        //查找出所有的地址
+        $table = \Models\sc_function::where('visible', '=', 'Y')->get();
+//        $table = Cache::store('file')->rememberForever('datamaintain_menu', function () {
+//            return \Models\sc_function::where('visible', '=', 'Y')->get();
+//        });
+        /*
+         * 取出功能樹 把他放入陣列中
+         * */
+        foreach ($table as $v) {
+                $data[$v->cid][] = $v->toarray();
+                $openArr[] = $v->parent_function;
+            if ($v->function_id==$v->parent_function && $v->cid=='0') {
+                $data['top'][] = $v->toArray();
+            }
+        }
+        /*
+        foreach ($data[0] as $v) {
+            if ($v->function_id==$v->parent_function && $v->cid=='0') {
+                $data['top'][] = $v;
+            }
+        }*/
+        unset($data[0]);
+        $data['openarr'] = array_unique($openArr);
         return $data;
     }
 
@@ -45,12 +70,15 @@ class GetMenu
         } else {
             $urlPath = $path_arr[0] . '.index';
         }
-        //查找出所有的地址
-        $table = Cache::store('file')->rememberForever('menus', function () {
-            return \App\Models\Admin\Permission::where('name', 'LIKE', '%index')
-                ->orWhere('cid', 0)
-                ->get();
-        });
+//        //查找出所有的地址
+//        $table = Cache::store('file')->rememberForever('menus', function () {
+//            return \App\Models\Admin\Permission::where('name', 'LIKE', '%index')
+//                ->orWhere('cid', 0)
+//                ->get();
+//        });
+        $table =\App\Models\Admin\Permission::where('name', 'LIKE', '%index')
+            ->orWhere('cid', 0)
+            ->get();
         foreach ($table as $v) {
             if ($v->cid == 0 || \Gate::forUser(auth('admin')->user())->check($v->name)) {
                 if ($v->name == $urlPath) {

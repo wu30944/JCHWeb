@@ -153,14 +153,14 @@ class NewsController extends Controller
 
     public function saveItem(Request $request)
     {   
-        \Debugbar::info($request);
+        // \Debugbar::info($request);
         return $this->dtNews->save($request);
     }
 
     public function PhotoUpload(Request $request)
     {
         $file = $request->file('image');
-
+        // \Debugbar::info($file);
         $catalog='/news';
 
         //必須是image的驗證
@@ -172,14 +172,14 @@ class NewsController extends Controller
         $validator = \Validator::make($input, $rules);
         if ( $validator->fails() ) {
             return \Response::json([
-                'success' => false,
+                'ServerNo' => '404',
                 'errors' => $validator->getMessageBag()->toArray()
             ]);
         }else{       
             
-            $destinationPath = public_path().env('PHOTO_PATH').$catalog;
+            $destinationPath = public_path().config('app.news_photo_path');
 
-            \Debugbar::info($destinationPath);
+            // \Debugbar::info($destinationPath);
 
             if (!is_dir($destinationPath))
             {
@@ -190,7 +190,7 @@ class NewsController extends Controller
 
 
             $data = $this->dtNews->find($request->get('id'));
-            $data->image = env('PHOTO_PATH').$catalog.'/'.$filename;
+            $data->image = config('app.news_photo_path').'/'.$filename;
             $data->save();
 
 

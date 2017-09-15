@@ -1,7 +1,11 @@
 <?php
 
 return [
-
+    /*
+     * 存放上傳圖片的路徑
+     * */
+    'fellowship_photo_path'=>'/photo/fellowship',
+    'news_photo_path'=>'/photo/news',
     /*
     |--------------------------------------------------------------------------
     | Application Name

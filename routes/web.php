@@ -44,9 +44,7 @@ Route::get('/teens1',['as'=>'teens',
     }
 ]);
 
-Route::get('/fellowship/{id}',['as'=>'fellowship','uses'=>'IndexController@fellowship']);
-
-Route::get('/fellowship/{id}',['as'=>'fellowship','uses'=>'IndexController@fellowship']);
+Route::get('/fellowship/{id}',['as'=>'fellowship','uses'=>'FellowshipController@ShowFellowship']);
 
 //行事曆測試
 Route::get('/calendar',function()
@@ -110,7 +108,7 @@ Route::post('/search_test',['as'=>'search_test','uses'=>'NewsController@search_t
 
 
 // 維護的路由
-Route::group(['middleware'=>'auth'],function(){
+Route::group(['middleware'=>'auth:admin'],function(){
 
     Route::get('/MA_MeetingInfo',['as'=>'MA_MeetingInfo','uses'=>'MeetInfoController@MA_MeetingInfo']);
 
@@ -170,6 +168,13 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get ( '/MA_OurPastor_D', ['as' => 'MA_OurPastor_D','uses'=>'StaffController@MA_OurPastor_D' ]);
 
     Route::post ( '/MA_Update_Staff_D', ['as' => 'MA_Update_Staff_D','uses'=>'StaffController@UpdateItemD' ]);
+
+    Route::post ( '/MADeleteFellowship', ['as' => 'MADeleteFellowship','uses'=>'FellowshipController@DeleteItem' ]);
+
+    Route::post ( '/MACreateFellowship', ['as' => 'MACreateFellowship','uses'=>'FellowshipController@AddItem' ]);
+
+    Route::post ( '/MACreateAlbum', ['as' => 'MACreateAlbum','uses'=>'AlbumController@AddItem' ]);
+     Route::get ( '/MAAlbum', ['as' => 'MAAlbum','uses'=>'AlbumController@MAAlbum' ]);
 
 });
 

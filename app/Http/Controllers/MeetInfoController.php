@@ -94,14 +94,13 @@ class MeetInfoController extends Controller
             'day'=>'required'
 
         );
-        \Debugbar::info(Input::all());
+
         $validator = Validator::make ( Input::all (), $rules );
-        if ($validator->fails ()){       
-             return Response::json ( 
+        if ($validator->fails ()){
+             return Response::json (
                 array ('errors' => $validator->messages()->all() ));
         }
         else {
-            //\Debugbar::info('帥哥');
             $data = new MeetingInfo ();
             $data->name = $request->fellowship_name;
             $data->meeting_time = $request->meeting_time;
@@ -110,8 +109,9 @@ class MeetInfoController extends Controller
             $data->save ();
 
             // Session::flash('message', 'Successfully updated nerd!');
+//            \Debugbar::info($request->meeting_time);
             return response ()->json ( $data );
-   
+
 
         }
     }

@@ -25,7 +25,7 @@
 
             @endif
              <div class="row">
-                {!! Form::open(['route'=>'MA_Update_About','id'=>'form_update']) !!} 
+                {!! Form::open(['route'=>'MA_Update_About','id'=>'form_update']) !!}
 
                     <div class="col-md-8">
                         <div class="thumbnail">
@@ -79,12 +79,14 @@
                                     <p>
                                         {!!form::text('id',$jchinfo['ID'],['class'=>'hide'])!!}
                                     </p>
-                                    <div align="right">                                
+                                    @if(Gate::forUser(auth('admin')->user())->check('admin.permission.edit'))
+                                    <div align="right">
                                         <button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btn_add" >
                                             <span class='glyphicon glyphicon-check'> </span> 更新
-                                        </button>   
+                                        </button>
                                         {{-- <input class="submit" type="submit" value="加入"/> --}}
                                     </div>
+                                    @endif
                                 </div>
                             </div>
                     </div>
@@ -138,7 +140,7 @@
                             fex: {required:"請輸入傳真",minlength:"輸入的傳真號碼可能錯誤"},
                             email:{required:"請輸入E-mail",email:"輸入的E-mail格式有誤"},
                             uniform_number:{required:"請輸入教會統一編號",minlength:"輸入的統編數字太短"}
-                            
+
                         }
                     });
                 });
@@ -150,7 +152,7 @@
               //     $(".alert-block").hide(200);
               //   }, 3000);
               // });
-              
+
               setTimeout(function () {
                   $(".alert-block").hide(200);
                 }, 3000);

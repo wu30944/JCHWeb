@@ -30,11 +30,11 @@
                 </div>
         </div>
         @if(Auth::check())
-        <div class="form-group row add">
+        <div class="form-group row add hide">
         <br>
             <div class="col-md-4">
                 <button class="btn btn-primary" type="submit" id="add">
-                    <span class="glyphicon glyphicon-plus"></span> 新增
+                    <span class="glyphicon glyphicon-plus"></span> @lang('default.add')
                 </button>
             </div>
         </div>
@@ -166,7 +166,8 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="Addmeeting_time">聚會時間:</label>
                                 <div class="col-sm-10">
-                                    <input type="name" class="form-control" id="Addmeeting_time">
+                                    <input type="text" id="timepicker" class="form-control"/>
+                                    {{--<input type="name" class="form-control" id="Addmeeting_time">--}}
                                 </div>
                             </div>
                             <div class="form-group">
@@ -200,9 +201,22 @@
                 </div>
             </div>
         </div>
+    <script src="../js/jquery.datetimepicker.full.js"></script>
     <script>
+        /*
+      時間
+      datepicker:是否藏掉選擇日期的控制項 false,
+      format:選擇時間格式'H:i',
+      step:選擇時間的區間 30
+*/
+        $('#meeting_time').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            step:30
+        });
 
-    function fillmodalData(details){
+
+        function fillmodalData(details){
 
         $('#fellowship_name').val(details[0]);
         $('#meeting_time').val(details[1]);

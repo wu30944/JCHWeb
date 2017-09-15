@@ -2,111 +2,158 @@
             // its initialization.
             CKEDITOR.on('instanceReady', function(ev) {
                 // Show the editor name and description in the browser status bar.
-                document.getElementById('eMessage').innerHTML = 'Instance <code>' + ev.editor.name + '<\/code> loaded.';
+                // document.getElementById('eMessage').innerHTML = 'Instance <code>' + ev.editor.name + '<\/code> loaded.';
 
-                // Show this sample buttons.
-                document.getElementById('eButtons').style.display = 'block';
+                // // Show this sample buttons.
+                // document.getElementById('eButtons').style.display = 'block';
+
             });
 
-            function InsertHTML($value) {
+            function InsertHTML($obj, $value) {
                 // Get the editor instance that we want to interact with.
-                var editor = CKEDITOR.instances.editor1;
+                // var editor = CKEDITOR.instances.editor1;
                 // var value = document.getElementById('htmlArea').value;
 
                 // Check the active editing mode.
-                if (editor.mode == 'wysiwyg') {
+                if ($obj.mode == 'wysiwyg') {
                     // Insert HTML code.
                     // http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-insertHtml
-                    editor.insertHtml($value);
+                    $obj.insertHtml($value);
                 } else
                     alert('You must be in WYSIWYG mode!');
             }
 
             /*
-                20170831. 增加請除編輯界面api
+                20170915.  建立CKEDITOR物件
+                如果在建立該物件時，有傳入視窗高度，則建立時使用使用者定義的大小，不然就是用預設高度
             */
-            function ClearText() {
-                // Get the editor instance that we want to interact with.
-                var editor = CKEDITOR.instances.editor1;
-                // var value = document.getElementById('htmlArea').value;
-                editor.setData('');
+            function CreateCKEDITOR($objID, $height = 0) {
+                if ($height != 0) {
+                    return CKEDITOR.replace($objID, {
+                        skin: "kama",
+                        height: $height,
+                        on: {
+                            focus: onFocus,
+                            blur: onBlur,
+
+                            // Check for availability of corresponding plugins.
+                            pluginsLoaded: function(evt) {
+                                var doc = CKEDITOR.document,
+                                    ed = evt.editor;
+                                if (!ed.getCommand('bold'))
+                                    doc.getById('exec-bold').hide();
+                                if (!ed.getCommand('link'))
+                                    doc.getById('exec-link').hide();
+                            }
+                        }
+                    });
+                } else if ($height == 0) {
+                    return CKEDITOR.replace($objID, {
+                        on: {
+                            focus: onFocus,
+                            blur: onBlur,
+                            // Check for availability of corresponding plugins.
+                            pluginsLoaded: function(evt) {
+                                var doc = CKEDITOR.document,
+                                    ed = evt.editor;
+                                if (!ed.getCommand('bold'))
+                                    doc.getById('exec-bold').hide();
+                                if (!ed.getCommand('link'))
+                                    doc.getById('exec-link').hide();
+                            }
+                        }
+                    });
+                }
+
             }
 
-            function InsertText($value) {
+            /*
+                20170831. 增加請除編輯界面api
+            */
+            function ClearText($obj) {
+
                 // Get the editor instance that we want to interact with.
-                var editor = CKEDITOR.instances.editor1;
+                // var editor = CKEDITOR.instances.$id;
+                // var value = document.getElementById('htmlArea').value;
+                $obj.setData('');
+            }
+
+            function InsertText($obj, $value) {
+                // Get the editor instance that we want to interact with.
+                // var editor = CKEDITOR.instances.editor1;
                 // var value = document.getElementById('txtArea').value;
 
                 // Check the active editing mode.
-                if (editor.mode == 'wysiwyg') {
+                if ($obj.mode == 'wysiwyg') {
                     // Insert as plain text.
                     // http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-insertText
-                    editor.insertText($value);
+                    $obj.insertText($value);
                 } else
                     alert('You must be in WYSIWYG mode!');
             }
 
-            function SetContents($value) {
+            function SetContents($obj, $value) {
                 // Get the editor instance that we want to interact with.
-                var editor = CKEDITOR.instances.editor1;
+                // var editor = CKEDITOR.instances.editor1;
                 // var value = document.getElementById('htmlArea').value;
 
                 // Set editor contents (replace current contents).
                 // http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-setData
-                editor.setData($value);
+                $obj.setData($value);
             }
 
-            function GetContents() {
+            function GetContents($obj) {
                 // Get the editor instance that you want to interact with.
-                var editor = CKEDITOR.instances.editor1;
+                // var editor = CKEDITOR.instances.editor1;
 
                 // Get editor contents
                 // http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-getData
                 // alert(editor.getData());
-                return editor.getData();
+                return $obj.getData();
             }
 
-            function ExecuteCommand(commandName) {
+            function ExecuteCommand($obj, commandName) {
                 // Get the editor instance that we want to interact with.
-                var editor = CKEDITOR.instances.editor1;
+                // var editor = CKEDITOR.instances.editor1;
 
                 // Check the active editing mode.
-                if (editor.mode == 'wysiwyg') {
+                if ($obj.mode == 'wysiwyg') {
                     // Execute the command.
                     // http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-execCommand
-                    editor.execCommand(commandName);
+                    $obj.execCommand(commandName);
                 } else
                     alert('You must be in WYSIWYG mode!');
             }
 
-            function CheckDirty() {
+            function CheckDirty($obj) {
                 // Get the editor instance that we want to interact with.
-                var editor = CKEDITOR.instances.editor1;
+                // var editor = CKEDITOR.instances.editor1;
                 // Checks whether the current editor contents present changes when compared
                 // to the contents loaded into the editor at startup
                 // http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-checkDirty
-                alert(editor.checkDirty());
+                alert($obj.checkDirty());
             }
 
-            function ResetDirty() {
+            function ResetDirty($obj) {
                 // Get the editor instance that we want to interact with.
-                var editor = CKEDITOR.instances.editor1;
+                // var editor = CKEDITOR.instances.editor1;
                 // Resets the "dirty state" of the editor (see CheckDirty())
                 // http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-resetDirty
-                editor.resetDirty();
+                $obj.resetDirty();
                 alert('The "IsDirty" status has been reset');
             }
 
-            function Focus() {
-                CKEDITOR.instances.editor1.focus();
+            function Focus($obj) {
+                // CKEDITOR.instances.editor1.focus();
+                $obj.focus();
             }
 
             function onFocus() {
-                document.getElementById('eMessage').innerHTML = '<b>' + this.name + ' is focused </b>';
+                // document.getElementById('eMessage').innerHTML = '<b>' + this.name + ' is focused </b>';
             }
 
             function onBlur() {
-                document.getElementById('eMessage').innerHTML = this.name + ' lost focus';
+                // document.getElementById('eMessage').innerHTML = this.name + ' lost focus';
             }
 
             function processData() {

@@ -106,7 +106,7 @@
 
        <script>
             // Replace the <textarea id="editor1"> with an CKEditor instance.
-            CKEDITOR.replace( 'editor1', {
+            var objEditor1=CKEDITOR.replace( 'editor1', {
                 on: {
                     focus: onFocus,
                     blur: onBlur,
@@ -141,7 +141,7 @@
                         if(data['ServerNo']=="200"){
                             // alert(data['data'].content);
                            // $('#editor1').val(data['data']);
-                           InsertHTML(data['data'].content);
+                           InsertHTML(objEditor1,data['data'].content);
                            $('#staffd_id').val(data['data'].id);
                         }else{
                             

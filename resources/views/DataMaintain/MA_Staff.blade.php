@@ -170,6 +170,14 @@
 		    	@endforeach
 		    @endif
 		</div>
+			<!--下列方法為顯示分頁頁碼，配合controller當中elquent模型的DB::paginate(一面幾筆資料)
+			要記得，必須要有paginate()，在blade才能夠使用下列方法-->
+	        <div class="row">
+	            <div class="col-lg-12 text-center">
+	               {{$dtStaff->render()}}
+	            </div>
+			</div>
+			
   		<div id="Edit_Modal" class="modal fade" role="dialog">
 		
             <div class="modal-dialog">

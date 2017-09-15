@@ -68,8 +68,8 @@
 
             // $validator = Validator::make ( $request->all(), $rules );
             if ($validator->fails ()){      
-
-                 return  collect(['ServerNo'=>'404','message' =>  $validator->messages()->all()]);
+                \Debugbar::info($validator->messages());
+                 return  collect(['ServerNo'=>'404','Result' =>  $validator->messages()->all()]);
             }
             else {
                             
@@ -90,7 +90,7 @@
 
                 // Session::flash('message', 'Successfully updated nerd!');
                 // return response ()->json ( ['ServerNo'=>'200','data'=>$data ]);
-                return  collect(['ServerNo'=>'200','message' =>'儲存成功！','data'=>$data]);
+                return  collect(['ServerNo'=>'200','Result' =>'儲存成功！','data'=>$data]);
             }
         }
 

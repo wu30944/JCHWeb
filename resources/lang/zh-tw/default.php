@@ -50,7 +50,8 @@ return array(
 	,'floor_1'=>'樓層'
 	,'floor_2'=>'樓'
 	,'introduction'=>'相關簡介'
-
+    ,'sure_delete'=>'您確定要刪除此資料?'
+    ,'church_floor'=>'建成教會 {0} 樓'
 	);
 
  ?>

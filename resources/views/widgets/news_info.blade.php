@@ -23,7 +23,9 @@
                                             <h3>
                                                 <a href="{{route('news_d',$item->title)}}">{{$item->title}}
                                                 <p>
-                                                <small>{{mb_substr($item->content,0,20,"utf-8")}}...</small>
+                                                <small>
+                                                    {{mb_substr(strip_tags ($item->content),0,20,"utf-8")}}...
+                                                </small>
                                                 </p>
                                                 </a>
                                             </h3>

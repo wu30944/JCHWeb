@@ -14,23 +14,12 @@
 
 <body>
     <div class="content full ">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">最新消息維護
-                    {{-- <small>Subheading</small> --}}
-                </h1>
-                <ol class="breadcrumb">
-                    <li><a href="{{url('/')}}">首頁</a>
-                    </li>
-                    <li class="active">最新消息維護</li>
-                </ol>
-
-            </div>
+        <div class="col-lg-12">
+            <h1 class="page-header text-center">@lang('function_title.MANews')</h1>
         </div>
         <div class="first">
 
             <div class="form-group row add">
-            <br>
                 <div class="col-md-4">
                     <button class="btn btn-primary" type="submit" id="add">
                         <span class="glyphicon glyphicon-plus"></span> 新增
@@ -56,7 +45,9 @@
                         <tr class="item{{$item->id}}">
                             <td align="left">{{$item->title}}</td>
                             <td>{{$item->created_at}}</td>
-                            <td align="left">{{mb_substr($item->content,0,25,"utf-8")}}</td>
+                            <td align="left">
+                                {{mb_substr(strip_tags ($item->content),0,25,"utf-8")}}...
+                                </td>
 
                             <td><button class="edit-modal btn btn-info"
                                     data-info="{{$item->id}},{{$item->title}},{{$item->action_date}},{{$item->content}}">
@@ -72,15 +63,14 @@
                         @endforeach
                     @else
                         <div>
-                            尚未建立任何消息
+                            @lang('message.NoNews')
                         </div>
                     @endif
                 </table>
             </div>
         </div>
-    </div>
         <div class="second hide">
-                     <!-- Intro Content -->
+                         <!-- Intro Content -->
             <h2>
                 <label >標題：</label>
                 <input type="text" id="news_title" >
@@ -103,7 +93,9 @@
 
             <div class="col-md-12">
                 {{-- <img class="img-responsive show-update-img"  alt="" id="ShowImg" style="max-width: 500; max-height: 290px;"> --}}
-                <img class="img-responsive img-hover" src="/photo/sample900*300.jpg" alt="" id="ShowImg" style="max-width: width:100%; max-height: 400px;">
+                <div align="center">
+                     <img class="img-responsive img-hover" src="/photo/sample900*300.jpg" alt="" id="ShowImg" style="max-width: width:100%; max-height: 400px;">
+                </div>
                 <button type="button" class="btn actionBtn" data-dismiss="modal" id="edit_photo">
                     <span id="edit_photo_text" class='glyphicon'></span>
                 </button>
@@ -114,10 +106,10 @@
              <br>
             {{-- <textarea id="editor1" style="width:100%;height:230px"></textarea> --}}
 
-            <textarea cols="100" id="editor1" name="editor1" rows="10"></textarea>
+            <textarea cols="100" id="NewsEditor" name="NewsEditor" rows="10"></textarea>
 
-            </div>    
-            
+            </div>
+
             <div class="add_modal-footer">
                 <p class="error text-center alert alert-danger hidden"></p>
 
@@ -128,47 +120,79 @@
                         <span class='glyphicon glyphicon-remove'></span> 取消
                     </button>
             </div>
-            <hr> 
+            <hr>
         </div>
-        <div id="Edit_Photo_Modal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"></h4>
+    </div>
+    <div id="Edit_Photo_Modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" id="UploadPhotoForm" enctype="multipart/form-data" action="MA_Fellowship_Photo"  method="post">
+                    {{ csrf_field() }}
+                        <div class="size"></div>
+                        <img class="img-responsive img-hover preview" src="http://placehold.it/900x300" alt="">
+                        <label for="upload-profile-picture">
+
+                             <input name="image" id="image" type="file" class="manual-file-chooser js-manual-file-chooser js-avatar-field upl" >
+                        </label>
+                        </a>
+                        <span id="upload-avatar"></span>
+                     </form>
+                    <div class="modal-footer">
+                    <p class="error text-center alert alert-danger hidden"></p>
+                        <button type="button" class="btn actionBtn" data-dismiss="modal" id="btnUpdatePhoto" >
+                            <span id="spUpdatePhoto" class='glyphicon glyphicon-check'></span>
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='glyphicon glyphicon-remove'></span> 取消
+                        </button>
                     </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal" role="form" id="UploadPhotoForm" enctype="multipart/form-data" action="MA_Fellowship_Photo"  method="post">  
-                        {{ csrf_field() }}
-                            <div class="size"></div>
-                            <img class="img-responsive img-hover preview" src="http://placehold.it/900x300" alt="">                      
-                            <label for="upload-profile-picture">
-                               
-                                 <input name="image" id="image" type="file" class="manual-file-chooser js-manual-file-chooser js-avatar-field upl" >
-                            </label>
-                            </a>
-                            <span id="upload-avatar"></span>
-                         </form>
-                        <div class="deleteContent" >
-                            確定要刪除此筆資料 <span class="dname"></span> ? <span
-                                class="hidden did"></span>
-                        </div>
-                        <div class="modal-footer">
-                        <p class="error text-center alert alert-danger hidden"></p>
-                            <button type="button" class="btn actionBtn" data-dismiss="modal" id="btnUpdatePhoto">
-                                <span id="spUpdatePhoto" class='glyphicon'></span>
-                            </button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                <span class='glyphicon glyphicon-remove'></span> 取消
-                            </button>
-                        </div>
-                       
-                    </div>
+
                 </div>
             </div>
-
         </div>
+
+    </div>
+
+    <div id="DeleteModel" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">@lang('default.delete')</h4>
+                </div>
+                {{-- {!! Form::open(['route'=>'MADeleteFellowship','id'=>'FormDelete','class'=>'form-horizontal']) !!} --}}
+
+                <div class="modal-body">
+                    <div class="deleteContent" >
+                        {{--<input type="text" class="form-control hide" id="FellowshipId" disabled="disabled">--}}
+                        {{-- {!!form::text('FellowshipId','',['class'=>'form-control hide','id'=>'FellowshipId'])!!} --}}
+                        @lang('default.sure_delete') <span class="dname"></span> ? <span
+                                class="hidden did"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <p class="error text-center alert alert-danger hidden"></p>
+
+                        {{--{!!Form::submit('刪除',['class'=>'btn glyphicon-trash btn-danger','id'=>'btnDelete']) !!}--}}
+                        <button type="button" class='btn  btn-danger' id="btnDelete">
+                            <span class='glyphicon glyphicon-trash'></span>  @lang('default.delete')
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='glyphicon glyphicon-remove'></span>  取消
+                        </button>
+                    </div>
+
+                </div>
+                {{-- {!! Form::close() !!} --}}
+            </div>
+        </div>
+    </div>
 
 </body>
     <script src="../ckeditor/ckeditor.js"></script>
@@ -177,21 +201,8 @@
     <script>
 
         // Replace the <textarea id="editor1"> with an CKEditor instance.
-            CKEDITOR.replace( 'editor1', {
-                on: {
-                    focus: onFocus,
-                    blur: onBlur,
+            var objNewsEditor=CreateCKEDITOR('NewsEditor');
 
-                    // Check for availability of corresponding plugins.
-                    pluginsLoaded: function( evt ) {
-                        var doc = CKEDITOR.document, ed = evt.editor;
-                        if ( !ed.getCommand( 'bold' ) )
-                            doc.getById( 'exec-bold' ).hide();
-                        if ( !ed.getCommand( 'link' ) )
-                            doc.getById( 'exec-link' ).hide();
-                    }
-                }
-            });
 
     var objImg;
     var ImgURL;
@@ -212,11 +223,13 @@
     function preview(input) {
         if (!input.files[0].type.match('image.*'))
         {
+            $('#btnUpdatePhoto').attr('disabled','disabled');
             alert('您選擇的不是圖片檔案');
             $('#image').attr({value:''});
 
         }
         else if (input.files && input.files[0] ) {
+            $('#btnUpdatePhoto').attr('disabled',false);
             var reader = new FileReader();
             objImg=input.files[0];
             reader.onload = function (e) {
@@ -276,7 +289,7 @@
         }else
         {
             ShowImg(objImg);
-            $('#edit_photo_text').text(" 更換照片");
+            $('#edit_photo_text').text("更換照片");
         }     
 
     });
@@ -302,10 +315,10 @@
                            $('#ShowImg').attr('src', data['ResultData']);
                            ShowImg(img);
                             // alert(data['ResultData']);
-                           $(obj).off('change');
+                           // $(obj).off('change');
                             
-                          }else{
-                            
+                          }else if(data['ServerNo']=='404'){
+                            alert(data['errors']);
                             // 如果失败
                               // alert(data['ResultData']);
                           }
@@ -336,12 +349,12 @@
        var stuff = $(this).data('info').split(',');
         $('.first').addClass('hide');
         $('.second').removeClass('hide');
-        $('#update_action_button').text(" 更新");
+        $('#update_action_button').text("更新");
         $('#update_action_button').addClass('glyphicon-check');
         $('#update_action_button').removeClass('glyphicon-trash');
         $('.actionBtn').addClass('btn-success');
         $('.actionBtn').removeClass('btn-danger');
-        $('.actionBtn').addClass('edit');
+        // $('.actionBtn').addClass('edit');
         // alert(stuff[1]);
         $.ajax({
             type: 'post',
@@ -358,21 +371,24 @@
                 $('#news_title').val(data.title);
                 $('#datepicker').val(data.action_date);
                 // $('#editor1').val(data.content);
-                InsertHTML(data.content);
+                InsertHTML(objNewsEditor,data.content);
                 $('#timepicker').val(data.action_time);
                 $('#action_postion').val(data.action_postion);
                 $('#news_id').val(data.id);
 
                 if(data.image==""){
-                    $('#edit_photo_text').text(" 新增照片");
+                    $('#edit_photo_text').text("新增照片");
+                    $('#edit_photo_text').addClass('glyphicon-check');
                     $('#ShowImg').attr('src','/photo/sample900*300.jpg');
-                    $('#spUpdatePhoto').text(" 上傳");
+                    $('#spUpdatePhoto').text("上傳");
+                   
 
                 }else{
                     
                     $('#ShowImg').attr('src',data.image);
-                    $('#edit_photo_text').text(" 更換照片");
-                    $('#spUpdatePhoto').text(" 更新");
+                    $('#edit_photo_text').text("更換照片");
+                    $('#spUpdatePhoto').text("更新");
+
                     // alert(data[0].image_path);
                 }
               
@@ -386,7 +402,12 @@
     */
     $('#edit_photo').on('click', function() {
         // $('.second').addClass('hide');
+        $('.form-horizontal').show();
+        $('.deleteContent').hide();
+        $('#btnUpdatePhoto').text("確認");
+        $('#spUpdatePhoto').addClass('glyphicon-check');
         $('#Edit_Photo_Modal').modal('show');
+
     });
 
 
@@ -398,7 +419,7 @@
         $('.second').addClass('hide');
         $('.first').removeClass('hide');
         $("#ShowImg").removeAttr("src");
-        ClearText();
+        ClearText(objNewsEditor);
         // $(".container").find(":text,textarea,file").each(function() {
         //         $(this).val("");
         //     });
@@ -407,7 +428,7 @@
 
 
     $('#addbtn').on('click', function() {
-
+         // alert(GetContents(objEditor1));
         $.ajax({
             type: 'post',
             url: '/MA_News_Save',
@@ -416,24 +437,30 @@
                     'news_title': $('#news_title').val(),
                     'action_date': $('#datepicker').val(),
                     'action_time': $('#timepicker').val(),
-                    'news_content': GetContents(),//$('#editor1').val(),
+                    'news_content': GetContents(objNewsEditor),//$('#editor1').val(),
                     'action_postion': $('#action_postion').val(),
                     'id':$('#news_id').val()
                    }
             , success: function(data){
                 //如果＃news_id是空的，表示一開始是沒有值的，所以就要新增到畫面上
-
+                
                 if($('#news_id').val()=="")
                 {
-                    $('#gridview').append("<tr class='item" + data.id + "'><td align='left'>" + data.title + "</td><td>" + data.action_date + "</td><td align='left'>" + data.content.substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data.id+","+data.title+","+data.content+","+data.action_date+"' data-id='" + data.id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data.id+","+data.title+","+data.action_date+","+data.content+"' data-id='" + data.id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
+                    $('#gridview').append("<tr class='item" + data['data'].id + "'><td align='left'>" + data['data'].title + "</td><td>" + data['data'].action_date + "</td><td align='left'>" + data['content'].substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data.id+","+data['data'].title+","+data['content']+","+data['data'].action_date+"' data-id='" + data['data'].id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['content']+"' data-id='" + data['data'].id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
 
                     $('#news_id').val(data.id);
 
-                    saveImg(objImg);
+                    /*
+                        此處要判斷是否有上傳照片，如果該參數是未定義，
+                        就不需要跑saveImg這個Function
+                    */
+                    if(typeof(objImg) != "undefined")
+                        saveImg(objImg);
 
                 }else
                 {
-                    $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td align='left'>" + data.title + "</td><td>" + data.action_date + "</td><td align='left'>" + data.content.substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data.id+","+data.title+","+data.action_date+","+data.content+"' data-id='" + data.id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data.id+","+data.title+","+data.action_date+","+data.content+"' data-id='" + data.id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
+                    // alert(data['content']);
+                    $('.item' + data['data'].id).replaceWith("<tr class='item" + data['data'].id + "'><td align='left'>" + data['data'].title + "</td><td>" + data['data'].action_date + "</td><td align='left'>" + data['content'].substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['data'].content+"' data-id='" + data['data'].id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['content']+"' data-id='" + data['data'].id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
 
                 }  
                 
@@ -441,6 +468,9 @@
                 $('.first').removeClass('hide');
                 alert('儲存成功');
                 $("#ShowImg").removeAttr("src");
+            },error: function(e)
+            {
+                
             }
 
         });
@@ -449,25 +479,17 @@
 
 
     $(document).on('click', '.delete-modal', function() {
-        $('#btnUpdatePhoto').text(" 刪除");
-        $('#btnUpdatePhoto').removeClass('glyphicon-check');
-        $('#btnUpdatePhoto').addClass('glyphicon-trash');
-        $('.actionBtn').removeClass('btn-success');
-        $('.actionBtn').addClass('btn-danger');
-        $('.actionBtn').addClass('delete');
-        $('.modal-title').text('刪除');
-        $('.deleteContent').show();
-        $('.form-horizontal').hide();
         //$('.dname').html($(this).data('name'));
-        $('#Edit_Photo_Modal').modal('show');
+        $('#DeleteModel').modal('show');
 
         var stuff = $(this).data('info').split(',');
         // alert(stuff[0]);
         $('#news_id').val(stuff[0]);
     });
 
-    $('.modal-footer').on('click', '.delete', function() {
-        $.ajax({
+    $('#btnDelete').on('click',function()
+    {
+         $.ajax({
             type: 'post',
             url: '/MA_News_Delete',
             data: {
@@ -486,20 +508,19 @@
         $(".container").find(":text,textarea,file").each(function() {
             $(this).val("");
         });
-        ClearText();
+        ClearText(objNewsEditor);
 
         $('.first').addClass('hide');
         $('.second').removeClass('hide');
-        $('#update_action_button').text(" 新增消息");
+        $('#update_action_button').text("新增消息");
         $('#update_action_button').addClass('glyphicon-check');
         $('#update_action_button').removeClass('glyphicon-trash');
         $('.actionBtn').addClass('btn-success');
         $('.actionBtn').removeClass('btn-danger');
-        $('.actionBtn').addClass('edit');
-        $('#edit_photo_text').text(" 新增照片");
-        $('#spUpdatePhoto').text(" 確認");
-        $('#spUpdatePhoto').addClass('glyphicon-check');
-
+        // $('.actionBtn').addClass('edit');
+        $('#edit_photo_text').text("新增照片");
+        $('#edit_photo_text').addClass('glyphicon-plus');
+        $('#spUpdatePhoto').text("確認");
         $('#ShowImg').attr('src','/photo/sample900*300.jpg');
     });
 

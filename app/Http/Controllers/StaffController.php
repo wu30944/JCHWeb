@@ -61,7 +61,7 @@ class StaffController extends Controller
     public function MA_Staff()
     {
     	  $dtDuty = $this->codtbld->getWhere('duty');
-        $dtStaff = $this->staff->getAll();
+        // $dtStaff = $this->dtStaff->getAll();
         $item=collect(['choice'=>'請選擇']);
         // $item->push('新增年份');
         foreach ($dtDuty as $key) {
@@ -76,8 +76,9 @@ class StaffController extends Controller
           //Debug專用
          \Debugbar::info( $dtfellowship );
 
+         $dtStaff=$this->staff->getOrderByPageing(9);
         // return view('DataMaintain.MA_Category',compact('dtfellowship','categories','ItemAll'));
-
+      // return view('DataMaintain.MA_Staff')->with('dtvideos',$dtVideos)->with('dtfellowship',$dtfellowship )->with('ItemAll',$ItemAll );
 
     	return view('DataMaintain.MA_Staff',compact('dtfellowship','ItemAll','dtStaff'));
 

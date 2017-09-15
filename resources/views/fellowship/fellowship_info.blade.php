@@ -3,7 +3,7 @@
 
         @extends('TmpView.tmp')
 
-        @section('title','社青團契')
+        {{--@section('title','社青團契')--}}
 
         @section('content')
         <section class='container'>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-md-6">
                             <h2>{{$info->introduction_title}}</h2>
-                            {{$info->introduction_content}}
+                            {!!$info->introduction_content!!}
                         </div>
                     </div>
                     <!-- /.row -->   
@@ -69,30 +69,24 @@
                             <div id="myTabContent" class="tab-content col-md-10">
                              @if($info->page_one_title!='')
                                 <div class="tab-pane fade active in" id="service-one">
-                                    {{-- <h4>{{$info->page_one_title}}</h4> --}}
-                                     <textarea id="news_content" style="width:100%;height:300px;border-style:none;outline:none" readonly="true">{{$info->page_one_content}}</textarea> 
-                                    {{-- <p>{{$info->page_one_content}}</p> --}}
+                                    {!!$info->page_one_content!!}
                                 </div>
                              @endif
                              @if($info->page_two_title!='')
                                 <div class="tab-pane fade" id="service-two">
                                     <h4>{{$info->page_two_title}}</h4>
-                                     <textarea id="news_content" style="width:100%;height:300px;border-style:none;outline:none" readonly="true">{{$info->page_two_content}}</textarea> 
+                                     {!!  $info->page_two_content!!}
                                     {{-- <p>{{$info->page_two_content}}</p> --}}
                                 </div>
                              @endif
                              @if($info->page_three_title!='')
                                 <div class="tab-pane fade" id="service-three">
-                                    <h4>{{$info->page_three_title}}</h4>
-                                     <textarea id="news_content" style="width:100%;height:300px;border-style:none;outline:none" readonly="true">{{$info->page_three_content}}</textarea> 
-                                    {{-- <p>{{$info->page_three_content}}</p> --}}
+                                    {!!$info->page_three_content!!}
                                 </div>
                              @endif
                              @if($info->page_four_title!='')
                                 <div class="tab-pane fade" id="service-four">
-                                    <h4>{{$info->page_four_title}}</h4>
-                                     <textarea id="news_content" style="width:100;height:300px;border-style:none;outline:none" readonly="true">{{$info->page_four_content}}</textarea> 
-                                    {{-- <p>{{$info->page_four_content}}</p> --}}
+                                    {!! $info->page_four_content !!}
                                 </div>
                                 @endif
                             </div>

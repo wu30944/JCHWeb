@@ -14,36 +14,26 @@ use DB;
 use App\Repositories\ActionPhotosRepository;
 use App\Repositories\MoreYoutubeRepository;
 use App\Repositories\NewsRepository;
+use App\Repositories\FellowshipRepository;
+use App\Repositories\MeetingRepository;
 
 class IndexController extends Controller
 {
-    public $navFellowship ;
+    public $dtFellowship ;
     public $dtPhoto_action;
     public $dtMoreYoutube;
     public $dtNews;
+    public $dtMeetingInfo;
 
-    public function __construct(ActionPhotosRepository $ActionPhotosRepository,MoreYoutubeRepository $MoreYoutubeRepository,NewsRepository $NewsRepository)
+    public function __construct(ActionPhotosRepository $ActionPhotosRepository,MoreYoutubeRepository $MoreYoutubeRepository,NewsRepository $NewsRepository,
+        FellowshipRepository $FellowshipRepository,
+        MeetingRepository $MeetingRepository)
     {   
         $this->dtPhoto_action=$ActionPhotosRepository;
         $this->dtMoreYoutube=$MoreYoutubeRepository;
-        $this->dtNews=$NewsRepository;
-        //  $content =fellowship::all();
-         
-        //  $i=0;
-
-        // foreach($content as $dtFellowship)
-        // {
-        //   $dtfellow[$i++]=$dtFellowship->NAME;//$test->getTableWhere();
-
-        // }
-
-        // $encode_test=json_encode($dtfellow);
-        // $decode_test=json_decode($encode_test);
-        // $navFellowship=$encode_test;
-        // \Debugbar::info($decode_test);
-        // \Debugbar::info($encode_test);
-        //$json_string = json_encode($arr); 
-
+        $this->dtNews=$NewsRepository; 
+        $this->dtFellowship=$FellowshipRepository;
+        $this->dtMeetingInfo=$MeetingRepository;
     }
 
     //
@@ -57,22 +47,23 @@ class IndexController extends Controller
        $NewVideo=$this->dtMoreYoutube->getNewVideo();
 
        $WidgetNews=$this->dtNews->getWidgetNews();
-       \Debugbar::info($WidgetNews);
-        // $i=0;
+       
+       $dtSundayID=$this->dtFellowship->getSunday();
 
-        // foreach($dtfellowship as $dtFellowship)
-        // {
-        //   $dtfellow[$i++]=$dtFellowship->NAME;//$test->getTableWhere();
+        $item=collect([]);
+        $count=0;
+        // $item->push('新增年份');
+        foreach ($dtSundayID as $key) {
+            # code...
+            // $item->push($key->title);
+            $item[$count++]=$key->id;
+        }
 
-        // }
+        $ItemAll=$item->all();
 
-        // $encode_test=json_encode($dtfellow);
-        // $decode_test=json_decode($encode_test);
-        // $navFellowship=$encode_test;
+        $WidgetMeetingInfo=$this->dtMeetingInfo->getWidgetMeetingInfo($ItemAll);
 
-        //\Debugbar::info($dtfellowship);
-
-        return view('home.index')->with('dtfellowship',$dtfellowship)->with('dtVerse',$dtVerse)->with('photo_link',$photo_link)->with('NewVideo',$NewVideo)->with('WidgetNews',$WidgetNews);
+        return view('home.index')->with('dtfellowship',$dtfellowship)->with('dtVerse',$dtVerse)->with('photo_link',$photo_link)->with('NewVideo',$NewVideo)->with('WidgetNews',$WidgetNews)->with('WidgetMeetingInfo',$WidgetMeetingInfo);
     }
 
     public function more_youtube()

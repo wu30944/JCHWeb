@@ -12,13 +12,19 @@ use DB;
 use Validator;
 use Redirect;
 
+use App\Repositories\FellowshipRepository;
+
 
 class FellowshipController extends Controller
 {
-	public function index()
-	{
 
-	}
+    private $fellowshipRepository;
+
+    public function __construct(fellowshipRepository $fellowshipRepository)
+    {
+        $this->fellowshipRepository=$fellowshipRepository;
+    }
+
 
     public function MA_Fellowship()
     {
@@ -34,13 +40,12 @@ class FellowshipController extends Controller
     }
 
     public function MA_Fellowship_D(Request $req)
-    {   
-        \Debugbar::info($req->PARA_1);
+    {
          //根據使用者選擇的資訊，將資料明細帶出
-        $fellowship_info=DB::select('SELECT * FROM fellowship_d b
-                                    where b.id=?', [$req->PARA_1]);
-        \Debugbar::info($fellowship_info);
-            // redirect
+        $fellowship_info=$this->fellowshipRepository->getFellowshipD($req->ID);
+            /*DB::select('SELECT * FROM fellowship_d b
+                                    where b.id=?', [$req->PARA_1]);*/
+
             //\Session::flash('flash_message', 'Successfully updated nerd!');
         return response ()->json ( $fellowship_info );
 
@@ -51,46 +56,55 @@ class FellowshipController extends Controller
         編輯團契資訊的function 
     */
     public function editItem(Request $request) {
+        try{
+            DB::connection()->getPdo()->beginTransaction();
 
-         $rules = array (
-            'introduction_title'=> 'required',
-            'introduction_content'=> 'required',
-            'page_one_title'=>'required',
-            // 'page_two_title'=>'required',
-            // 'page_three_title'=>'required',
-            // 'page_four_title'=>'required',
-            'page_one_content'=>'required',
-            // 'page_two_content'=>'required',
-            // 'page_three_content'=>'required',
-            // 'page_four_content'=>'required',
-            'id'=>'required'
+            $rules = array (
+                'introduction_title'=> 'required',
+                'id'=>'required'
+            );
 
-        );
 
-        $validator = Validator::make ( Input::all (), $rules );
-        if ($validator->fails ()){       
-             return Response::json ( 
-                array ('errors' => $validator->messages()->all() ));
-        }
-        else {
-            \Debugbar::info($request);
-            $data = fellowship_d::find($request->id);
-            $data->introduction_title = $request->introduction_title;
-            $data->introduction_content = $request->introduction_content;
-            $data->page_one_title = $request->page_one_title;
-            $data->page_two_title = $request->page_two_title;
-            $data->page_three_title = $request->page_three_title;
-            $data->page_four_title = $request->page_four_title;
-            $data->page_one_content = $request->page_one_content;
-            $data->page_two_content = $request->page_two_content;
-            $data->page_three_content = $request->page_three_content;
-            $data->page_four_content = $request->page_four_content;
-            $data->save ();
+            $messages = ['introduction_title.required' => '團契名稱不能空白'
+                        ,'id.required'=>'程式有問題'];
 
-            // Session::flash('message', 'Successfully updated nerd!');
-            return response ()->json ( $data );
-   
+            $validator = Validator::make ( $request->all (), $rules, $messages );
+            if ($validator->fails ()){
+    //             return Response::json (
+    //                array ('errors' => $validator->messages()->all() ));
+                return response ()->json ( ['ServerNo' => '404','Result' => $validator->messages()->all() ]);
+            }
+            else {
+    //            \Debugbar::info($request);
+                $data = fellowship_d::find($request->id);
+                $data->introduction_title = $request->introduction_title;
+                $data->name = $request->introduction_title;
+                $data->introduction_content = $request->introduction_content;
+                $data->page_one_title = $request->page_one_title;
+                $data->page_two_title = $request->page_two_title;
+                $data->page_three_title = $request->page_three_title;
+                $data->page_four_title = $request->page_four_title;
+                $data->page_one_content = $request->page_one_content;
+                $data->page_two_content = $request->page_two_content;
+                $data->page_three_content = $request->page_three_content;
+                $data->page_four_content = $request->page_four_content;
+                $data->save ();
 
+                $objFellowship = fellowship::find($data->fellowship_id);
+                $objFellowship->name=$request->introduction_title;
+                $objFellowship->save ();
+
+                MeetingInfo::where('fellowship_id','=',$data->fellowship_id)
+                                 ->update(['name'=>$request->introduction_title]);
+
+                DB::connection()->getPdo()->commit();
+                // Session::flash('message', 'Successfully updated nerd!');
+                return response ()->json (['ServerNo'=>'200','Result'=> $data ]);
+
+            }
+        }catch (\PDOException $e)
+        {
+            DB::connection()->getPdo()->rollBack();
         }
     }
 
@@ -98,62 +112,32 @@ class FellowshipController extends Controller
         新增項目
     */
     public function AddItem(Request $request) {
-
-        $rules = array (
-            'introduction_title'=> 'required',
-            'introduction_content'=> 'required',
-            'page_one_title'=>'required',
-            'page_two_title'=>'required',
-            'page_three_title'=>'required',
-            'page_four_title'=>'required',
-            'page_one_content'=>'required',
-            'page_two_content'=>'required',
-            'page_three_content'=>'required',
-            'page_four_content'=>'required'
-
-        );
-
-        \Debugbar::info('234');
-        $validator = Validator::make ( Input::all (), $rules );
-        if ($validator->fails ()){       
-             return Response::json ( 
-                array ('errors' => $validator->messages()->all() ));
+        $Result=$this->fellowshipRepository->save($request);
+        if($Result['ServerNo']=='200') {
+            return back()->with('success', $Result['Result']);
         }
-        else {
-            \Debugbar::info($request);
-            $data = fellowship_d::find($request->id);
-            $data->introduction_title = $request->introduction_title;
-            $data->introduction_content = $request->introduction_content;
-            $data->page_one_title = $request->page_one_title;
-            $data->page_two_title = $request->page_two_title;
-            $data->page_three_title = $request->page_three_title;
-            $data->page_four_title = $request->page_four_title;
-            $data->page_one_content = $request->page_one_content;
-            $data->page_two_content = $request->page_two_content;
-            $data->page_three_content = $request->page_three_content;
-            $data->page_four_content = $request->page_four_content;
-            $data->save ();
-
-            // Session::flash('message', 'Successfully updated nerd!');
-            return response ()->json ( $data );
-   
-
+        else{
+            return back()->with('fails', $Result['Result']);
         }
     }
     /*
         刪除被選到的項目
     */
     public function DeleteItem(Request $request)
-    {   
-        // MeetingInfo::find ( $request->id )->delete ();
-        // return response ()->json ();
+    {
+//        return $request->FellowshipId;
+        if($request->FellowshipId!="")
+        {
+            $Result=$this->fellowshipRepository->delete($request->FellowshipId);
+            if($Result['ServerNo']=='200')
+                return back()->with('success', $Result['Result']);
+            elseif($Result['ServerNo']=='404')
+                return back()->with('fails',$Result['Result']);
+        }
+        else{
+            return back()->with('fails', '資料庫有誤');
+        }
 
-        
-        $id = Input::get('id');
-        \Debugbar::info($id);
-        $strMeetingInfo = MeetingInfo::find($id)->delete();
-        //MeetingInfo::find ( $request->id )->delete ();
-        return response ()->json ();
     }
 
 
@@ -172,28 +156,28 @@ class FellowshipController extends Controller
         $rules = array(
             'image' => 'image'
         );
-        
+
         $validator = \Validator::make($input, $rules);
         if ( $validator->fails() ) {
             return \Response::json([
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
             ]);
-        }else{       
-            
-            $destinationPath = public_path().env('PHOTO_PATH').$catalog;
+        }else{
+
+            $destinationPath = public_path().config('app.fellowship_photo_path');
 
 
             if (!is_dir($destinationPath))
             {
                 mkdir($destinationPath);
             }
-            
+
             //都將檔案存成jpg檔案 命名方式依照團契的ＩＤ命名,這樣就不會有重複的問題
-            $filename = $request->get('id').'.jpg';//$file->getClientOriginalName();
+            $filename = $request->get('id').'.jpg';
 
             $data = fellowship_d::find($request->get('id'));
-            $data->image_path = env('PHOTO_PATH').$catalog.'/'.$filename;
+            $data->image_path = config('app.fellowship_photo_path').'/'.$filename;
             $data->save();
 
 
@@ -210,5 +194,28 @@ class FellowshipController extends Controller
         // ]);
         
     }
+
+    /*
+        點選導覽列的團契生活，到資料庫抓取Blade檔案名稱
+        與存放在哪個目錄下，再把它給串接起來
+    */
+    public function ShowFellowship($id)
+    {
+        $dtfellowship = $this->fellowshipRepository->getAll();
+        $fellowship_info=$this->fellowshipRepository->getFellowshipD($id);
+           /* DB::select('SELECT * FROM fellowship_d a
+                            where a.fellowship_id=?', [$id]);*/
+
+        foreach($fellowship_info as $value)
+        {
+            $page_title=$value->name;
+        }
+
+
+        return view('fellowship.fellowship_info')->with('dtfellowship',$dtfellowship)
+                                                        ->with('fellowship_info',$fellowship_info)
+                                                        ->with('page_title',$page_title);
+    }
+
 
 }

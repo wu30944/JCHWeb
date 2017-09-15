@@ -101,6 +101,7 @@
 							<li><a href="{{route('MA_Staff')}}">@lang('default.jch_staff')</a></li>
 							<li><a href="{{route('MA_About')}}">關於我們</a></li>
 							<li><a href="{{route('MA_OurPastor')}}">我們的牧師</a></li>
+							<li><a href="{{route('MAAlbum')}}">相簿</a></li>
 							<li><a href="blog-post.html">團契生活</a></li>
 							</ul>
 						</li>

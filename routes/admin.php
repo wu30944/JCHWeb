@@ -45,6 +45,12 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post('user/index', ['as' => 'admin.user.index', 'uses' => 'UserController@index']);
     Route::resource('user', 'UserController', ['names' => ['update' => 'admin.role.edit', 'store' => 'admin.role.create']]);
 
+    /*
+     * 功能表管理
+     * 2017/09/10  建立
+     * */
+    Route::get('function/index', ['as' => 'admin.function.index', 'uses' => 'PermissionController@create']);
+
 });
 
 Route::get('/', function () {

@@ -49,13 +49,20 @@
                     </ul>
                 </li>
             @endforeach
-            <?php $test_menu=Request::get('test_menu'); ?>
-            @foreach($test_menu['top'] as $v)
-                <li class="treeview ">
-                    <a href="#"><i class="fa"></i> <span></span> <i
+
+            <?php $DataMatainMenu=Request::get('DataMatain_menu'); ?>
+            @foreach($DataMatainMenu['top'] as $v)
+                <li class="treeview  ">
+                    <a href="#"><i class="fa"></i> <span>{{$v['function_cname']}}</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        {{$v}}
+                        @foreach($DataMatainMenu['1'] as $vv)
+                            <li >
+                                <a href="{{route($vv['route'])}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <i class="fa fa-circle-o"></i>{{$vv['function_cname']}}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </li>
             @endforeach

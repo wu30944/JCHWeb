@@ -271,4 +271,5 @@
         {
              return $this->dtStaff->orderBy('cod_id','desc')->paginate($num);
         }
+        
     }

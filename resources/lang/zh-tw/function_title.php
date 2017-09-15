@@ -18,6 +18,9 @@ return array(
 	,'home'=>'首頁'
 	,'our_pastor'=>'我們的牧師'
 	,'meeting_info'=>'聚會資訊'
+    ,'MAFellowship'=>'團契資料維護'
+    ,'MAAlbum'=>'相簿資料維護'
+    ,'MANews'=>'最新消息維護'
 	);
 
  ?>

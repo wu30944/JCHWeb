@@ -6,37 +6,58 @@
           </a>
           <h3><i class="fa fa-fw fa-gift"></i> @lang('default.meeting_time')</h3>
           <hr class="sm">
-          <div class="events-listing-content smaller-cont">
-              <div class="event-list-item event-dynamic">
+          @if(isset($WidgetMeetingInfo))
+            @foreach($WidgetMeetingInfo as $item)
+              <div class="events-listing-content smaller-cont">
+                    <div class="event-list-item event-dynamic">
 
-                <div class="event-list-item-info::after">
-                        <div class="lined-info">
-                                  <h4><a href="http://www.yahoo.com.tw"> @lang('default.taiwanese_worship')</a></h4>
+                      <div class="event-list-item-info::after">
+                              <div class="lined-info">
+                                        <h4><a href="{{route('fellowship',$item->fellowship_id)}}"> {{$item->name}}</a></h4>
+                                  
+                                 <span class="glyphicon glyphicon-time"></span>
+                                    <i> {{$item->day}}&nbsp&nbsp{{$item->meeting_time}}</i>
+                                    &nbsp&nbsp
+                                <span class="glyphicon glyphicon-map-marker"></span>
+                                <span> 建成教會{{$item->floor}}樓</span>
+                            </div>
                             
-                           <span class="glyphicon glyphicon-time"></span>
-                              <i> 星期日&nbspAM 09:30</i>
-                          <span class="glyphicon glyphicon-map-marker"></span>
-                          <span> 建成教會2樓</span>
+                        </div>
+                    </div>
+                </div> 
+              {{-- <div class="events-listing-content smaller-cont">
+                  <div class="event-list-item event-dynamic">
+
+                    <div class="event-list-item-info::after">
+                            <div class="lined-info">
+                                      <h4><a href="http://www.yahoo.com.tw"> @lang('default.taiwanese_worship')</a></h4>
+                                
+                               <span class="glyphicon glyphicon-time"></span>
+                                  <i> 星期日&nbspAM 09:30</i>
+                              <span class="glyphicon glyphicon-map-marker"></span>
+                              <span> 建成教會2樓</span>
+                          </div>
+                          
                       </div>
-                      
                   </div>
-              </div>
-          </div> 
+              </div> 
 
-          <div class="events-listing-content smaller-cont">
-              <div class="event-list-item event-dynamic">
+              <div class="events-listing-content smaller-cont">
+                  <div class="event-list-item event-dynamic">
 
-                <div class="event-list-item-info::after">
-                       <div class="lined-info">
-                                  <h4><a href="http://www.yahoo.com.tw">華語禮拜</a></h4>
-                            
-                           <span class="glyphicon glyphicon-time"></span>
-                              <i>&nbsp星期日&nbspAM 09:30</i>
-                          <span class="glyphicon glyphicon-map-marker"></span>
-                          <span> 建成教會2樓</span>
-                      </div>                                                                     
+                    <div class="event-list-item-info::after">
+                           <div class="lined-info">
+                                      <h4><a href="http://www.yahoo.com.tw">華語禮拜</a></h4>
+                                
+                               <span class="glyphicon glyphicon-time"></span>
+                                  <i>&nbsp星期日&nbspAM 09:30</i>
+                              <span class="glyphicon glyphicon-map-marker"></span>
+                              <span> 建成教會2樓</span>
+                          </div>                                                                     
+                      </div>
                   </div>
-              </div>
-          </div> 
+              </div>   --}}
+              @endforeach
+          @endif
       </div>
   </div>

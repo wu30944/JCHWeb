@@ -5,6 +5,8 @@
     use Models\news;
     use Validator;
     use DB;
+    use Response;
+
 /**
 * Our pokemon repository, containing commonly used queries
 * 我們的 pokemon 資源庫，包含一些常用的查詢
@@ -84,8 +86,10 @@
                 $data->content = $request->news_content;
                 $data->save ();
 
+                 return Response::json ( 
+                    array ('data' => $data,'content'=>strip_tags($data->content) ));
                 // Session::flash('message', 'Successfully updated nerd!');
-                return response ()->json ( $data );
+                // return response ()->json ( 'data'=>$data,'content'=> strip_tags($data->content) );
             }
         }
 
