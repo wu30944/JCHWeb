@@ -1,10 +1,9 @@
-@extends('TmpView.tmp')
-
-@section('title','關於我們')
-
+@extends('admin.layouts.base')
+@section('title','關於建成')
+@section('pageDesc','DashBoard')
 @section('content')
 
-    <section class='container'>
+    <section class='container box'>
 
         <!-- Page Content -->
         <div class="content full">
@@ -79,7 +78,7 @@
                                     <p>
                                         {!!form::text('id',$jchinfo['ID'],['class'=>'hide'])!!}
                                     </p>
-                                    @if(Gate::forUser(auth('admin')->user())->check('admin.permission.edit'))
+                                   @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
                                     <div align="right">
                                         <button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btn_add" >
                                             <span class='glyphicon glyphicon-check'> </span> 更新

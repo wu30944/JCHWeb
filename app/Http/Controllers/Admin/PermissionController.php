@@ -104,7 +104,7 @@ class PermissionController extends Controller
         }
         $permission->save();
         Event::fire(new permChangeEvent());
-        event(new \App\Events\userActionEvent('\App\Models\Admin\Permission', $permission->id, 1, '添加了权限:' . $permission->name . '(' . $permission->label . ')'));
+        event(new \App\Events\userActionEvent('\App\Models\Admin\Permission', $permission->id, 1, '添加了權限:' . $permission->name . '(' . $permission->label . ')'));
 
         return redirect('/admin/permission/' . $permission->cid)->withSuccess('添加成功！');
     }

@@ -15,7 +15,7 @@
                             <div class="lgray-bg ">
                                 <div class="container:before">
                                     <ol class="breadcrumb">
-                                        <li><a href="{{url('/')}}">@lang('default.home')</a>
+                                        <li><span class="glyphicon glyphicon glyphicon-home"> <a href="{{url('/')}}">@lang('default.home')</a>
                                         </li>
                                         <li class="active">@lang('function_title.our_pastor')</li>
                                     </ol>

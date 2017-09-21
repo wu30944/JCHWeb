@@ -18,7 +18,7 @@
                         <div class="lgray-bg ">
                             <div class="container:before">
                                 <ol class="breadcrumb">
-                                <li><a href="{{url('/')}}">Home</a>
+                                <li><a href="{{url('/')}}"><span class="glyphicon glyphicon glyphicon-home"> @lang('default.home')</a>
                                 </li>
                                 <li class="active">{{$info->name}}</li>
                             </ol>
@@ -30,7 +30,7 @@
 
                          <!-- Intro Content -->
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" align="center">
                             <img class="img-responsive" src="{{$info->image_path}}" alt=""  style="max-width: 500; max-height: 290px;">
                         </div>
                         <div class="col-md-6">

@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Models\dtControl;
 use Input;
 use DB;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\MoreYoutubeRepository;
 use App\Repositories\fellowshipRepository;
 use App\Repositories\codtbldRepository;
 
-class MoreYoutubeController extends Controller
+class VideosController extends Controller
 {
 	private $videos;
 	private $fellowship;

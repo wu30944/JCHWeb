@@ -24,7 +24,7 @@
                 <div class="lgray-bg ">
                     <div class="container:after">
                         <ol class="breadcrumb">
-                            <li><a href="{{url('/')}}">首頁</a>
+                            <li><a href="{{url('/')}}"><span class="glyphicon glyphicon glyphicon-home"></span> @lang('default.home')</a>
                             </li>
                             <li class="active">最新消息</li>
                         </ol>
@@ -44,10 +44,11 @@
                                   <!-- First Blog Post -->
                                     <h2>
         {{--                                 <a href="{{route('news_d',$News->id)}}">{{$News->title}}</a> --}}
+                                        <span class="glyphicon glyphicon-info-sign"></span>
                                         {{$News->title}}
                                     </h2>
 
-                                    <p><span class="glyphicon glyphicon-time"></span></i>&nbsp{{$News->action_date}}</p>
+                                    <p> <span class="glyphicon glyphicon-calendar"></span></i>&nbsp{{$News->action_date}}</p>
                                     @if ( !empty($News->image))
                                     <div align="center">
                                         <img class="img-responsive img-hover" src="{{$News->image}}" alt="" style="max-width: 400; max-height: 200px;">    
@@ -179,5 +180,14 @@
 
             });
     });
+
+    // $(window).load(function(){
+    //     alert('load');
+    // });
+    // $(window).ready(function()
+    //     {
+    //         alert('ready');
+    //     });
+
 </script>
 @stop

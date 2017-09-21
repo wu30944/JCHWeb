@@ -21,6 +21,8 @@ return array(
     ,'MAFellowship'=>'團契資料維護'
     ,'MAAlbum'=>'相簿資料維護'
     ,'MANews'=>'最新消息維護'
+    ,'SundayPreview'=>'主日信息預告'
+    ,'MAStaffIntroduction'=>'職務介紹資料維護'
 	);
 
  ?>

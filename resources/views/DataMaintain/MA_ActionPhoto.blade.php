@@ -1,9 +1,8 @@
-@extends('TmpView.tmp')
-
+@extends('admin.layouts.base')
 @section('title','活動照片維護')
-
+@section('pageDesc','DashBoard')
 @section('content')
-	<section class='container'>
+	<section class='container box'>
 		<!-- Team Members -->
 	        <div class="row">
 	            <div class="col-lg-12">
@@ -14,16 +13,20 @@
             <div class="form-group row add">
             <br>
                 <div class="col-md-4">
+                @if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
                     <button class="btn btn-primary" type="submit" id="add">
-                        <span class="glyphicon glyphicon-plus"></span> 新增
+                        <span class="glyphicon glyphicon-plus"></span> @lang('default.add')
                     </button>
+                @endif
+                @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
                 	<button class="btn btn-info" id="edit">
-						<span class="glyphicon glyphicon-pencil"></span> 修改
+						<span class="glyphicon glyphicon-pencil"></span> @lang('default.edit')
 					</button>
 	              	<button type="button" class="btn btn-warning" data-dismiss="modal" disabled="disabled" id="cancel">
-		                <span class='glyphicon glyphicon-remove'></span> 取消
+		                <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
 		            </button>
                 </div>
+                @endif
             </div>
            
 			{!! Form::open(['url'=>'MA_Insert_ActionPhoto','id'=>'form_link_add']) !!} 
@@ -94,14 +97,14 @@
     						  </p>
 	                            <div align="right">                                
 		                            <button type="button" class="save-modal btn btn-success hide" data-info="{{$action_photo->id}}" data-dismiss="modal" id="save_{{$action_photo->id}}" >
-	                        			<span class='glyphicon glyphicon-check'> </span>儲存
+	                        			<span class='glyphicon glyphicon-check'> </span> @lang('default.save')
 	                    			</button>	
-
+	                    		@if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
 	                                <button class="delete-modal btn btn-danger hide"
 	                                    data-info="{{$action_photo->id}}">
-	                                    <span class="glyphicon glyphicon-trash"></span> 刪除
+	                                    <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
 	                                </button>
-
+	                             @endif
                         		</div>
 		                    </div>
 		                </div>
@@ -167,6 +170,8 @@
 	                </div>
 	            </div>
 	        </div>
+			@stop
+			@section('js')
 	        {{-- 下面的link是，為了讓必輸欄位如果沒有輸入資料控制項變為紅色，提示文字為紅色 --}}
 	        <link rel="stylesheet" href="{{ asset('css/screen.css')}}" >
 		    <script src="../js/jquery.datetimepicker.full.js"></script>

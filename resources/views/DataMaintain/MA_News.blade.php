@@ -1,10 +1,9 @@
-@extends('TmpView.tmp')
-
-@section('title','最新消息維護')
-
+@extends('admin.layouts.base')
+@section('title','聚會時間資料維護')
+@section('pageDesc','DashBoard')
 @section('content')
 
-<section class='container'>
+<section class='container box'>
 <style>
 .table-borderless tbody tr td, .table-borderless tbody tr th,
     .table-borderless thead tr th {
@@ -18,15 +17,15 @@
             <h1 class="page-header text-center">@lang('function_title.MANews')</h1>
         </div>
         <div class="first">
-
+            @if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
             <div class="form-group row add">
                 <div class="col-md-4">
                     <button class="btn btn-primary" type="submit" id="add">
-                        <span class="glyphicon glyphicon-plus"></span> 新增
+                        <span class="glyphicon glyphicon-plus"></span> @lang('default.add')
                     </button>
                 </div>
             </div>
-
+            @endif
             <div class="table-responsive text-center">
                 {{-- <table class="table table-borderless table-striped" id="gridview"> --}}
                 <table class="table table-borderless table-striped" id="gridview">
@@ -49,14 +48,19 @@
                                 {{mb_substr(strip_tags ($item->content),0,25,"utf-8")}}...
                                 </td>
 
-                            <td><button class="edit-modal btn btn-info"
+                            <td>
+                                @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
+                                <button class="edit-modal btn btn-info"
                                     data-info="{{$item->id}},{{$item->title}},{{$item->action_date}},{{$item->content}}">
-                                    <span class="glyphicon glyphicon-edit"></span> 修改
+                                    <span class="glyphicon glyphicon-edit"></span> @lang('default.edit')
                                 </button>
+                                @endif
+                                @if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
                                 <button class="delete-modal btn btn-danger"
                                     data-info="{{$item->id}},{{$item->title}},{{$item->action_date}},{{$item->content}}">
-                                    <span class="glyphicon glyphicon-trash"></span> 刪除
+                                    <span class="glyphicon glyphicon-trash"></span> @lang('default.delete)
                                 </button>
+                                @endif
                             </td>
                            
                         </tr>
@@ -195,6 +199,9 @@
     </div>
 
 </body>
+</section>
+@stop
+@section('js')
     <script src="../ckeditor/ckeditor.js"></script>
     <script src="../js/ckeditor_api.js"></script>
     <script src="../js/jquery.datetimepicker.full.js"></script>
@@ -525,5 +532,4 @@
     });
 
 </script>
-</section>
 @stop

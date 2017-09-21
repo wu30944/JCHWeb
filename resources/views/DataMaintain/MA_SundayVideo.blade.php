@@ -1,9 +1,8 @@
-@extends('TmpView.tmp')
-
-@section('title','更多影片')
-
+@extends('admin.layouts.base')
+@section('title','教會影片')
+@section('pageDesc','DashBoard')
 @section('content')
-	<section class='container'>
+	<section class='container box'>
 		<!-- Team Members -->
 	        <div class="row">
 	            <div class="col-lg-12">
@@ -16,7 +15,7 @@
 	                <button type="button" class="close" data-dismiss="alert">×</button>
 	                <strong>{{ $message }}</strong>
 	            </div>
-	            @elseif($message = Session::get('fails'))
+            @elseif($message = Session::get('fails'))
 	            <div class="alert alert-danger alert-block">
 	                <button type="button" class="close" data-dismiss="alert">×</button>
 	                <strong>{{ $message }}</strong>
@@ -34,66 +33,154 @@
 
             <div class="form-group row add">
             <br>
-                <div class="col-md-4">
+                <div class="col-md-8">   
+                 	<button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btn_add" onclick="Search()">
+                    			<span class='glyphicon glyphicon-search'> </span> @lang('default.search')
+        			</button>
+					@if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
                     <button class="btn btn-primary" type="submit" id="add">
-                        <span class="glyphicon glyphicon-plus"></span> 新增
+                        <span class="glyphicon glyphicon-plus"></span> @lang('default.add')
                     </button>
+					@endif
+					@if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
                 	<button class="btn btn-info" id="edit">
-						<span class="glyphicon glyphicon-pencil"></span> 修改
+						<span class="glyphicon glyphicon-pencil"></span> @lang('default.edit')
 					</button>
 	              	<button type="button" class="btn btn-warning" data-dismiss="modal" disabled="disabled" id="cancel">
-		                <span class='glyphicon glyphicon-remove'></span> 取消
+		                <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
 		            </button>
+					@endif
                 </div>
             </div>
 
-			{!! Form::open(['url'=>'MA_Insert_Sunday_Video','id'=>'form_link_add']) !!} 
-            {{-- <form id="form_link_add" method="post" action="{{ url('MA_Insert_Sunday_Video') }}"> --}}
-	            <div class="col-md-4 text-center hide" id="div_add" >
+             <div id="AddModel" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4>@lang('default.add')</h4>
+                </div>
+                <div class="modal-body">
+                    {{--<form class="form-horizontal" role="form" action="">--}}
+                    {!! Form::open(['route'=>'MA_Insert_Sunday_Video','id'=>'form_link_add','class'=>'form-horizontal']) !!}
+	                             <div class="form-group">
+	                                {!!form::label('video_type','影音類型:',['class'=>'control-label col-sm-2'])!!}
+	                                <div class="col-sm-10">
+										{!! Form::select('video_type',$ItemAll, old('video_type'), ['placeholder'=>'Select Category','style'=>'width:120px']) !!}
+	                                </div>
+	                            </div>
+
+	                            <div class="form-group">
+	                                <label class="control-label col-sm-2" for="video_link">影片連結：</label>
+	                                <div class="col-sm-10">
+	                                 <input type="text" class="form-control" id="video_link" name="video_link">
+	                                </div>
+	                            </div>
+	                         <div class="form-group">
+                                	<label class="control-label col-sm-2" for="theme">主題：</label>
+                            	<div class="col-sm-10">
+                                    <input type="text" class="form-control" id="theme" name="theme">
+                                </div>
+                            </div>
+                           <div class="form-group">
+                                	<label class="control-label col-sm-2" for="speaker">專講人員：</label>
+                            	<div class="col-sm-10">
+                                    <input type="text" class="form-control" id="speaker" name="speaker">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                	<label class="control-label col-sm-2" for="video_date">日期：</label>
+                            	<div class="col-sm-10">
+                                    <input type="text" class="date-modal form-control" id="datepicker_add" name="video_date">
+                                </div>
+                            </div>
+                        <div class="add_modal-footer" align="right">
+                            <p class="error text-center alert alert-danger hidden"></p>
+                            <button type="submit" class='btn btn-success' id="btnSave" onclick="Insert()">
+                                <span class='glyphicon glyphicon-plus'></span>  @lang('default.add')
+                            </button>
+
+                            <button type="button" class="btn btn-warning btn-cancel" data-dismiss="modal">
+                                <span class='glyphicon glyphicon-remove'></span>  取消
+                            </button>
+                        </div>
+                    {{--</form>--}}
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
+            {{-- 測試區塊 --}}
+            {!! Form::open(['route'=>'MA_SearchMoreYoutube','id'=>'form_search']) !!} 
+		            <div class="col-lg-12">
 		                <div class="thumbnail">
-		                   {{--   <div class="embed-responsive embed-responsive-4by3">
-	                       		 <iframe class="embed-responsive-item" src="" frameborder="0" allowfullscreen id=""></iframe>
-	                    	</div> --}}
-
-		                    <div class="caption" align="left">
-		                    	<p>
-	                					<div style="display: inline;">
-	            						{!!form::label('video_type','影音類型:')!!}
-	            						</div>
-	                    				<div style="display: inline;">
-	                    				{!! Form::select('video_type',$ItemAll, old('video_type'), ['placeholder'=>'Select Category','style'=>'width:120px']) !!}
-	                    				</div>
-			                         </p>
-		                        <p>
-	                        		<label for="link">影片連結：</label><br>
-	                        			{{-- {{$more_youtube->link}} --}}
-	                    				<input class="span2_add " size="16" type="text" style="width:100%;" id="video_link" name="video_link">
-	                    		</p>
-                				<p>
-	                    				<label for="theme">主題：</label><br>
-	                    				<input class="span3_add " size="16" type="text" id="theme" name="theme" style="width:80%;"><br>
-		                         </p>
-		                         <p>
-		                            <label for="speaker">專講人員：</label><br>
-		                            	<input class="span3_add " size="16" type="text" id="speaker" name="speaker" style="width:80%;"><br>
-	                             </p>
-	                             <p>
-		                        <label for="video_date">日期：</label><br>
-	        						  <input class="date-modal" size="16" type="text" id="datepicker_add" name="video_date" >
-        						  </p>
-	                            <div align="right">                                
-		                            <button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btn_add" >
-	                        			<span class='glyphicon glyphicon-check'> </span>加入
-	                    			</button>	
-	                    			{{-- <input class="submit" type="submit" value="加入"/> --}}
-
-	                    		</div>
-		                    </div>
-		                </div>
-	            </div>
-            {{-- </form> --}}
+			      
+	                  	<table class="table  site-footer" >
+		  			  		<tr>
+		  			  			<td class="col-lg-2" align="left">
+		  			  				<div style="display: inline;">
+		    							{!!form::label('video_type','影音類型:')!!}
+		    						</div>
+		  			  			</td>
+		  			  			<td>
+		  			  				<div style="display: inline;">
+		            				{!! Form::select('SearchVideoType',$ItemAll,(isset($request))?$request->SearchVideoType:2, ['placeholder'=>'Select Category','style'=>'width:130px','id'=>'SearchVideoType']) !!}
+		            				</div>
+		  			  			</td>
+		  			  		</tr>
+		  			  		<tr>
+		  			  			<td class="col-lg-2">
+				  					<label>@lang('default.subject'):</label>
+		  			  			</td>
+		  			  			<td>
+		  			  				{!!form::text('SearchTheme',(isset($request))?$request->SearchTheme:'',['class'=>'text form-control','id'=>'SearchTheme'])!!}
+		  			  				{{-- <input type="text" class="form-control" id="SearchTheme" > --}}
+		  			  			</td>
+		  			  		</tr>
+		  			  		<tr>
+		  			  			<td class="col-lg-2">
+		  			  				<label>專講人員:</label>
+		  			  			</td>
+		  			  			<td>
+		  			  				{!!form::text('SearchSpeaker',(isset($request))?$request->SearchSpeaker:'',['class'=>'text form-control','id'=>'SearchSpeaker'])!!}
+		  			  				{{-- <input type="text" class="form-control" id="SearchSpeaker" > --}}
+		  			  			</td>
+		  			  				
+		  			  		</tr>
+		  			  		<tr>
+		  			  			<td class="col-lg-2">
+		  			  				<label >@lang('default.sdate'):</label>
+		  			  			</td>
+		  			  			<td>
+		  			  				{{-- <input type="text" class="form-control search-date-modal" id="SearchSDate" > --}}
+		  			  				{!!form::text('SearchSDate',(isset($request))?$request->SearchSDate:'',['class'=>'text form-control search-date-modal','id'=>'SearchSDate'])!!}
+		  			  			</td>
+		  			  		</tr>
+		  			  		<tr>
+		  			  			<td class="col-lg-2">
+		  			  				<label >@lang('default.edate'):</label>
+		  			  			</td>
+		  			  			<td>
+		  			  				{!!form::text('SearchEDate',(isset($request))?$request->SearchEDate:'',['class'=>'text form-control search-date-modal','id'=>'SearchEDate'])!!}
+		  			  				{{-- <input type="text" class="form-control search-date-modal" id="SearchEDate" > --}}
+		  			  			</td>
+		  			  		</tr>
+		  			  	</table>
+					         @if(count($dtvideos)===0)
+		                		<div class="alert alert-danger alert-block">
+					                <button type="button" class="close" data-dismiss="alert">×</button>
+					                <strong>查無符合資料</strong>
+					            </div>
+		                	 @endif
+			          </div>
+	            	</div>
+	            {{-- </form> --}}
             {!! Form::close() !!}
-		    @if (isset($dtvideos))
+            {{-- 測試區塊 --}}
+
+		    @if (isset($dtvideos)and count($dtvideos)>0)
 		    	{{-- expr --}}
 		    	@foreach ($dtvideos->chunk(3) as $more_youtube)
 		    		<div class="row">
@@ -111,14 +198,14 @@
 		                        	</div>
 
 				                    <div class="caption" align="left">
-				                    <p>
+				                    	<p>
 			                					<div style="display: inline;">
 			            						{!!form::label('video_type','影音類型:')!!}
 			            						</div>
 			                    				<div style="display: inline;">
 			                    				{!! Form::select('video_type_'.$item->id,$ItemAll, $item->type, ['placeholder'=>'Select Category','style'=>'width:130px','disabled'=>'disabled','class'=>'span4','id'=>'video_type_'.$item->id]) !!}
 			                    				</div>
-					                         </p>
+			                        	 </p>
 				                        <p>	
 		                            		<label >影片連結:</label><br>
 		                            			{{-- {{$more_youtube->link}} --}}
@@ -141,11 +228,12 @@
 				                            <button type="button" class="save-modal btn btn-success hide" data-info="{{$item->id}}" data-dismiss="modal" id="save_{{$item->id}}" >
 			                        			<span class='glyphicon glyphicon-check'> </span>儲存
 			                    			</button>	
-
+											@if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
 			                                <button class="delete-modal btn btn-danger hide"
 			                                    data-info="{{$item->id}}">
 			                                    <span class="glyphicon glyphicon-trash"></span> 刪除
 			                                </button>
+											@endif
 
 		                        		</div>
 				                    </div>
@@ -167,7 +255,7 @@
 			</div>
 			{{-- @include('WebUIControl.Pager') --}}
 				{{-- 20170611.  增禮拜影片新增頁面 --}}
-			<div id="AddModel" class="modal fade" role="dialog">
+			<div id="DeleteModel" class="modal fade" role="dialog">
 	            <div class="modal-dialog">
 	                <!-- Modal content-->
 	                <div class="modal-content">
@@ -177,30 +265,6 @@
 	                    </div>
 	                    <div class="modal-body">
 	                        <form class="form-horizontal" role="form">
-	                            <div class="form-group">
-	                                <label class="control-label col-sm-2" for="Addfellowship_name">影片連結:</label>
-	                                <div class="col-sm-10">
-	                                    <input type="text" class="form-control" id="Addfellowship_name" >
-	                                </div>
-	                            </div>
-	                            <div class="form-group">
-	                                <label class="control-label col-sm-2" for="Addmeeting_time">主題:</label>
-	                                <div class="col-sm-10">
-	                                    <input type="name" class="form-control" id="Addmeeting_time">
-	                                </div>
-	                            </div>
-	                            <div class="form-group">
-	                                <label class="control-label col-sm-2" for="Addday">專講人員:</label>
-	                                <div class="col-sm-10">
-	                                    <input type="name" class="form-control" id="Addday">
-	                                </div>
-	                            </div>
-	                            <div class="form-group">
-	                                <label class="control-label col-sm-2" for="Addfloor">日期:</label>
-	                                <div class="col-sm-10">
-	                                    <input type="name" class="form-control" id="Addfloor">
-	                                </div>
-	                            </div>
 	                        </form>
 	                        <div class="deleteContent">
 	                            您確定要刪除此影片 <span class="dname"></span> ? <span
@@ -220,6 +284,8 @@
 	                </div>
 	            </div>
 	        </div>
+	        @stop
+	        @section('js')
 	        {{-- 下面的link是，為了讓必輸欄位如果沒有輸入資料控制項變為紅色，提示文字為紅色 --}}
 	        <link rel="stylesheet" href="{{ asset('css/screen.css')}}" >
 		    <script src="../js/jquery.datetimepicker.full.js"></script>
@@ -325,6 +391,7 @@
 		    */
 		    $('#add').on('click',function()
 		    {	
+		        $('#AddModel').modal('show');
 
 		    	$('#div_add').removeClass('hide');
 		        $('#btn_add').removeClass('hide');
@@ -334,6 +401,42 @@
 		    	$('#edit').attr('disabled',"disabled");
 		    });
 
+		    $('#search').on('clikc',function(){
+
+		        $.ajax({
+		            type: 'post',
+		            url: '/MA_SearchMoreYoutube',
+		            data: {
+		                '_token': $('input[name=_token]').val(),
+		                'type':$('#SearchVideoType').val(),
+		                'theme':$('#SearchTheme').val(),
+		                'speaker': $('SearchSpeaker').val()  ,
+		                'sdate': $('SearchSdate').val(),
+		                'edate':$('SearchEdate').val()     
+		                    },
+		            success: function(data){ 
+		            	// alert(data['errors']);
+		                if(data['ServerNo']=='200')
+		                {
+
+		                	// $('#videolink_'+stuff).val(data['data'].link);
+			                // $('#theme_'+stuff).val(data['data'].theme);
+			                // $('#speaker_'+stuff).val(data['data'].name);
+			                // $('#datepicker_'+stuff).val(data['data'].video_date);
+			                // $('iframe_'+stuff).attr("src",data['data'].link);
+		                }else if(data['ServerNo']=='404')
+		                {
+		                	alert(data['errors']);
+		                	// $('#videolink_'+stuff).val(video_link);
+			                // $('#theme_'+stuff).val(theme);
+			                // $('#speaker_'+stuff).val(speaker);
+			                //  $('#datepicker_'+stuff).val(video_date);
+			                // $('iframe_'+stuff).attr("src",data.link);
+		                }
+		                
+		            }
+		        });
+		    });
 
 			/*
 				取消
@@ -357,7 +460,8 @@
 		        $('.span2').width('100%');
 
 		        $('.btn-danger').addClass('hide');
-		        $('.btn-success').addClass('hide');
+		        $('.save-modal').addClass('hide');
+		        // $('.btn-success').addClass('hide');
 
 		        $('#div_add').addClass('hide');
 
@@ -373,10 +477,9 @@
 		        $('.actionBtn').addClass('delete');
 		        $('.modal-title').text('刪除');
 		        $('.deleteContent').show();
-		        $('.form-horizontal').hide();
 		        //$('.dname').html($(this).data('name'));
-		        $('#AddModel').modal('show');
-		        $('#action_button').text('刪除');
+		        $('#DeleteModel').modal('show');
+		        $('#action_button').text(' 刪除');
 		        $('#action_button').addClass('glyphicon-trash');
 
 	             var stuff = $(this).data('info');
@@ -572,6 +675,15 @@
 	            formatDate:'Y-m-d'
     	  });
 
+    	  $('.search-date-modal').datetimepicker({
+	            yearOffset:0,  
+	            lang:'zh-TW',
+	            timepicker:false,
+	            format:'Y-m-d',
+	            formatDate:'Y-m-d'
+    	  });
+
+
           $(function () {
               $(".alert-block").click(function () {
                 $(".alert-block").slideToggle(200);
@@ -584,7 +696,11 @@
               //     $(".alert-test").hide(200);
               //   }, 3000);
             });
-			</script>
+
+         function Search(){
+         	form_search.submit();
+         }
+		</script>
 
 	</section>
 @stop

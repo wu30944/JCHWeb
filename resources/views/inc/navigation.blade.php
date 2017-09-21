@@ -23,8 +23,8 @@
 						<li><a href="{{url('about')}}">教會資訊</a></li>
 						<li><a href="{{url('our_pastor')}}">建成牧師</a></li>
 						<li><a href="{{route('elder_deacon')}}">建成長執</a></li>
-						<li><a href="{{url('contact')}}">建成同工</a></li>
-						<li><a href="{{url('contact')}}">聯絡我們</a></li>
+						{{-- <li><a href="{{url('Presidency')}}">建成同工</a></li> --}}
+						{{-- <li><a href="{{url('contact')}}">聯絡我們</a></li> --}}
 					</ul>
 				</li>
 
@@ -36,10 +36,11 @@
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown"><strong>主日預告</strong><b class="caret"></b></a>
 					<ul class="dropdown-menu">
+						<li><a href="{{url('SundayPreview')}}">信息預告</a></li>
 						<li>
 							<a href=" {{ url('MeetingInfo') }}">聚會資訊</a>
 						</li>
-						<li><a href="{{route('inc.adultsunday')}}">活動資訊</a></li>
+						{{-- <li><a href="{{route('inc.adultsunday')}}">活動資訊</a></li> --}}
 					</ul>
 				</li>
 				<li class="dropdown"><a href="#" class="dropdown-toggle"

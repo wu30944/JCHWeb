@@ -2,7 +2,7 @@
 
 @section('title','403')
 
-@section('pageHeader','错误')
+@section('pageHeader','錯誤')
 
 @section('pageDesc','没有權限')
 
@@ -16,7 +16,7 @@
 
             <p>
                 没有權限.
-                你可以返回<a href="{{route('admin.index')}}"> 首頁 </a> 或者返回 <a href="{{$previousUrl}}"> 上一页 </a>.
+                你可以返回<a href="{{route('admin.index')}}"> 首頁 </a> 或者返回 <a href="{{$previousUrl}}"> 上一頁 </a>.
             </p>
 
         </div>

@@ -2,9 +2,9 @@
 
 @section('title','404')
 
-@section('pageHeader','错误')
+@section('pageHeader','錯誤')
 
-@section('pageDesc','页面找不到')
+@section('pageDesc','頁面找不到')
 
 @section('content')
     <div class="error-page">

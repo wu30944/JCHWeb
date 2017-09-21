@@ -1,9 +1,8 @@
-
-@extends('TmpView.tmp')
-@section('title','最新消息')
+@extends('admin.layouts.base')
+@section('title','職務介紹資料維護')
+@section('pageDesc','DashBoard')
 @section('content')
-
-<section class='container'>
+<section class='container box'>
 <style>
 .table-borderless tbody tr td, .table-borderless tbody tr th,
     .table-borderless thead tr th {
@@ -14,7 +13,7 @@
 <div class="content full">
      <div class="row">
         <div class="col-md-12">
-            <h1 class="page-header">建成的牧師
+            <h1 class="page-header">@lang('function_title.MAStaffIntroduction')
                 {{-- <small>Subheading</small> --}}
             </h1>
             <div class="lgray-bg ">
@@ -22,7 +21,7 @@
                     <ol class="breadcrumb">
                         <li><a href="{{url('/')}}">@lang('default.home')</a>
                         </li>
-                        <li class="active">建成的牧師</li>
+                        <li class="active">@lang('function_title.MAStaffIntroduction')</li>
                     </ol>
                 </div>    
             </div>
@@ -50,10 +49,12 @@
                 <tr class="item_{{$item->id}}">
                     <td align="center">{{$item->name}}</td>
                     <td align="center">
+                        @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
                         <button class="edit-modal btn btn-info"
                             data-info="{{$item->name}},{{$item->id}}" id="test">
                             <span class="glyphicon glyphicon-edit"></span> @lang('default.edit')
                         </button>
+                        @endif
                         {{-- <button class="delete-modal btn btn-danger"
                             data-info="{{$item->name}},{{$item->id}}">
                             <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
@@ -96,10 +97,11 @@
             </div>
         {!! Form::close() !!}
     </div>
-
-
-
-</div>  
+</div> 
+</body>
+</section>
+@stop
+@section('js') 
 <script src="../ckeditor/ckeditor.js"></script>
 <script src="../js/ckeditor_api.js"></script>
 <script src="../js/history.js"></script>
@@ -225,6 +227,4 @@
             });
          
         </script>
-</body>
-</section>
 @stop

@@ -17,7 +17,7 @@
                     </h1>
                     <div class="lgray-bg">
                         <ol class="breadcrumb">
-                            <li><a href="{{url('/')}}">Home</a>
+                            <li><a href="{{url('/')}}"><span class="glyphicon glyphicon glyphicon-home"> @lang('default.home')</a>
                             </li>
                             <li class="active"> @lang('function_title.about_jch')</li>
                         </ol>
@@ -39,14 +39,13 @@
                 <!-- Contact Details Column -->
                 <div class="col-md-4">
                     <h3><label for="">{{$jchinfo['CNAME']}}</label></h3>
-                    <p>@lang('default.address'): {{$jchinfo['ADDRESS']}}
+                    <p><span class="glyphicon glyphicon-map-marker"></span> @lang('default.address'): {{$jchinfo['ADDRESS']}}
                     </p>
-                    <p><i class="icon-home"></i> 
+                    <p><span class="glyphicon glyphicon-phone-alt"></span> 
                        @lang('default.phone'): {{$jchinfo['PHONE']}} </p>
-                        <p><i class="icon-home"></i> 
-                       @lang('default.fex'): {{$jchinfo['FEX']}} </p>
-                    <p><i class="fa fa-envelope-o"></i> 
-                        <abbr title="Email">@lang('default.email')</abbr>: <a href="mailto:name@example.com">{{$jchinfo['EMAIL']}}</a>
+                        <p><span class="glyphicon glyphicon-print"></span> @lang('default.fex'): {{$jchinfo['FEX']}} </p>
+                    <p><span class="glyphicon glyphicon-envelope"></span>
+                        <abbr title="Email">@lang('default.email')</abbr>: <a href="mailto:{{$jchinfo['EMAIL']}}">{{$jchinfo['EMAIL']}}</a>
                     </p>
                     <p>@lang('default.uniform_number'): {{$jchinfo['UNIFORM']}}
                     </p>

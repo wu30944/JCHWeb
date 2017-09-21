@@ -25,7 +25,6 @@
 {{-- 2017/07/20.  新增CSS. 顯示日期包在框框內 --}}
 <link rel="stylesheet" href="{{ asset('css/DateStyle.css')}}" >
 
-
     {{--<link rel="stylesheet" href="{{ asset('css/screen.css')}}" >--}}
 {{-- 2017/08/28 新增使用ajax也是可以使用上一頁下一頁 --}}
 {{-- <script src="../js/history.js"></script> --}}
@@ -35,8 +34,12 @@
 <script src="../js/jquery.dataTables.min.js"></script>
 <script src="../js/jquery.ui.js"></script>
 
+
+{{--2017/09/20 從AdminLET拉過來的 載入畫面 loding--}}
+<link href="/dist/css/load/load.css" rel="stylesheet">
+<script src="/dist/js/common.js"></script>
     {{--20170913 下方js是載入畫面轉轉轉的部分--}}
-<script src="../loading/spin.js"></script>
+{{-- <script src="../loading/spin.js"></script> --}}
 <script src="../loading/LoadingScreen.js"></script>
 
 <!-- JAVASCRIPTS -->

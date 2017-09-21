@@ -71,14 +71,14 @@ class GetMenu
             $urlPath = $path_arr[0] . '.index';
         }
 //        //查找出所有的地址
-//        $table = Cache::store('file')->rememberForever('menus', function () {
-//            return \App\Models\Admin\Permission::where('name', 'LIKE', '%index')
-//                ->orWhere('cid', 0)
-//                ->get();
-//        });
-        $table =\App\Models\Admin\Permission::where('name', 'LIKE', '%index')
-            ->orWhere('cid', 0)
-            ->get();
+       $table = Cache::store('file')->rememberForever('menus', function () {
+           return \App\Models\Admin\Permission::where('name', 'LIKE', '%index')
+               ->orWhere('cid', 0)
+               ->get();
+       });
+        // $table =\App\Models\Admin\Permission::where('name', 'LIKE', '%index')
+        //     ->orWhere('cid', 0)
+        //     ->get();
         foreach ($table as $v) {
             if ($v->cid == 0 || \Gate::forUser(auth('admin')->user())->check($v->name)) {
                 if ($v->name == $urlPath) {

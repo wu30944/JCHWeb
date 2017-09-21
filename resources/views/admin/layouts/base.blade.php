@@ -38,6 +38,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     {{--loding--}}
     <link href="/dist/css/load/load.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="{{ asset('css/jquery.datetimepicker.css')}}" >
+{{-- 2017/07/20.  新增CSS. 顯示日期包在框框內 --}}
+{{-- <link rel="stylesheet" href="{{ asset('css/DateStyle.css')}}" > --}}
+
     @yield('css')
 </head>
 <!--
@@ -206,10 +212,14 @@ desired effect
 <script src="/plugins/tokenfield/dist/bootstrap-tokenfield.min.js"></script>
 <script src="/dist/js/common.js"></script>
 
+<script src="../js/jquery.datetimepicker.full.js"></script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
+    
+{{--2017/09/20 下方js是載入畫面轉轉轉的部分--}}
+<script src="../loading/LoadingScreen.js"></script>
 @yield('js')
         <!-- Main Footer -->
 @include('admin.layouts.mainFooter')

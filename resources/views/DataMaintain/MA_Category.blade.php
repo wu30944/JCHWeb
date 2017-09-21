@@ -1,22 +1,8 @@
-@extends('TmpView.tmp')
-
-@section('title','分類資料維護')
-
+@extends('admin.layouts.base')
+@section('title','消息分類維護')
+@section('pageDesc','DashBoard')
 @section('content')
-
-<section class='container'>
-{{--     <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
-        <link href="{{ asset('css/treeview.css')}}" rel="stylesheet">
-    </head> --}}
-
-    <head>
-        {{-- <title>Laravel Category Treeview Example</title> --}}
-{{--         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> --}}
-        <link href="/css/treeview.css" rel="stylesheet">
-    </head>
+<section class='container box'>
     <br>
         <div class="content full">
             <div class="panel panel-primary">
@@ -73,11 +59,11 @@
                                     {!! Form::text('title', old('title'), ['class'=>'form-control', 'placeholder'=>'Enter Title']) !!}
                                     <span class="text-danger">{{ $errors->first('title') }}</span>
                                 </div>
-
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
                                 <div class="form-group">
                                     <button class="btn btn-success">新增</button>
                                 </div>
-
+                            @endif
                             {!! Form::close() !!}
 
                         </div>
@@ -86,6 +72,12 @@
                 </div>
             </div>
         </div>
-        <script src="../js/treeview.js"></script>
+        
 </section>
+@stop
+@section('css')
+        <link href="{{ asset('css/treeview.css')}}" rel="stylesheet">
+@stop
+@section('js')
+<script src="../js/treeview.js"></script>
 @stop

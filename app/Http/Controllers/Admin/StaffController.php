@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Models\staff;
@@ -17,13 +18,11 @@ use  App\Repositories\codtbldRepository;
 
 class StaffController extends Controller
 {
-	  private $fellowshipRepository;
     private $staff;
     private $codtbld;
 
-    public function __construct(fellowshipRepository $fellowshipRepository,staffRepository $staffRepository,codtbldRepository $codtbldRepository)
+    public function __construct(staffRepository $staffRepository,codtbldRepository $codtbldRepository)
     {
-        $this->fellowshipRepository=$fellowshipRepository;
         $this->staff=$staffRepository;
         $this->codtbld=$codtbldRepository;
     }
@@ -83,15 +82,9 @@ class StaffController extends Controller
 
         $ItemAll=$item->all();
 
-        $dtfellowship = $this->fellowshipRepository->getAll();
-          //Debug專用
-         \Debugbar::info( $dtfellowship );
-
          $dtStaff=$this->staff->getOrderByPageing(9);
-        // return view('DataMaintain.MA_Category',compact('dtfellowship','categories','ItemAll'));
-      // return view('DataMaintain.MA_Staff')->with('dtvideos',$dtVideos)->with('dtfellowship',$dtfellowship )->with('ItemAll',$ItemAll );
 
-    	return view('DataMaintain.MA_Staff',compact('dtfellowship','ItemAll','dtStaff'));
+    	return view('DataMaintain.MA_Staff',compact('ItemAll','dtStaff'));
 
     }
 
@@ -174,7 +167,6 @@ class StaffController extends Controller
   public function MA_our_pastor()
   {
     $dtControl=dtControl::all()->where('BLADE_NAME','MA_OurPastor');
-    $dtfellowship = $this->fellowshipRepository->getAll();
     $dtPastor = $this->staff->getPastor();
 
      $item=collect(['choice'=>'請選擇']);
@@ -188,7 +180,7 @@ class StaffController extends Controller
     $ItemAll=$item->all();
 
 
-    return view('DataMaintain.MA_OurPastor',compact('dtfellowship','dtControl','ItemAll','dtPastor'));
+    return view('DataMaintain.MA_OurPastor',compact('dtControl','ItemAll','dtPastor'));
 
   }
 

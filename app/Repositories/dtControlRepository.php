@@ -2,50 +2,37 @@
     namespace App\Repositories;
 // model/Repositories/Pokemon/PokemonRepository.php
     use Illuminate\Http\Request;
-    use Models\more_youtube;
+    use Models\dtControl;
     use Validator;
     use Response;
     use DB;
 
     use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
+    use Illuminate\Pagination\Paginator;
 
-    class MoreYoutubeRepository 
+    class dtControlRepository 
     {
-    	private $dtVideos;
+        private $dtControl;
 
-        public function __construct(more_youtube $data)
+        public function __construct(dtControl $data)
         {
-            $this->dtVideos=$data;
-        }
-
-        /*
-            為了取得最新的影片資訊
-        */
-        public function getNewVideo()
-        {
-             return $this->dtVideos->where('type','=','2')->orderBy('video_date','desc')->first();
+            $this->dtControl=$data;
         }
 
         public function getAll()
         {
-        	return $this->dtVideos->all();
+            return $this->dtControl->all();
         }
 
-        public function getOrderByPageing($num)
-        {
-        	 return $this->dtVideos->orderBy('video_date','desc')->paginate($num);
-        }
-
-       public function getVideoOrderByPageing($num,$video_type)
-        {
-             return $this->dtVideos->where('type','=',$video_type)->orderBy('video_date','desc')->paginate($num);
+        public function getTableSetting($blade)
+        {   
+            return $this->dtControl->where('BLADE_NAME','=',$blade)->get();
         }
 
         public function delete($id)
         {
             // \Debugbar::info($id);
-            $data = $this->dtVideos->find($id)->delete();
+            $data = $this->dtControl->find($id)->delete();
             //MeetingInfo::find ( $request->id )->delete ();
             return response ()->json ();
         }
@@ -82,7 +69,7 @@ use Illuminate\Pagination\Paginator;
 
                     $data = new more_youtube();
                 }else{
-                    $data = $this->dtVideos->find($request->id);
+                    $data = $this->dtControl->find($request->id);
                 }
                
                 $data->link = $request->video_link;
@@ -129,29 +116,4 @@ use Illuminate\Pagination\Paginator;
             return $data;
         }
 
-        public function Testquery($type)
-        {   
-
-            // $query = DB::select( DB::raw('select *
-            //                  from youtube_link a
-            //                  where (type= '.$type.' or '.$type.'="")' ));
-
-            $query = DB::select( DB::raw('select *
-                                     from youtube_link a
-                                     where (type= ? or ?="")' )
-                                    ,[$type,$type]);   
-
-             $page = Paginator::resolveCurrentPage("page");
-            $perPage = 9; //實際每頁筆數
-            $offset = ($page * $perPage) - $perPage;
-
-            $data = new LengthAwarePaginator(array_slice($query, $offset, $perPage, true), count($query), $perPage, $page, ['path' =>  Paginator::resolveCurrentPath()]);
-
-            return $data;
-            // return  DB::select('select *
-            //                  from youtube_link a
-            //                  where (type=? or ?="")'
-            //                  , [$type,
-            //                  $type]);
-        }
     }

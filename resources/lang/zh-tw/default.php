@@ -52,6 +52,10 @@ return array(
 	,'introduction'=>'相關簡介'
     ,'sure_delete'=>'您確定要刪除此資料?'
     ,'church_floor'=>'建成教會 {0} 樓'
+    ,'sdate'=>'開始日期'
+    ,'edate'=>'結束日期'
+    ,'search'=>'搜尋'
+    ,'sunday'=>'禮拜'
 	);
 
  ?>

@@ -14,7 +14,7 @@
 	            <div class="lgray-bg ">
 	                <div class="container:before">
 	                    <ol class="breadcrumb">
-	                        <li><a href="{{url('/')}}">首頁</a>
+	                        <li> <a href="{{url('/')}}"><span class="glyphicon glyphicon glyphicon-home">首頁</a>
 	                        </li>
 	                        <li class="active">建成長執</li>
 	                    </ol>

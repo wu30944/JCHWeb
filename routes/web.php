@@ -156,7 +156,7 @@ Route::group(['middleware'=>'auth:admin'],function(){
 
     Route::post('/MA_Delete_Staff',['as'=>'MA_Delete_Staff','uses'=>'StaffController@DeleteItem']);
 
-    Route::get('/MA_About',['as'=>'MA_About','uses'=>'AboutController@MA_About']);
+    // Route::get('/MA_About',['as'=>'MA_About','uses'=>'AboutController@MA_About']);
 
     Route::post('/MA_Update_About',['as'=>'MA_Update_About','uses'=>'AboutController@UpdateItem']);
 
@@ -175,6 +175,8 @@ Route::group(['middleware'=>'auth:admin'],function(){
 
     Route::post ( '/MACreateAlbum', ['as' => 'MACreateAlbum','uses'=>'AlbumController@AddItem' ]);
      Route::get ( '/MAAlbum', ['as' => 'MAAlbum','uses'=>'AlbumController@MAAlbum' ]);
+
+    Route::post('/MA_SearchMoreYoutube',['as'=>'MA_SearchMoreYoutube','uses'=>'MoreYoutubeController@Search']);
 
 });
 
@@ -208,3 +210,12 @@ Route::get('/staff/elder_deacon',['as'=>'elder_deacon','uses'=>'StaffController@
     2017/08/21  建立我們的牧師 路由
 */
 Route::get('/our_pastor',['as'=>'our_pastor','uses'=>'StaffController@show_our_pastor']);
+
+/*
+    2017/09/19. 主日信息預告 路由
+*/
+Route::get('/SundayPreview',['as'=>'SundayPreview','uses'=>'SundayPreviewController@index']);
+/*
+    2017/09/19. 會長
+*/
+Route::get('/Presidency',['as'=>'Presidency','uses'=>'StaffController@ShowPresidency']);

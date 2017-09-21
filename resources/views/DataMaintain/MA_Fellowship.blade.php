@@ -1,10 +1,9 @@
-@extends('TmpView.tmp')
-
+@extends('admin.layouts.base')
 @section('title','團契資料維護')
-
+@section('pageDesc','DashBoard')
 @section('content')
 
-<section class='container'>
+<section class='container box'>
 <style>
 .table-borderless tbody tr td, .table-borderless tbody tr th,
     .table-borderless thead tr th {
@@ -20,7 +19,7 @@
 
     <div class="first">
 
-            @if(Auth::check())
+            @if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
             <div class="form-group row add">
             <br>
                 <div class="col-md-4">
@@ -54,7 +53,7 @@
                             {{-- <th class="text-center">#</th> --}}
                             <th class="hidden"></th>
                             <th class="text-center">團契名稱</th>
-                            @if(Auth::check())
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
                             <th class="text-center">Actions</th>
                             @endif
                         </tr>
@@ -64,17 +63,20 @@
                         {{-- <td>{{$item->id}}</td> --}}
                         <td class="hidden">{{$item->id}}</td>
                         <td>{{$item->NAME}}</td>
-                        @if(Auth::check())
-                        <td><button class="edit-modal btn btn-info"
+                        <td>
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
+                            <button class="edit-modal btn btn-info"
                                 data-info="{{$item->NAME}},{{$item->id}},{{$item->PARA_1}}">
-                                <span class="glyphicon glyphicon-edit"></span> 修改
+                                <span class="glyphicon glyphicon-edit"></span> @lang('default.edit')
                             </button>
+                            @endif
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
                             <button class="delete-modal btn btn-danger"
                                 data-info="{{$item->NAME}},{{$item->id}},{{$item->PARA_1}}">
-                                <span class="glyphicon glyphicon-trash"></span> 刪除
+                                <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
                             </button>
+                            @endif
                         </td>
-                        @endif
                     </tr>
                     @endforeach
                 </table>
@@ -277,26 +279,11 @@
             </div>
         </div>
     </div>
+    </body>
+</section>
+    @stop
 
-    {{--<style type="text/css">--}}
-        {{--.jCProgress {--}}
-            {{--position: absolute;--}}
-            {{--z-index: 9999999;--}}
-            {{--/*  margin-top:-15px; !* offset from the center */--}}
-        {{--}--}}
-
-        {{--.jCProgress > div.percent {--}}
-            {{--font: 18px/27px 'BebasRegular', Arial, sans-serif;--}}
-            {{--color:#ebebeb;--}}
-            {{--text-shadow: 1px 1px 1px #1f1f1f;--}}
-
-            {{--position:absolute;--}}
-            {{--margin-top:40px;--}}
-            {{--margin-left:22px;--}}
-            {{--text-align: center;--}}
-            {{--width:60px;--}}
-        {{--}--}}
-    {{--</style>--}}
+    @section('js')
     <script src="../js/jquery.validate.js"></script>
 
     <script src="../ckeditor/ckeditor.js"></script>
@@ -575,6 +562,4 @@
 
 
     </script>
-</body>
-</section>
 @stop

@@ -1,10 +1,8 @@
-@extends('TmpView.tmp')
-
-@section('title','聚會時間')
-
+@extends('admin.layouts.base')
+@section('title','聚會時間資料維護')
+@section('pageDesc','DashBoard')
 @section('content')
-
-<section class='container'>
+<section class='container box'>
 <style>
 .table-borderless tbody tr td, .table-borderless tbody tr th,
     .table-borderless thead tr th {
@@ -29,7 +27,7 @@
 
                 </div>
         </div>
-        @if(Auth::check())
+        @if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
         <div class="form-group row add hide">
         <br>
             <div class="col-md-4">
@@ -66,16 +64,21 @@
                     <td>{{$item->meeting_time}}</td>
                     <td>{{$item->day}}</td>
                     <td>{{$item->floor}}</td>
-                    @if(Auth::check())
-                    <td><button class="edit-modal btn btn-info"
+                    <td>
+                        @if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
+                        <button class="edit-modal btn btn-info"
                             data-info="{{$item->name}},{{$item->meeting_time}},{{$item->day}},{{$item->floor}},{{$item->id}}">
                             <span class="glyphicon glyphicon-edit"></span> 修改
                         </button>
+                        @endif
+                        @if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
                         <button class="delete-modal btn btn-danger"
                             data-info="{{$item->name}},{{$item->meeting_time}},{{$item->day}},{{$item->floor}},{{$item->id}}">
                             <span class="glyphicon glyphicon-trash"></span> 刪除
-                        </button></td>
-                    @endif
+                        </button>
+                        @endif
+                    </td>
+
                 </tr>
                 @endforeach
             </table>
@@ -201,6 +204,10 @@
                 </div>
             </div>
         </div>
+    </body>
+</section>
+    @stop
+    @section('js')
     <script src="../js/jquery.datetimepicker.full.js"></script>
     <script>
         /*
@@ -354,6 +361,4 @@
         });
     });
 </script>
-</body>
-</section>
 @stop

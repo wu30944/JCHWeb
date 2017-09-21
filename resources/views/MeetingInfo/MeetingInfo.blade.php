@@ -15,7 +15,7 @@
             <div class="lgray-bg ">
                 <div class="container:before">
                     <ol class="breadcrumb">
-                        <li><a href="{{url('/')}}">@lang('function_title.home')</a>
+                        <li><a href="{{url('/')}}"><span class="glyphicon glyphicon glyphicon-home"> @lang('function_title.home')</a>
                         </li>
                         <li class="active">@lang('function_title.meeting_info')</li>
                     </ol>

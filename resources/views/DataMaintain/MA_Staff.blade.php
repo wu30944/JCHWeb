@@ -1,9 +1,9 @@
-@extends('TmpView.tmp')
-
-@section('title','建成長執')
-
+@extends('admin.layouts.base')
+@section('title','職務人員')
+@section('pageDesc','DashBoard')
 @section('content')
-	<section class='container'>
+@section('content')
+	<section class='container box'>
 		<!-- Team Members -->
         <div class="row">
             <div class="col-lg-12">
@@ -28,15 +28,19 @@
             <div class="form-group row add">
             <br>
                 <div class="col-md-4">
+					@if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
                     <button class="btn btn-primary" type="submit" id="add">
                         <span class="glyphicon glyphicon-plus"></span> 新增
                     </button>
+					@endif
+					@if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
                 	<button class="btn btn-info" id="edit">
 						<span class="glyphicon glyphicon-pencil"></span> 修改
 					</button>
 	              	<button type="button" class="btn btn-warning" data-dismiss="modal" disabled="disabled" id="cancel">
 		                <span class='glyphicon glyphicon-remove'></span> 取消
 		            </button>
+					@endif
                 </div>
             </div>
 
@@ -155,11 +159,12 @@
 				                            <button type="button" class="save-modal btn btn-success hide" data-info="{{$person->id}}" data-dismiss="modal" id="update_{{$person->id}}" >
 			                        			<span class='glyphicon glyphicon-check'> </span> 更新
 			                    			</button>	
-
+											@if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
 			                                <button class="delete-modal btn btn-danger hide"
 			                                    data-info="{{$person->id}}">
-			                                    <span class="glyphicon glyphicon-trash"></span> 刪除
+			                                    <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
 			                                </button>
+											@endif
 
 		                        		</div>
 				                    </div>
@@ -209,6 +214,9 @@
                 </div>
             </div>     
         </div>
+      </section>
+    @stop
+    @section('js')
 	<link rel="stylesheet" href="{{ asset('css/screen.css')}}" >
 	<script src="../js/jquery.datetimepicker.full.js"></script>
 	<script src="../js/jquery.validate.js"></script>
@@ -604,5 +612,4 @@
             })
 
       </script>
- 	</section>
 @stop	   

@@ -15,7 +15,7 @@
                 <div class="lgray-bg ">
                     <div class="container:after">
                         <ol class="breadcrumb">
-                            <li><a href="{{url('/')}}">@lang('function_title.home')</a>
+                            <li><a href="{{url('/')}}"><span class="glyphicon glyphicon glyphicon-home"> @lang('function_title.home')</a>
                             </li>
                             <li><a href="{{route('news')}}">@lang('function_title.news')</a>
                             </li>
@@ -50,13 +50,16 @@
                             <hr>
                             <h3>
                             @if ( !empty($News->action_date))
+                                <span class="glyphicon glyphicon-calendar"></span>
                                 <label>@lang('default.date'):</label>{{$News->action_date}}
                             @endif
                             @if ( !empty($News->action_time))
+                                 <span class="glyphicon glyphicon-time"></span>
                                 <label>@lang('default.time'):</label>{{$News->action_time}}
                             @endif
                             @if ( !empty($News->action_postion))
-                                <br>
+                                
+                                <span class="glyphicon glyphicon-map-marker"></span>
                                 <label>@lang('default.action_postion'):</label>{{$News->action_postion}}
                             @endif
 
@@ -77,4 +80,5 @@
 </section>
     <script src="../ckeditor/ckeditor.js"></script>
     <script src="../js/ckeditor_api.js"></script>
+
 @stop

@@ -187,9 +187,26 @@
                                  join codtbld b
                                  on b.cod_type= ?
                                  and b.cod_id=a.cod_id 
-                                 where a.cod_id= ?', [$strType,$strStaff]);
+                                 where a.cod_id= ?
+                                 and a.edate >= CURDATE()', [$strType,$strStaff]);
         }
 
+        /*
+            撈出會長
+        */
+        public function getPresidency()
+        {
+            $strType='duty';
+            $strStaff='5';
+            return  $dtNews=DB::select('select a.id,a.name,a.image_path,a.sdate
+                                ,a.edate,b.cod_val
+                                 from staffs a
+                                 join codtbld b
+                                 on b.cod_type= ?
+                                 and b.cod_id=a.cod_id 
+                                 where a.cod_id= ?
+                                 and a.edate >= CURDATE() ', [$strType,$strStaff]);
+        }
 
         /*
             撈出執事
@@ -204,7 +221,8 @@
                                  join codtbld b
                                  on b.cod_type= ?
                                  and b.cod_id=a.cod_id 
-                                 where a.cod_id= ?', [$strType,$strStaff]);
+                                 where a.cod_id= ?
+                                 and a.edate >= CURDATE()', [$strType,$strStaff]);
         }
 
         /*

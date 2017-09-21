@@ -22,7 +22,7 @@
                         {{-- <small>Subheading</small> --}}
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="{{url('/')}}">首頁</a>
+                        <li><span class="glyphicon glyphicon glyphicon-home"> <a href="{{url('/')}}"> @lang('default.home')</a>
                         </li>
                         <li class="active">聚會資訊</li>
                     </ol>
