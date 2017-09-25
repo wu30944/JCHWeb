@@ -30,19 +30,88 @@
                 <div class="col-md-4">
 					@if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
                     <button class="btn btn-primary" type="submit" id="add">
-                        <span class="glyphicon glyphicon-plus"></span> 新增
+                        <span class="glyphicon glyphicon-plus"></span> @lang('default.add')
                     </button>
 					@endif
 					@if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
                 	<button class="btn btn-info" id="edit">
-						<span class="glyphicon glyphicon-pencil"></span> 修改
+						<span class="glyphicon glyphicon-pencil"></span> @lang('default.edit')
 					</button>
 	              	<button type="button" class="btn btn-warning" data-dismiss="modal" disabled="disabled" id="cancel">
-		                <span class='glyphicon glyphicon-remove'></span> 取消
+		                <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
 		            </button>
 					@endif
                 </div>
             </div>
+			{{-- 搜尋測試區塊 --}}
+			{!! Form::open(['route'=>'MA_SearchStaff','id'=>'form_search']) !!}
+			<div class="col-lg-12">
+				<div class="thumbnail">
+
+					<table class="table  site-footer" >
+						<tr>
+							<td class="col-lg-2">
+								<label>@lang('default.name'):</label>
+							</td>
+							<td>
+								{!!form::text('SearchName',(isset($request))?$request->SearchName:'',['class'=>'text form-control','id'=>'SearchName'])!!}
+								{{-- <input type="text" class="form-control" id="SearchSpeaker" > --}}
+							</td>
+
+						</tr>
+						<tr>
+							<td class="col-lg-2" align="left">
+								<div style="display: inline;">
+									<label>@lang('default.staff'):</label>
+								</div>
+							</td>
+							<td>
+								<div style="display: inline;">
+									{!! Form::select('SearchStaff',$ItemAll,(isset($request))?$request->SearchStaff:2, ['placeholder'=>'Select Category','style'=>'width:130px','id'=>'SearchStaff']) !!}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="col-lg-2" align="left">
+								<div style="display: inline;">
+									<label>@lang('default.depart'):</label>
+								</div>
+							</td>
+							<td>
+								<div style="display: inline;">
+									{!! Form::select('SearchDepart',$ItemDepartAll,(isset($request))?$request->SearchDepart:2, ['placeholder'=>'Select Category','style'=>'width:130px','id'=>'SearchDepart']) !!}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="col-lg-2">
+								<label >@lang('default.sdate'):</label>
+							</td>
+							<td>
+								{{-- <input type="text" class="form-control search-date-modal" id="SearchSDate" > --}}
+								{!!form::text('SearchSDate',(isset($request))?$request->SearchSDate:'',['class'=>'text form-control search-date-modal','id'=>'SearchSDate'])!!}
+							</td>
+						</tr>
+						<tr>
+							<td class="col-lg-2">
+								<label >@lang('default.edate'):</label>
+							</td>
+							<td>
+								{!!form::text('SearchEDate',(isset($request))?$request->SearchEDate:'',['class'=>'text form-control search-date-modal','id'=>'SearchEDate'])!!}
+								{{-- <input type="text" class="form-control search-date-modal" id="SearchEDate" > --}}
+							</td>
+						</tr>
+					</table>
+					@if(count($dtStaff)===0)
+						<div class="alert alert-danger alert-block">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<strong>查無符合資料</strong>
+						</div>
+					@endif
+				</div>
+			</div>
+			{!! Form::close() !!}
+			{{-- 搜尋測試區塊 --}}
 
             <div class="row">
 				{!! Form::open(['route'=>'MA_Insert_Staff','id'=>'form_add','files'=>true,'class'=>'hide']) !!} 
@@ -63,30 +132,45 @@
 			                    		{{-- <img class="img-responsive preview img-circle"  alt="" id="preview" src="/photo/sample.jpg">
 	 --}}		                    </p>
 			                        <p>
-			                        	{!!form::label('name','姓名:')!!}
-		                        		{{-- <label for="name">姓名：</label><br> --}}
-		                        		{!!form::text('name','',['class'=>'name'])!!}
-		                    				{{-- <input class="span2_add " size="16" type="text" style="width:100%;" id="name" name="name"> --}}
+										<label for="">@lang('default.name') :</label>
+											{{--{!!form::label('name','姓名:')!!}--}}
+										<div style="display: inline;">
+											{!!form::text('name','',['class'=>'name'])!!}
+										</div>
 		                    		</p>
 	                				<p>
 	                					<div style="display: inline;">
-	            						{!!form::label('duty','職務:')!!}
+										<label for="">@lang('default.staff')</label>
+	            						{{--{!!form::label('duty','職務:')!!}--}}
 	            						</div>
-	                    				{{-- <label for="duty">職務：</label><br> --}}
-	                    				{{-- <select class="span3_add " size="16" type="text" id="duty" name="duty" style="width:80%;"><br> --}}
 	                    				<div style="display: inline;">
 	                    				{!! Form::select('duty',$ItemAll, old('duty'), ['placeholder'=>'Select Category','style'=>'width:100px']) !!}
 	                    				</div>
 			                         </p>
+									<p>
+										<div style="display: inline;">
+										<label for="">@lang('default.depart')</label>
+											{{--{!!form::label('depart','部門:')!!}--}}
+										</div>
+										<div style="display: inline;">
+											{!! Form::select('depart',$ItemDepartAll, old('depart'), ['placeholder'=>'Select Category','style'=>'width:100px','clase'=>'form-control']) !!}
+										</div>
+									</p>
 			                          <p>
-			                          	 {!!form::label('sdate','開始日期:')!!}
+										<div style="display: inline;">
+											<label for="">@lang('default.sdate')</label>
+											{{--{!!form::label('depart','部門:')!!}--}}
+										</div>
+			                          	 {{--{!!form::label('sdate','開始日期:')!!}--}}
 
-			                        	  {{-- <label for="sdate">開始日期：</label><br> --}}
 		        						  <input class="date-modal" size="16" type="text" id="sdate" name="sdate" >
 	        						  </p>
 	  	                             <p>
-			                        	  {{-- <label for="edate">結束日期：</label><br> --}}
-			                        	  {!!form::label('edate','結束日期:')!!}
+										<div style="display: inline;">
+											<label for="">@lang('default.edate')</label>
+											{{--{!!form::label('depart','部門:')!!}--}}
+										</div>
+			                        	  {{--{!!form::label('edate','結束日期:')!!}--}}
 		        						  <input class="date-modal" size="16" type="text" id="edate" name="edate" >
 	        						  </p>
 		                            <div align="right">                                
@@ -133,31 +217,43 @@
 					                        </div>
 				                        </p>
 		                				<p>
-			                        		<label >姓名：</label>
-		                    				<input class="span3" size="16" type="text" id="name_{{$person->id}}" value="{{$person->name}}" style="border-style:none;outline:none" readonly="true" >
+			                        		<label >@lang('default.name')：</label>
+		                    				<input class="span3" size="16" type="text" id="name_{{$person->id}}" value="{{$person->name}}" style="border-style:none;outline:none" readonly="true" class="form-control name">
 		                				</p>
 		                				<p>
-		                					<label>職務：</label>
+		                					<label>@lang('default.staff')：</label>
 
-		                					{!! Form::select('duty_'.$person->id,$ItemAll, $person->cod_id, ['placeholder'=>'Select Category','style'=>'width:100px','disabled'=>'disabled','class'=>'span4','id'=>'duty_'.$person->id]) !!}
-		                           {{--        	  <select class="form-control" name="duty_{{$person->id}}">
-											    @foreach($ItemAll as $item)
-											      <option value="{{$item->id}}">{{$item->id}}</option>
-											    @endforeach
-											  </select> --}}
-				                        </p>
+		                					{!! Form::select('duty_'.$person->id,$ItemAll, $person->cod_id, ['placeholder'=>'Select Category','style'=>'width:100px','disabled'=>'disabled','class'=>'staff','id'=>'duty_'.$person->id,'data-info'=>$person->id]) !!}
+											@if($person->cod_id == 5)
+												{!! Form::select('fellowship_'.$person->id,$ItemFellowshipAll, $person->fellowship_id, ['placeholder'=>'Select Category','disabled'=>'disabled','class'=>'span4','style'=>'width:140px','id'=>'fellowship_'.$person->id]) !!}
+											@else
+												{!! Form::select('fellowship_'.$person->id,$ItemFellowshipAll, $person->fellowship_id, ['placeholder'=>'Select Category','disabled'=>'disabled','class'=>'hide','style'=>'width:140px','id'=>'fellowship_'.$person->id]) !!}
+											@endif
+										</p>
+										<p>
+											@if($person->cod_id == 2 or $person->cod_id == 3 or $person->cod_id==5)
+											<label class="" id="lblDepart_{{$person->id}}">@lang('default.depart')：</label>
+
+											{!! Form::select('depart_'.$person->id,$ItemDepartAll, $person->depart_id, ['placeholder'=>'Select Category','style'=>'width:100px','disabled'=>'disabled','class'=>'span4','id'=>'depart_'.$person->id]) !!}
+											@else
+											<label class="hide" id="lblDepart_{{$person->id}}">@lang('default.depart')：</label>
+
+											{!! Form::select('depart_'.$person->id,$ItemDepartAll, $person->depart_id, ['placeholder'=>'Select Category','style'=>'width:100px','class'=>'hide','id'=>'depart_'.$person->id]) !!}
+
+											@endif
+										</p>
 				                        <p>
-				                        	<label >開始日期：</label>
+				                        	<label >@lang('default.sdate')：</label>
 		            						  <input class="date-modal" size="16" type="text" id="sdate_{{$person->id}}" style="border-style:none;outline:none" readonly="true" value="{{$person->sdate}}">
 		    						  	</p>
 		    						  	 <p>
-				                        	<label >結束日期：</label>
+				                        	<label >@lang('default.edate')：</label>
 		            						  <input class="date-modal" size="16" type="text" id="edate_{{$person->id}}" style="border-style:none;outline:none" readonly="true" value="{{$person->edate}}">
 		    						  	</p>
 
 			                            <div align="right">                                
 				                            <button type="button" class="save-modal btn btn-success hide" data-info="{{$person->id}}" data-dismiss="modal" id="update_{{$person->id}}" >
-			                        			<span class='glyphicon glyphicon-check'> </span> 更新
+			                        			<span class='glyphicon glyphicon-check'> </span> @lang('default.update')
 			                    			</button>	
 											@if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
 			                                <button class="delete-modal btn btn-danger hide"
@@ -197,7 +293,7 @@
                              
                      
                         <div class="deleteContent">
-                            您確定要刪除此照片 <span class="dname"></span> ? <span
+                            @lang('message.delete_msg') <span class="dname"></span> ? <span
                                 class="hidden did"></span>
                         </div>
                         <div class="modal-footer">
@@ -207,7 +303,7 @@
                                 <span id="action_button" class='glyphicon'> </span>
                             </button>
                             <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                <span class='glyphicon glyphicon-remove'></span> 取消
+                                <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
                             </button>
                         </div>
                     </div>
@@ -273,6 +369,7 @@
 
 			        $('input[class="span3"]').removeAttr("readonly");
 			        $('select[class="span4"]').removeAttr("disabled");
+                    $('select[class="staff"]').removeAttr("disabled");
 			        $('.date-modal').removeAttr("readonly");
 
 			        $('#cancel').removeAttr("disabled");
@@ -328,6 +425,7 @@
 		        $('#div_add').addClass('hide');
 
 		        $('select[class="span4"]').attr('disabled',"disabled");
+                $('select[class="staff"]').attr('disabled',"disabled");
 
 		        $('#name').val('');
 		        $('#sdate').val('');
@@ -476,7 +574,9 @@
 		        var duty = $('#duty_'+stuff).val();
 		        var sdate = $('#sdate_'+stuff).val();
 		        var edate = $('#edate_'+stuff).val();
-		         // alert( duty);
+		        var depart = $('#depart_'+stuff).val();
+                var fellowship = $('#fellowship_'+stuff).val();
+//				alert( fellowship);
 		        // var video_link = $('#speaker_'+stuff).val();
 
 
@@ -492,6 +592,8 @@
 			            formData.append('duty',duty);
 			            formData.append('sdate',sdate);
 			            formData.append('edate',edate);
+			            formData.append('depart',depart);
+			            formData.append('fellowship',fellowship);
 			            formData.append('_token',$('input[name=_token]').val());
 
 			            $.ajax({
@@ -532,7 +634,9 @@
 				                'name':name ,
 				                'duty':duty,
 				                'sdate': sdate  ,
-				                'edate': edate     
+				                'edate': edate,
+								'depart':depart,
+								'fellowship':fellowship
 		                    },
 				            success: function(data){ 
 				            	// alert(data['errors']);
@@ -610,6 +714,35 @@
               //     $(".alert-test").hide(200);
               //   }, 3000);
             })
+
+			$('select[class="staff"]').change(function(){
+//			alert($(this).data('info'));
+
+				$id = $(this).data('info');
+				$strStaff=$('#duty_'+$id).val();
+
+				if($strStaff==5)
+				{
+//                   alert($('#duty_'+$id).val());
+                    $('#fellowship_'+$id).removeClass('hide');
+                    $('#lblDepart_'+$id).removeClass('hide');
+                    $('#depart_'+$id).removeClass('hide');
+				}else
+				{
+                    $('#fellowship_'+$id).addClass('hide');
+                    if($strStaff== 2 || $strStaff == 3)
+					{
+                        $('#lblDepart_'+$id).removeClass('hide');
+                        $('#lblDepart_'+$id).removeClass('hide');
+                        $('#depart_'+$id).removeClass('hide');
+					}else {
+
+                        $('#lblDepart_'+$id).addClass('hide');
+						$('#depart_'+$id).addClass('hide');
+					}
+				}
+
+			});
 
       </script>
 @stop	   

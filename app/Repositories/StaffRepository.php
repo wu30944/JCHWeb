@@ -37,87 +37,105 @@
             return  collect(['ServerNo'=>'200','Result' =>'儲存成功！']);
         }
 
-        public function create_staff_d($staff_id,$staff_name,$cod_id)
+        /*
+         * 2017/09/22   新增部門，多帶入一個參數
+         * */
+        public function create_staff_d($staff_id,$staff_name,$cod_id,$depart_id,$fellowship_id)
         {   
 
             $data = new staffs_d();
             $data->staff_id=$staff_id;
             $data->name=$staff_name;
             $data->cod_id=$cod_id;
+            $data->depart_id=$depart_id;
+            $data->fellowship_id = $fellowship_id;
             $data->content="";
-            $data->create_date=date("Y-m-d");;
+            $data->create_date=date("Y-m-d");
             $data->save ();
 
         }
 
 
-
+        /*
+         * 2017/09/22   新增部門，多帶入一個參數
+         * */
         public function save(Request $request)
         {
-
-            $rules = array (
-                'name'=> 'required',
-                'duty'=>'not_in:choice',
-                'sdate'=>'required',
-                'edate'=>'required'
-            );
-            $messages = ['name.required' => '姓名欄位不能空白'
-                         ,'duty.not_in'=>'請選擇職務'];
-            // \Debugbar::info($request->name);
-            // \Debugbar::info($request->duty);
-            // \Debugbar::info($request->sdate);
-            // \Debugbar::info($request->edate);
-            $validator = Validator::make ( $request->all(), $rules,$messages );
-            \Debugbar::info($request->duty);
-            if ($validator->fails ()){       
-                 // return Response::json ( 
-                 //    array ('errors' => $validator->messages()->all() ));
-                  return  collect(['ServerNo'=>'404','Result' =>  $validator->messages()->all()]);
-                  // return response()->json(['0' => '404','Result' =>  $validator->messages()->all()]);
-            }
-            else {
-                      // \Debugbar::info('2');          
-                if($request->id==NULL)
-                {
-                    $data = new staff();
-
-                    $data->name = $request->name;
-                    $data->cod_id = $request->duty;
-                    $data->sdate = $request->sdate;
-                    $data->edate = $request->edate;
-                    $data->save ();
-                    $this->create_staff_d($data->id,$request->name,$request->duty);
-
-                }else{
-                    $data = $this->dtStaff->find($request->id);
-
-                    $data->name = $request->name;
-                    $data->cod_id = $request->duty;
-                    $data->sdate = $request->sdate;
-                    $data->edate = $request->edate;
-                    $data->save ();
-
-                    /*
-                        20170831. 為了要同步staff與 staffs_d兩個table的人員資料
-                        所以在這裡也必須要儲存staffs_d中的cod_id欄位資料，不然當修改
-                        職務時，就會發生錯誤
-                    */
-                    $staffd_id = $this->dtStaff_D->where('staff_id','=',$request->id)->pluck('id');
-                    // \Debugbar::info(count($staffd_id));
-                    if(count($staffd_id)>0)
-                    {   
-                        $data_d=$this->dtStaff_D->find($staffd_id);
-                        $data_d->cod_id = $request->duty;
-                         $data_d->save ();
+            try {
+                    $rules = array (
+                        'name'=> 'required',
+                        'duty'=>'not_in:choice',
+                        'sdate'=>'required',
+                        'edate'=>'required'
+                    );
+                    $messages = ['name.required' => '姓名欄位不能空白'
+                                 ,'duty.not_in'=>'請選擇職務'];
+                    // \Debugbar::info($request->name);
+                    // \Debugbar::info($request->duty);
+                    // \Debugbar::info($request->sdate);
+                    // \Debugbar::info($request->edate);
+                    $validator = Validator::make ( $request->all(), $rules,$messages );
+                    \Debugbar::info($request->duty);
+                    if ($validator->fails ()){
+                         // return Response::json (
+                         //    array ('errors' => $validator->messages()->all() ));
+                          return  collect(['ServerNo'=>'404','Result' =>  $validator->messages()->all()]);
+                          // return response()->json(['0' => '404','Result' =>  $validator->messages()->all()]);
                     }
-                    
+                    else {
 
-                }
+                        DB::connection()->getPdo()->beginTransaction();
+                              // \Debugbar::info('2');
+                        if($request->id==NULL)
+                        {
+                            $data = new staff();
 
-                // Session::flash('message', 'Successfully updated nerd!');
-                // return response ()->json ( $data );
-                return  collect(['ServerNo'=>'200','Result' =>'儲存成功！','id'=>$data->id]);
-                // return response ()->json ( ['0'=>'200','Result'=>'儲存成功！' ]);
+                            $data->name = $request->name;
+                            $data->cod_id = $request->duty;
+                            $data->sdate = $request->sdate;
+                            $data->edate = $request->edate;
+                            $data->depart_id = $request->depart;
+                            $data->fellowship_id = $request->fellowship;
+                            $data->save ();
+                            $this->create_staff_d($data->id,$request->name,$request->duty,$request->depart,$request->fellowship);
+
+                        }else{
+                            $data = $this->dtStaff->find($request->id);
+
+                            \Debugbar::info($request->fellowship);
+                            $data->name = $request->name;
+                            $data->cod_id = $request->duty;
+                            $data->sdate = $request->sdate;
+                            $data->edate = $request->edate;
+                            $data->depart_id = $request->depart;
+                            $data->fellowship_id = $request->fellowship;
+                            $data->save ();
+
+                            /*
+                                20170831. 為了要同步staff與 staffs_d兩個table的人員資料
+                                所以在這裡也必須要儲存staffs_d中的cod_id欄位資料，不然當修改
+                                職務時，就會發生錯誤
+                            */
+                            $staffd_id = $this->dtStaff_D->where('staff_id','=',$request->id)->pluck('id');
+                            // \Debugbar::info(count($staffd_id));
+                            if(count($staffd_id)>0)
+                            {
+                                $data_d=$this->dtStaff_D->find($staffd_id);
+                                $data_d->cod_id = $request->duty;
+                                $data_d->depart_id = $request->depart;
+                                 $data_d->save ();
+                            }
+
+
+                        }
+                        DB::connection()->getPdo()->commit();
+                        // Session::flash('message', 'Successfully updated nerd!');
+                        // return response ()->json ( $data );
+                        return  collect(['ServerNo'=>'200','Result' =>'儲存成功！','id'=>$data->id]);
+                        // return response ()->json ( ['0'=>'200','Result'=>'儲存成功！' ]);
+                    }
+                } catch (\PDOException $e) {
+                DB::connection()->getPdo()->rollBack();
             }
         }
 

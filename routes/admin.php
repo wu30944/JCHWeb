@@ -118,6 +118,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::get ( '/MA_OurPastor', ['as' => 'MA_OurPastor','uses'=>'StaffController@MA_our_pastor' ]);
     Route::get ( '/MA_OurPastor_D', ['as' => 'MA_OurPastor_D','uses'=>'StaffController@MA_OurPastor_D' ]);
     Route::post ( '/MA_Update_Staff_D', ['as' => 'MA_Update_Staff_D','uses'=>'StaffController@UpdateItemD' ]);
+    Route::post ( '/MA_SearchStaff', ['as' => 'MA_SearchStaff','uses'=>'StaffController@UpdateItemD' ]);
 });
 
 Route::get('/', function () {

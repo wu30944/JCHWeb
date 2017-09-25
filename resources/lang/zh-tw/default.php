@@ -56,6 +56,8 @@ return array(
     ,'edate'=>'結束日期'
     ,'search'=>'搜尋'
     ,'sunday'=>'禮拜'
+    ,'depart'=>'部門'
+    ,'update'=>'更新'
 	);
 
  ?>

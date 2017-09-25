@@ -112,7 +112,7 @@
         </div>
     </div>
 
-            {{-- 測試區塊 --}}
+            {{-- 搜尋測試區塊 --}}
             {!! Form::open(['route'=>'MA_SearchMoreYoutube','id'=>'form_search']) !!} 
 		            <div class="col-lg-12">
 		                <div class="thumbnail">
@@ -267,7 +267,7 @@
 	                        <form class="form-horizontal" role="form">
 	                        </form>
 	                        <div class="deleteContent">
-	                            您確定要刪除此影片 <span class="dname"></span> ? <span
+	                            @lang('message.delete_msg') <span class="dname"></span> ? <span
 	                                class="hidden did"></span>
 	                        </div>
 	                        <div class="modal-footer">
@@ -651,7 +651,7 @@
 
 		                if(data.image==""){
 		                    $('#edit_photo_text').text(" 新增照片");
-		                    $('#ShowImg').attr('src','/photo/sample900*300.jpg');
+		                    $('#ShowImg').attr('src','/photo/public/sample900*300.jpg');
 		                    $('#spUpdatePhoto').text(" 上傳");
 
 		                }else{

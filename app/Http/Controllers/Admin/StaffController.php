@@ -11,40 +11,23 @@ use DB;
 use Models\dtControl;
 
 use App\Repositories\fellowshipRepository;
-
 use  App\Repositories\staffRepository;
-
 use  App\Repositories\codtbldRepository;
 
 class StaffController extends Controller
 {
     private $staff;
     private $codtbld;
+    private $fellowship;
 
-    public function __construct(staffRepository $staffRepository,codtbldRepository $codtbldRepository)
+    public function __construct(staffRepository $staffRepository,codtbldRepository $codtbldRepository,
+                                fellowshipRepository $fellowshipRepository)
     {
         $this->staff=$staffRepository;
         $this->codtbld=$codtbldRepository;
+        $this->fellowship = $fellowshipRepository;
     }
 
-    public function show()
-    {
-       $dtDuty = $this->codtbld->getWhere('duty');
-        $dtStaff = $this->staff->getAll();
-
-        $dtfellowship = $this->fellowshipRepository->getAll();
-         $item=collect(['choice'=>'請選擇']);
-        // $item->push('新增年份');
-        foreach ($dtDuty as $key) {
-            # code...
-            // $item->push($key->title);
-            $item[$key->cod_id]=$key->cod_val;
-        }
-
-        $ItemAll=$item->all();
-
-      return view('staff.elder_deacon',compact('dtfellowship','ItemAll','dtStaff'));
-    }
 
     public function show_elder_deacon()
     {
@@ -73,7 +56,6 @@ class StaffController extends Controller
     	  $dtDuty = $this->codtbld->getWhere('duty');
         // $dtStaff = $this->dtStaff->getAll();
         $item=collect(['choice'=>'請選擇']);
-        // $item->push('新增年份');
         foreach ($dtDuty as $key) {
             # code...
             // $item->push($key->title);
@@ -82,9 +64,29 @@ class StaffController extends Controller
 
         $ItemAll=$item->all();
 
+        /*
+         * 2017/09/22  職務功能新增部門選項
+         * */
+        $dtDepart = $this->codtbld->getWhere('depart');
+        $ItemDepart = collect([''=>'請選擇']);
+        foreach ($dtDepart as $key) {
+            # code...
+            $ItemDepart[$key->cod_id]=$key->cod_val;
+        }
+        $ItemDepartAll=$ItemDepart->all();
+
+        $dtFellowship = $this->fellowship->getAll();
+        $ItemFellowship = collect([''=>'請選擇團契']);
+        foreach ($dtFellowship as $key) {
+            # code...
+            $ItemFellowship[$key->id]=$key->NAME;
+        }
+        $ItemFellowshipAll=$ItemFellowship->all();
+
+
          $dtStaff=$this->staff->getOrderByPageing(9);
 
-    	return view('DataMaintain.MA_Staff',compact('ItemAll','dtStaff'));
+    	return view('DataMaintain.MA_Staff',compact('ItemAll','dtStaff','ItemDepartAll','ItemFellowshipAll'));
 
     }
 

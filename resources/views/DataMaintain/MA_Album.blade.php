@@ -144,7 +144,7 @@
                     <form class="form-horizontal" role="form" id="UploadPhotoForm" enctype="multipart/form-data" action="MA_Fellowship_Photo"  method="post">  
                     {{ csrf_field() }}
                         <div class="size"></div>
-                        <img class="img-responsive preview"  alt="" id="preview" src="/photo/sample.jpg">
+                        <img class="img-responsive preview"  alt="" id="preview" src="/photo/public/sample.jpg">
                         <a href="#" class="btn button-change-profile-picture">
 
                         <label for="upload-profile-picture">
@@ -356,7 +356,7 @@
 
                 if(data[0].image_path=="" ||data[0].image_path==undefined){
                     $('#edit_photo').text(" 新增照片");
-                    $('#ShowImg').attr('src','/photo/sample.jpg');
+                    $('#ShowImg').attr('src','/photo/public/sample.jpg');
                 }else{
                     $('#ShowImg').attr('src',data[0].image_path);
                     $('#edit_photo').text(" 更換照片");

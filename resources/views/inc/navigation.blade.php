@@ -9,7 +9,7 @@
 				</span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<img class="navbar-img"  alt="Brand" src="../photo/church_logo.png">
+			<img class="navbar-img"  alt="Brand" src="../photo/public/church_logo.png">
 			<a class="navbar-brand" href="{{route('index')}}">建成教會</a>
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->

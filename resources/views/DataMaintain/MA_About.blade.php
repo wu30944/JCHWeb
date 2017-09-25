@@ -29,8 +29,8 @@
                     <div class="col-md-8">
                         <div class="thumbnail">
                             <p>
-                                {!!form::label('map','地圖:')!!}
-                                {!!form::text('map',$jchinfo['MAP'],['class'=>'name','size'=>'70'])!!}
+                                {!!form::label('map','地圖網址:')!!}
+                                {!!form::text('map',$jchinfo['MAP'],['class'=>'name form-control','size'=>'70'])!!}
                             </p>
                         <!-- Embedded Google Map -->
                              <iframe src="{{$jchinfo['MAP']}}"  width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
@@ -43,37 +43,37 @@
                                     <p>
                                         {!!form::label('cname','教會中文名稱:')!!}
                                         {{-- <label for="name">姓名：</label><br> --}}
-                                        {!!form::text('cname',$jchinfo['CNAME'],['size'=>'30'])!!}
+                                        {!!form::text('cname',$jchinfo['CNAME'],['size'=>'30','class'=>'form-control'])!!}
                                     </p>
                                     <p>
                                         {!!form::label('ename','教會英文名稱:')!!}
                                         {{-- <label for="name">姓名：</label><br> --}}
-                                        {!!form::text('ename',$jchinfo['ENAME'],['class'=>'name','size'=>'30'])!!}
+                                        {!!form::text('ename',$jchinfo['ENAME'],['class'=>'name form-control','size'=>'30'])!!}
                                     </p>
                                      <p>
                                         {!!form::label('address','教會地址:')!!}
                                         {{-- <label for="name">姓名：</label><br> --}}
-                                        {!!form::text('address',$jchinfo['ADDRESS'],['class'=>'address','size'=>'30'])!!}
+                                        {!!form::text('address',$jchinfo['ADDRESS'],['class'=>'address form-control','size'=>'30'])!!}
                                     </p>
                                     <p>
                                         {!!form::label('phone','電話:')!!}
                                         {{-- <label for="name">姓名：</label><br> --}}
-                                        {!!form::text('phone',$jchinfo['PHONE'],['class'=>'phone','size'=>'30'])!!}
+                                        {!!form::text('phone',$jchinfo['PHONE'],['class'=>'phone form-control','size'=>'30'])!!}
                                     </p>
                                     <p>
                                         {!!form::label('fex','傳真:')!!}
                                         {{-- <label for="name">姓名：</label><br> --}}
-                                        {!!form::text('fex',$jchinfo['FEX'],['class'=>'name','size'=>'30'])!!}
+                                        {!!form::text('fex',$jchinfo['FEX'],['class'=>'name form-control','size'=>'30'])!!}
                                     </p>
                                     <p>
                                         {!!form::label('email','E-mail:')!!}
                                         {{-- <label for="name">姓名：</label><br> --}}
-                                        {!!form::text('email',$jchinfo['EMAIL'],['class'=>'name','size'=>'30'])!!}
+                                        {!!form::text('email',$jchinfo['EMAIL'],['class'=>'name form-control','size'=>'30'])!!}
                                     </p>
                                     <p>
                                         {!!form::label('uniform_number','統一編號:')!!}
                                         {{-- <label for="name">姓名：</label><br> --}}
-                                        {!!form::text('uniform_number',$jchinfo['UNIFORM'],['class'=>'name','size'=>'30'])!!}
+                                        {!!form::text('uniform_number',$jchinfo['UNIFORM'],['class'=>'name form-control','size'=>'30'])!!}
                                     </p>
                                     <p>
                                         {!!form::text('id',$jchinfo['ID'],['class'=>'hide'])!!}
