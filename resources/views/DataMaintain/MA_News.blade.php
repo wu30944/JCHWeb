@@ -56,13 +56,17 @@
                                 </button>
                                 @endif
                                 @if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
-                                <button class="delete-modal btn btn-danger"
-                                    data-info="{{$item->id}},{{$item->title}},{{$item->action_date}},{{$item->content}}">
-                                    <span class="glyphicon glyphicon-trash"></span> @lang('default.delete)
-                                </button>
+                                    <button class="delete-modal btn btn-danger"
+                                            data-info="{{$item->id}},{{$item->title}},{{$item->action_date}},{{$item->content}}">
+                                        <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
+                                    </button>
+                                {{--<button class="delete-modal btn btn-danger"--}}
+                                    {{--data-info="{{$item->id}},{{$item->title}},{{$item->action_date}},{{$item->content}}">--}}
+                                    {{--<span class="glyphicon glyphicon-trash"></span> @lang('default.delete)--}}
+                                {{--</button>--}}
                                 @endif
                             </td>
-                           
+
                         </tr>
                         @endforeach
                     @else
@@ -98,7 +102,7 @@
             <div class="col-md-12">
                 {{-- <img class="img-responsive show-update-img"  alt="" id="ShowImg" style="max-width: 500; max-height: 290px;"> --}}
                 <div align="center">
-                     <img class="img-responsive img-hover" src="/photo/public/sample900*300.jpg" alt="" id="ShowImg" style="max-width: width:100%; max-height: 400px;">
+                     <img class="img-responsive img-hover" src="/photo/sample900_300.jpg" alt="" id="ShowImg" style="max-width: width:100%; max-height: 400px;">
                 </div>
                 <button type="button" class="btn actionBtn" data-dismiss="modal" id="edit_photo">
                     <span id="edit_photo_text" class='glyphicon'></span>
@@ -386,7 +390,7 @@
                 if(data.image==""){
                     $('#edit_photo_text').text("新增照片");
                     $('#edit_photo_text').addClass('glyphicon-check');
-                    $('#ShowImg').attr('src','/photo/public/sample900*300.jpg');
+                    $('#ShowImg').attr('src','/photo/sample900_300.jpg');
                     $('#spUpdatePhoto').text("上傳");
                    
 
@@ -528,7 +532,7 @@
         $('#edit_photo_text').text("新增照片");
         $('#edit_photo_text').addClass('glyphicon-plus');
         $('#spUpdatePhoto').text("確認");
-        $('#ShowImg').attr('src','/photo/public/sample900*300.jpg');
+        $('#ShowImg').attr('src','/photo/sample900_300.jpg');
     });
 
 </script>

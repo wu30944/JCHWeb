@@ -651,7 +651,7 @@
 
 		                if(data.image==""){
 		                    $('#edit_photo_text').text(" 新增照片");
-		                    $('#ShowImg').attr('src','/photo/public/sample900*300.jpg');
+		                    $('#ShowImg').attr('src','/photo/public/sample900_300.jpg');
 		                    $('#spUpdatePhoto').text(" 上傳");
 
 		                }else{
