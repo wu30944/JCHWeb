@@ -167,7 +167,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 //        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-//        Illuminate\Html\HtmlServiceProvider::class,
+        Illuminate\Html\HtmlServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -239,6 +239,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Form'      => Illuminate\Html\FormFacade::class,
+        'Html'      => Illuminate\Html\HtmlFacade::class,
         'Input'     => Illuminate\Support\Facades\Input::class,
 
     ],
