@@ -379,8 +379,9 @@
                     success: function(data){
                           if(data['ServerNo']=='200'){
                             // 如果成功
-                          alert(data['ResultData'].trim());
-                          $('#ShowImg').attr('src', data['ResultData'].toString());
+                              var strPhotoName = data['ResultData'].toString();
+                              alert('上傳成功');
+                              $('#ShowImg').attr('src', strPhotoName);
 
                             // $('input[name=ShowImg]').val(data);
                               /*
