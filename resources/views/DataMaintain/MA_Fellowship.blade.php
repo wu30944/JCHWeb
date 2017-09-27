@@ -379,7 +379,8 @@
                     success: function(data){
                           if(data['ServerNo']=='200'){
                             // 如果成功
-                           $('#ShowImg').attr('src', data['ResultData']);
+                          alert(data['ResultData'].trim());
+                          $('#ShowImg').attr('src', data['ResultData'].toString());
 
                             // $('input[name=ShowImg]').val(data);
                               /*
@@ -389,7 +390,7 @@
 
 
                           }else{
-                            alert('test');
+                            alert('上傳失敗');
                             // 如果失败
                               // alert(data['ResultData']);
                           }
