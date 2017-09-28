@@ -114,18 +114,18 @@
                 <div class="col-lg-12">
 
                     <ul id="myTab" class="nav nav-tabs nav-justified">
-                        <li class="active"><a href="#service-one" data-toggle="tab"><i class="fa fa-tree"></i> 
+                        <li class="active"><a href="#service-one" data-toggle="tab"><i class="fa fa-star"></i>
                         <input type="text" id="Page_one_Title" value="" placeholder="請填寫"></a>
                         </li>
-                        <li class=""><a href="#service-two" data-toggle="tab"><i class="fa fa-car"></i>
+                        <li class=""><a href="#service-two" data-toggle="tab"><i class="fa fa-star"></i>
                         <input type="text" id="Page_two_Title" value="">
                         </a>
                         </li>
-                        <li class=""><a href="#service-three" data-toggle="tab"><i class="fa fa-support"></i> 
+                        <li class=""><a href="#service-three" data-toggle="tab"><i class="fa fa-star"></i>
                         <input type="text" id="Page_three_Title" value="">
                         </a>
                         </li>
-                        <li class=""><a href="#service-four" data-toggle="tab"><i class="fa fa-database"></i> 
+                        <li class=""><a href="#service-four" data-toggle="tab"><i class="fa fa-star"></i>
                         <input type="text" id="Page_four_Title" value="">
                         </a>
                         </li>
@@ -379,9 +379,8 @@
                     success: function(data){
                           if(data['ServerNo']=='200'){
                             // 如果成功
-                              var strPhotoName = data['ResultData'].toString();
-                              alert('上傳成功');
-                              $('#ShowImg').attr('src', strPhotoName);
+                          alert( data['ResultData'].toString());
+                          $('#ShowImg').attr('src', data['ResultData'].toString());
 
                             // $('input[name=ShowImg]').val(data);
                               /*

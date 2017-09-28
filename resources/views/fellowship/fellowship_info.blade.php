@@ -49,19 +49,19 @@
 
                         <ul id="myTab" class="nav nav-tabs nav-justified">
                             @if(isset($info->page_one_title))
-                            <li class="active"><a href="#service-one" data-toggle="tab"><i class="fa fa-tree"></i> {{$info->page_one_title}}</a>
+                            <li class="active"><a href="#service-one" data-toggle="tab"><i class="fa fa-star"></i> {{$info->page_one_title}}</a>
                             </li>
                             @endif
                              @if($info->page_two_title!='')
-                            <li class=""><a href="#service-two" data-toggle="tab"><i class="fa fa-car"></i> {{$info->page_two_title}}</a>
+                            <li class=""><a href="#service-two" data-toggle="tab"><i class="fa fa-star"></i> {{$info->page_two_title}}</a>
                             </li>
                             @endif
                              @if($info->page_three_title!='')
-                            <li class=""><a href="#service-three" data-toggle="tab"><i class="fa fa-support"></i> {{$info->page_three_title}}</a>
+                            <li class=""><a href="#service-three" data-toggle="tab"><i class="fa fa-star"></i> {{$info->page_three_title}}</a>
                             </li>
                             @endif
                              @if($info->page_four_title!='')
-                            <li class=""><a href="#service-four" data-toggle="tab"><i class="fa fa-database"></i> {{$info->page_four_title}}</a>
+                            <li class=""><a href="#service-four" data-toggle="tab"><i class="fa fa-star"></i> {{$info->page_four_title}}</a>
                             </li>
                             @endif
                         </ul>{{--   
