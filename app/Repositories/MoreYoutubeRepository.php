@@ -8,7 +8,7 @@
     use DB;
 
     use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
+    use Illuminate\Pagination\Paginator;
 
     class MoreYoutubeRepository 
     {

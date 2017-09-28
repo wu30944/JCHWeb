@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post('/MA_Delete_Sunday_Video',['as'=>'MA_Delete_Sunday_Video','uses'=>'VideosController@DeleteItem']);
     Route::post('/MA_Edit_Sunday_Video',['as'=>'MA_Edit_Sunday_Video','uses'=>'VideosController@EditItem']);
     Route::post('/MA_Insert_Sunday_Video',['as'=>'MA_Insert_Sunday_Video','uses'=>'MoreYoutubeController@InsertItem']);
-    Route::post('/MA_SearchMoreYoutube',['as'=>'MA_SearchMoreYoutube','uses'=>'VideosController@Search']);
+    Route::any('/MA_SearchMoreYoutube',['as'=>'MA_SearchMoreYoutube','uses'=>'VideosController@Search']);
 
     /*
         2017/09/19  關於建成資料維護 Route 
@@ -118,7 +118,8 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::get ( '/MA_OurPastor', ['as' => 'MA_OurPastor','uses'=>'StaffController@MA_our_pastor' ]);
     Route::get ( '/MA_OurPastor_D', ['as' => 'MA_OurPastor_D','uses'=>'StaffController@MA_OurPastor_D' ]);
     Route::post ( '/MA_Update_Staff_D', ['as' => 'MA_Update_Staff_D','uses'=>'StaffController@UpdateItemD' ]);
-    Route::post ( '/MA_SearchStaff', ['as' => 'MA_SearchStaff','uses'=>'StaffController@UpdateItemD' ]);
+    Route::any ( '/MA_SearchStaff', ['as' => 'MA_SearchStaff','uses'=>'StaffController@Search' ]);
+
 });
 
 Route::get('/', function () {

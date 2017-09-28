@@ -67,7 +67,7 @@
 	                             <div class="form-group">
 	                                {!!form::label('video_type','影音類型:',['class'=>'control-label col-sm-2'])!!}
 	                                <div class="col-sm-10">
-										{!! Form::select('video_type',$ItemAll, old('video_type'), ['placeholder'=>'Select Category','style'=>'width:120px']) !!}
+										{!! Form::select('video_type',$ItemAll, old('video_type'), ['placeholder'=>'請選擇影片類型','style'=>'width:120px']) !!}
 	                                </div>
 	                            </div>
 
@@ -126,7 +126,7 @@
 		  			  			</td>
 		  			  			<td>
 		  			  				<div style="display: inline;">
-		            				{!! Form::select('SearchVideoType',$ItemAll,(isset($request))?$request->SearchVideoType:2, ['placeholder'=>'Select Category','style'=>'width:130px','id'=>'SearchVideoType']) !!}
+		            				{!! Form::select('SearchVideoType',$ItemAll,(isset($request))?$request->SearchVideoType:2, ['placeholder'=>'請選擇影片類型','style'=>'width:130px','id'=>'SearchVideoType']) !!}
 		            				</div>
 		  			  			</td>
 		  			  		</tr>
@@ -203,7 +203,7 @@
 			            						{!!form::label('video_type','影音類型:')!!}
 			            						</div>
 			                    				<div style="display: inline;">
-			                    				{!! Form::select('video_type_'.$item->id,$ItemAll, $item->type, ['placeholder'=>'Select Category','style'=>'width:130px','disabled'=>'disabled','class'=>'span4','id'=>'video_type_'.$item->id]) !!}
+			                    				{!! Form::select('video_type_'.$item->id,$ItemAll, $item->type, ['placeholder'=>'請選擇影片類型','style'=>'width:130px','disabled'=>'disabled','class'=>'span4','id'=>'video_type_'.$item->id]) !!}
 			                    				</div>
 			                        	 </p>
 				                        <p>	
@@ -249,9 +249,10 @@
 			<!--下列方法為顯示分頁頁碼，配合controller當中elquent模型的DB::paginate(一面幾筆資料)
 			要記得，必須要有paginate()，在blade才能夠使用下列方法-->
 	        <div class="row">
-	            <div class="col-lg-12 text-center">
-	               {{$dtvideos->render()}}
-	            </div>
+				<div class="col-lg-12 text-center">
+					{{$dtvideos->appends((isset($request))?['SearchVideoType'=>$request->SearchVideoType,'SearchTheme'=>$request->SearchTheme,
+                    'SearchSpeaker'=>$request->SearchSpeaker,'SearchSDate'=>$request->SearchSDate,'SearchEDate'=>$request->SearchEDate]:'')->render()}}
+				</div>
 			</div>
 			{{-- @include('WebUIControl.Pager') --}}
 				{{-- 20170611.  增禮拜影片新增頁面 --}}

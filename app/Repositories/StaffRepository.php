@@ -9,6 +9,9 @@
     use Response;
     use DB;
 
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use Illuminate\Pagination\Paginator;
+
 
     class StaffRepository 
     {
@@ -307,5 +310,38 @@
         {
              return $this->dtStaff->orderBy('cod_id','desc')->paginate($num);
         }
-        
+
+        /*
+         * 2017/09/28   新增 職務查詢
+         * */
+        public function query(Request $request)
+        {
+            // \Debugbar::info($request->SearchSpeaker);
+            $empty='';
+            $query = DB::select( DB::raw('select * from  staffs
+                                                where (name = ? or ? = ?)
+                                                and (cod_id= ? or ?= ?)
+                                                and (depart_id= ? or ? = ?)
+                                                and (sdate between ? and ?)' )
+                ,[$request->SearchName,
+                    $request->SearchName,
+                    $empty,
+                    $request->SearchStaff,
+                    $request->SearchStaff,
+                    $empty,
+                    $request->SearchDepart,
+                    $request->SearchDepart,
+                    $empty,
+                    $request->SearchSDate,
+                    $request->SearchEDate]);
+
+            $page = Paginator::resolveCurrentPage("page");
+            $perPage = 9; //實際每頁筆數
+            $offset = ($page * $perPage) - $perPage;
+
+            $data = new LengthAwarePaginator(array_slice($query, $offset, $perPage, true), count($query), $perPage, $page, ['path' =>  Paginator::resolveCurrentPath()]);
+
+            return $data;
+        }
+
     }

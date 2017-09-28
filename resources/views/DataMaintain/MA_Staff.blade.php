@@ -28,6 +28,9 @@
             <div class="form-group row add">
             <br>
                 <div class="col-md-4">
+					<button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btnSearch" onclick="Search()">
+						<span class='glyphicon glyphicon-search'> </span> @lang('default.search')
+					</button>
 					@if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
                     <button class="btn btn-primary" type="submit" id="add">
                         <span class="glyphicon glyphicon-plus"></span> @lang('default.add')
@@ -67,7 +70,7 @@
 							</td>
 							<td>
 								<div style="display: inline;">
-									{!! Form::select('SearchStaff',$ItemAll,(isset($request))?$request->SearchStaff:2, ['placeholder'=>'Select Category','style'=>'width:130px','id'=>'SearchStaff']) !!}
+									{!! Form::select('SearchStaff',$ItemAll,(isset($request))?$request->SearchStaff:2, ['placeholder'=>'請選擇職務','style'=>'width:130px','id'=>'SearchStaff']) !!}
 								</div>
 							</td>
 						</tr>
@@ -79,7 +82,7 @@
 							</td>
 							<td>
 								<div style="display: inline;">
-									{!! Form::select('SearchDepart',$ItemDepartAll,(isset($request))?$request->SearchDepart:2, ['placeholder'=>'Select Category','style'=>'width:130px','id'=>'SearchDepart']) !!}
+									{!! Form::select('SearchDepart',$ItemDepartAll,(isset($request))?$request->SearchDepart:2, ['placeholder'=>'請選擇部','style'=>'width:130px','id'=>'SearchDepart']) !!}
 								</div>
 							</td>
 						</tr>
@@ -144,7 +147,7 @@
 	            						{{--{!!form::label('duty','職務:')!!}--}}
 	            						</div>
 	                    				<div style="display: inline;">
-	                    				{!! Form::select('duty',$ItemAll, old('duty'), ['placeholder'=>'Select Category','style'=>'width:100px']) !!}
+	                    				{!! Form::select('duty',$ItemAll, old('duty'), ['placeholder'=>'請選擇職務','style'=>'width:100px']) !!}
 	                    				</div>
 			                         </p>
 									<p>
@@ -153,7 +156,7 @@
 											{{--{!!form::label('depart','部門:')!!}--}}
 										</div>
 										<div style="display: inline;">
-											{!! Form::select('depart',$ItemDepartAll, old('depart'), ['placeholder'=>'Select Category','style'=>'width:100px','clase'=>'form-control']) !!}
+											{!! Form::select('depart',$ItemDepartAll, old('depart'), ['placeholder'=>'請選擇部','style'=>'width:100px','clase'=>'form-control']) !!}
 										</div>
 									</p>
 			                          <p>
@@ -223,22 +226,22 @@
 		                				<p>
 		                					<label>@lang('default.staff')：</label>
 
-		                					{!! Form::select('duty_'.$person->id,$ItemAll, $person->cod_id, ['placeholder'=>'Select Category','style'=>'width:100px','disabled'=>'disabled','class'=>'staff','id'=>'duty_'.$person->id,'data-info'=>$person->id]) !!}
+		                					{!! Form::select('duty_'.$person->id,$ItemAll, $person->cod_id, ['placeholder'=>'請選擇職務','style'=>'width:100px','disabled'=>'disabled','class'=>'staff','id'=>'duty_'.$person->id,'data-info'=>$person->id]) !!}
 											@if($person->cod_id == 5)
-												{!! Form::select('fellowship_'.$person->id,$ItemFellowshipAll, $person->fellowship_id, ['placeholder'=>'Select Category','disabled'=>'disabled','class'=>'span4','style'=>'width:140px','id'=>'fellowship_'.$person->id]) !!}
+												{!! Form::select('fellowship_'.$person->id,$ItemFellowshipAll, $person->fellowship_id, ['placeholder'=>'請選擇團契','disabled'=>'disabled','class'=>'span4','style'=>'width:140px','id'=>'fellowship_'.$person->id]) !!}
 											@else
-												{!! Form::select('fellowship_'.$person->id,$ItemFellowshipAll, $person->fellowship_id, ['placeholder'=>'Select Category','disabled'=>'disabled','class'=>'hide','style'=>'width:140px','id'=>'fellowship_'.$person->id]) !!}
+												{!! Form::select('fellowship_'.$person->id,$ItemFellowshipAll, $person->fellowship_id, ['placeholder'=>'請選擇團契','disabled'=>'disabled','class'=>'hide','style'=>'width:140px','id'=>'fellowship_'.$person->id]) !!}
 											@endif
 										</p>
 										<p>
 											@if($person->cod_id == 2 or $person->cod_id == 3 or $person->cod_id==5)
 											<label class="" id="lblDepart_{{$person->id}}">@lang('default.depart')：</label>
 
-											{!! Form::select('depart_'.$person->id,$ItemDepartAll, $person->depart_id, ['placeholder'=>'Select Category','style'=>'width:100px','disabled'=>'disabled','class'=>'span4','id'=>'depart_'.$person->id]) !!}
+											{!! Form::select('depart_'.$person->id,$ItemDepartAll, $person->depart_id, ['placeholder'=>'請選擇部','style'=>'width:100px','disabled'=>'disabled','class'=>'span4','id'=>'depart_'.$person->id]) !!}
 											@else
 											<label class="hide" id="lblDepart_{{$person->id}}">@lang('default.depart')：</label>
 
-											{!! Form::select('depart_'.$person->id,$ItemDepartAll, $person->depart_id, ['placeholder'=>'Select Category','style'=>'width:100px','class'=>'hide','id'=>'depart_'.$person->id]) !!}
+											{!! Form::select('depart_'.$person->id,$ItemDepartAll, $person->depart_id, ['placeholder'=>'請選擇部','style'=>'width:100px','class'=>'hide','id'=>'depart_'.$person->id]) !!}
 
 											@endif
 										</p>
@@ -275,7 +278,8 @@
 			要記得，必須要有paginate()，在blade才能夠使用下列方法-->
 	        <div class="row">
 	            <div class="col-lg-12 text-center">
-	               {{$dtStaff->render()}}
+	               {{$dtStaff->appends((isset($request))?['SearchName'=>$request->SearchName,'SearchStaff'=>$request->SearchStaff,
+	               'SearchDepart'=>$request->SearchDepart,'SearchSDate'=>$request->SearchSDate,'SearchEDate'=>$request->SearchEDate]:'')->render()}}
 	            </div>
 			</div>
 			
@@ -396,6 +400,17 @@
 		            formatDate:'Y-m-d'
 	    	  });
 
+	          /*
+	          * 2017/09/28
+	          * */
+			$('.search-date-modal').datetimepicker({
+				yearOffset:0,
+				lang:'zh-TW',
+				timepicker:false,
+				format:'Y-m-d',
+				formatDate:'Y-m-d'
+			});
+
     	    $('#edit_photo').on('click', function() {
 		        // $('.second').addClass('hide');
 		        $('#Edit_Photo_Modal').modal('show');
@@ -420,7 +435,7 @@
 		        $('#edit').removeAttr("disabled");
 
 		        $('.btn-danger').addClass('hide');
-		        $('.btn-success').addClass('hide');
+		        $('.btn-success').not('#btnSearch').addClass('hide');
 
 		        $('#div_add').addClass('hide');
 
@@ -725,6 +740,7 @@
 				{
 //                   alert($('#duty_'+$id).val());
                     $('#fellowship_'+$id).removeClass('hide');
+                    $('#fellowship_'+$id).removeAttr("disabled");
                     $('#lblDepart_'+$id).removeClass('hide');
                     $('#depart_'+$id).removeClass('hide');
 				}else
@@ -744,5 +760,9 @@
 
 			});
 
+
+			function Search(){
+				form_search.submit();
+			}
       </script>
 @stop	   

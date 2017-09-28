@@ -55,7 +55,7 @@ class StaffController extends Controller
     {
     	  $dtDuty = $this->codtbld->getWhere('duty');
         // $dtStaff = $this->dtStaff->getAll();
-        $item=collect(['choice'=>'請選擇']);
+        $item=collect([]);
         foreach ($dtDuty as $key) {
             # code...
             // $item->push($key->title);
@@ -68,7 +68,7 @@ class StaffController extends Controller
          * 2017/09/22  職務功能新增部門選項
          * */
         $dtDepart = $this->codtbld->getWhere('depart');
-        $ItemDepart = collect([''=>'請選擇']);
+        $ItemDepart = collect([]);
         foreach ($dtDepart as $key) {
             # code...
             $ItemDepart[$key->cod_id]=$key->cod_val;
@@ -76,7 +76,7 @@ class StaffController extends Controller
         $ItemDepartAll=$ItemDepart->all();
 
         $dtFellowship = $this->fellowship->getAll();
-        $ItemFellowship = collect([''=>'請選擇團契']);
+        $ItemFellowship = collect([]);
         foreach ($dtFellowship as $key) {
             # code...
             $ItemFellowship[$key->id]=$key->NAME;
@@ -212,6 +212,58 @@ class StaffController extends Controller
             return back()->with('fails', $Result['Result']);
         }
   }
+
+    /*
+     * 2017/09/28   新增 職務查詢
+     * */
+    public function Search(Request $request)
+    {
+        \Debugbar::info($request->SearchName);
+
+        /*
+         * 下方為準備職務下拉選單的部分
+         * */
+        $dtDuty = $this->codtbld->getWhere('duty');
+        // $dtStaff = $this->dtStaff->getAll();
+        $item=collect([]);
+        foreach ($dtDuty as $key) {
+            # code...
+            // $item->push($key->title);
+            $item[$key->cod_id]=$key->cod_val;
+        }
+
+        $ItemAll=$item->all();
+
+        /*
+         * 2017/09/22  職務功能新增部門選項
+         * */
+        $dtDepart = $this->codtbld->getWhere('depart');
+        $ItemDepart = collect([]);
+        foreach ($dtDepart as $key) {
+            # code...
+            $ItemDepart[$key->cod_id]=$key->cod_val;
+        }
+        $ItemDepartAll=$ItemDepart->all();
+
+        /*
+         * 下方為準備團契下拉選單部分
+         * */
+        $dtFellowship = $this->fellowship->getAll();
+        $ItemFellowship = collect([]);
+        foreach ($dtFellowship as $key) {
+            # code...
+            $ItemFellowship[$key->id]=$key->NAME;
+        }
+        $ItemFellowshipAll=$ItemFellowship->all();
+
+
+        $dtStaff=$this->staff->query($request);
+
+        return view('DataMaintain.MA_Staff',compact('ItemAll','dtStaff','ItemDepartAll','ItemFellowshipAll','request'));
+
+//        return view('DataMaintain.MA_SundayVideo')->with('dtfellowship',$dtFellowship)->with('dtvideos',$dtVideos )->with('ItemAll',$ItemAll)->with('request',$request);
+        //response()->json(['ServerNo'=>'200','ResultData'=>$this->videos->query($request)]);
+    }
 
 
 }
