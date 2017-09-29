@@ -37,7 +37,6 @@ class NewsController extends Controller
 
         $dtNews=$this->dtNews->getAll()->where('id',$NewsID);
         $dtfellowship = $this->fellowshipRepository->getAll();//$dtfellowship =fellowship::all();
-
         return view('news.news_d',compact('dtfellowship'),compact('dtNews'));
     }
 
@@ -81,7 +80,7 @@ class NewsController extends Controller
         
         $total_html="";
 
-        \Debugbar::info(count($News));
+//        \Debugbar::info(count($News));
         if(count($News)==0)
         {
             $total_html='查無符合資料';
@@ -96,13 +95,22 @@ class NewsController extends Controller
                 {
                     $link_html=$link_html.'<img class="img-responsive img-hover" src="'.$data->image.'" alt="" style="max-width: 400; max-height: 200px;">';
                 }
-
-                $link_html=$link_html.'<br><p>'.mb_substr($data->content,0,50,"utf-8").'</p><button class="btn btn-primary btn-detail" id="btn_read_more" data-info="'.$data->id.',"id""> Read More <i class="fa fa-angle-right"></i></button><hr>';
+                /*
+                 * 2017/09/29   因為消息當中的搜尋控制項是利用ajax方法所寫，
+                 *              所以搜尋出的內容是在php程式中組裝而成，
+                 *              原來寫法按下Read more會沒有反應，所以組成html的語法做些小修改
+                 *              利用一個參數將route資訊存起來，再把內容給組起來就修正原來
+                 *              按下控制項沒有反應的問題
+                 * */
+                $varRoute = route("news_d",$data->id);
+                $link_html=$link_html.'<br><p>'.mb_substr($data->content,0,50,"utf-8").'</p>
+                    <a class="btn btn-primary" href="'.$varRoute.'">
+                    Read More <i class="fa fa-angle-right"></i></a><hr>';
 
                 $total_html=$total_html.$link_html;
             }
         }
-        // \Debugbar::info($total_html);
+         \Debugbar::info($total_html);
         return response ()->json ( $total_html );
     }
 

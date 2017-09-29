@@ -56,7 +56,7 @@ Route::get('/calendar',function()
 //最新消息
 Route::get('/news',['as'=>'news','uses'=>'NewsController@show_news']);
 Route::get('/{title}/news_d',['as'=>'news_d','uses'=>'NewsController@show_news_d']);
-Route::post('/search',['as'=>'searchs','uses'=>'NewsController@search']);
+Route::post('/search',['as'=>'search','uses'=>'NewsController@search']);
 Route::get('/news/{month}',['as'=>'month_news','uses'=>'NewsController@month_search']);
 
 
