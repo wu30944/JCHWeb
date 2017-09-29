@@ -27,12 +27,15 @@ class NewsController extends Controller
         $this->dtNews=$NewsRepository;
         $this->categories = Category::where('parent_id', '=', 0)->get();
     }
-    //顯示消息詳細資訊
-    public function show_news_d($title)
-    {
-       
-       $dtNews=$this->dtNews->getAll()->where('title',$title);
 
+    /*
+     * 顯示消息詳細資訊
+     * 2017/09/29  修正點選消息明細如果標題名稱相同，會帶出兩筆資料，因為之前是綁標題去帶資料，應該要改為消息ID去帶資料
+     * */
+    public function show_news_d($NewsID)
+    {
+
+        $dtNews=$this->dtNews->getAll()->where('id',$NewsID);
         $dtfellowship = $this->fellowshipRepository->getAll();//$dtfellowship =fellowship::all();
 
         return view('news.news_d',compact('dtfellowship'),compact('dtNews'));

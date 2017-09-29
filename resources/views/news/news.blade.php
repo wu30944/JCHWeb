@@ -59,11 +59,11 @@
                                      <h4>
                                      <textarea id="news_content" style="width:100%;height:230px;border-style:none;outline:none" readonly="true" class="hide">{{$News->content}}</textarea>   
                                     </h4>
-                                    <a class="btn btn-primary" href="{{route('news_d',$News->title)}}">Read More <i class="fa fa-angle-right"></i></a>
+                                    <a class="btn btn-primary" href="{{route('news_d',$News->id)}}">Read More <i class="fa fa-angle-right"></i></a>
                                    {{--  <button class="btn btn-primary btn-detail" id="btn_read_more" data-info="{{$News->id}},'id'">
                                             Read More <i class="fa fa-angle-right"></i>
                                     </button> --}}
-                                    <hr >
+                                    <hr>
                             @endforeach
                         @elseif(count($dtNews)===0)
                             查無符合資料
