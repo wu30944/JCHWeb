@@ -370,7 +370,7 @@
             formData.append('id',$('#fellowship_id').val());
             formData.append('_token',$('input[name=_token]').val());
             $.ajax({
-                    url: 'MA_Fellowship_Photo',
+                    url: '/admin/MA_Fellowship_Photo',
                     data: formData,
                     cache: false,
                     contentType: false,
@@ -415,7 +415,7 @@
 
         $.ajax({
             type: 'get',
-            url: '/MA_Fellowship_D',
+            url: '/admin/MA_Fellowship_D',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'ID':stuff[1],
@@ -510,7 +510,7 @@
     $('.modal-footer').on('click', '.delete', function() {
         $.ajax({
             type: 'post',
-            url: '/MADeleteFellowship',
+            url: '/admin/MADeleteFellowship',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('#id').val()
@@ -526,7 +526,7 @@
 //        alert($('#fellowship_id').val());
         $.ajax({
             type: 'post',
-            url: '/MA_Fellowship_D_Edit',
+            url: '/admin/MA_Fellowship_D_Edit',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'introduction_title': $('#Introduction_Title').val(),

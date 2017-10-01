@@ -314,7 +314,7 @@
             formData.append('id',$('#news_id').val());
             formData.append('_token',$('input[name=_token]').val());
             $.ajax({
-                    url: 'MA_News_Photo',
+                    url: '/admin/MA_News_Photo',
                     data: formData,
                     cache: false,
                     contentType: false,
@@ -369,7 +369,7 @@
         // alert(stuff[1]);
         $.ajax({
             type: 'post',
-            url: '/MA_News_Edit',
+            url: '/admin/MA_News_Edit',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id':stuff[0],
@@ -442,7 +442,7 @@
          // alert(GetContents(objEditor1));
         $.ajax({
             type: 'post',
-            url: '/MA_News_Save',
+            url: '/admin/MA_News_Save',
             data: {
                     '_token': $('input[name=_token]').val(),
                     'news_title': $('#news_title').val(),
@@ -502,7 +502,7 @@
     {
          $.ajax({
             type: 'post',
-            url: '/MA_News_Delete',
+            url: '/admin/MA_News_Delete',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('#news_id').val()

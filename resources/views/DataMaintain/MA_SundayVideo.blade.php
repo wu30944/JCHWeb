@@ -406,7 +406,7 @@
 
 		        $.ajax({
 		            type: 'post',
-		            url: '/MA_SearchMoreYoutube',
+		            url: '/admin/MA_SearchMoreYoutube',
 		            data: {
 		                '_token': $('input[name=_token]').val(),
 		                'type':$('#SearchVideoType').val(),
@@ -547,7 +547,7 @@
 
 		        $.ajax({
 		            type: 'post',
-		            url: '/MA_Edit_Sunday_Video',
+		            url: '/admin/MA_Edit_Sunday_Video',
 		            data: {
 			                '_token': $('input[name=_token]').val(),
 			                'id':id,
@@ -606,7 +606,7 @@
 			 	// alert($('#action_video_id').val());	
 		        $.ajax({
 		            type: 'post',
-		            url: '/MA_Delete_Sunday_Video',
+		            url: '/admin/MA_Delete_Sunday_Video',
 		            data: {
 		                '_token': $('input[name=_token]').val(),
 		                'id':  $('#action_video_id').val()
@@ -633,7 +633,7 @@
 		        // alert(stuff[1]);
 		        $.ajax({
 		            type: 'post',
-		            url: '/MA_News_Edit',
+		            url: '/admin/MA_News_Edit',
 		            data: {
 		                '_token': $('input[name=_token]').val(),
 		                'id':stuff[0],

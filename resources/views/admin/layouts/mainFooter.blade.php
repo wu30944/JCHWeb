@@ -4,5 +4,5 @@
       Designed by AdminLTE
     </div>
     <!-- Default to the left -->
-      <strong>Copyright &copy; 2017 <a href="https://github.com/big-pang">BigPang</a>.</strong>
+      <strong>Copyright &copy; 2017 <a href="">建成教會</a>.</strong>
   </footer>

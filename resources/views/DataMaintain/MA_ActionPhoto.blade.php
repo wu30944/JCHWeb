@@ -361,7 +361,7 @@
 
 		        $.ajax({
 		            type: 'post',
-		            url: '/MA_Update_ActionPhoto',
+		            url: '/admin/MA_Update_ActionPhoto',
 		            data: {
 		                '_token': $('input[name=_token]').val(),
 		                'id':id,
@@ -397,7 +397,7 @@
 			 	// alert($('#action_photo_id').val());	
 		        $.ajax({
 		            type: 'post',
-		            url: '/MA_Delete_ActionPhoto',
+		            url: '/admin/MA_Delete_ActionPhoto',
 		            data: {
 		                '_token': $('input[name=_token]').val(),
 		                'id':  $('#action_photo_id').val()
@@ -424,7 +424,7 @@
 		        // alert(stuff[1]);
 		        $.ajax({
 		            type: 'post',
-		            url: '/MA_News_Edit',
+		            url: '/admin/MA_News_Edit',
 		            data: {
 		                '_token': $('input[name=_token]').val(),
 		                'id':stuff[0],

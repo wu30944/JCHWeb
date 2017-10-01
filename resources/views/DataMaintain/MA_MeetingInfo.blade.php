@@ -255,7 +255,7 @@
     $('.modal-footer').on('click', '.edit', function() {
         $.ajax({
             type: 'post',
-            url: '/meeting_edit',
+            url: '/admin/meeting_edit',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id':$("#id").val(),
@@ -305,7 +305,7 @@
         // alert('test');
         $.ajax({
             type: 'post',
-            url: '/AddItem',
+            url: '/admin//AddItem',
             data: {
                  '_token': $('input[name=_token]').val(),
                 'fellowship_name': $("#Addfellowship_name").val(),
@@ -350,7 +350,7 @@
     $('.modal-footer').on('click', '.delete', function() {
         $.ajax({
             type: 'post',
-            url: '/DeleteItem',
+            url: '/admin/DeleteItem',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('#id').val()

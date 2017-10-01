@@ -131,7 +131,7 @@
 
              $.ajax({
                     type: 'get',
-                    url: '/MA_OurPastor_D',
+                    url: '/admin/MA_OurPastor_D',
                     data: {
                         '_token': $('input[name=_token]').val(),
                         'name':stuff[0],
