@@ -58,6 +58,8 @@ return array(
     ,'sunday'=>'禮拜'
     ,'depart'=>'部門'
     ,'update'=>'更新'
+    ,'chapter'=>'章節'
+    ,'verses'=>'聖經內容'
 	);
 
  ?>

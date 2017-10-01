@@ -95,7 +95,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
         2017/09/20  聚會時間資料維護 Route
     */
     Route::get('/MA_MeetingInfo',['as'=>'MA_MeetingInfo','uses'=>'MeetInfoController@MA_MeetingInfo']);
-    Route::post('/meeting_edit',['as'=>'meeting_edit','uses'=>'MeetInfoController@editItem']);  
+    Route::post('/meeting_edit',['as'=>'meeting_edit','uses'=>'MeetInfoController@editItem']);
     Route::post ( '/DeleteItem', 'MeetInfoController@DeleteItem' ); 
     Route::post ( '/AddItem', 'MeetInfoController@AddItem' );
 
@@ -120,6 +120,15 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post ( '/MA_Update_Staff_D', ['as' => 'MA_Update_Staff_D','uses'=>'StaffController@UpdateItemD' ]);
     Route::any ( '/MA_SearchStaff', ['as' => 'MA_SearchStaff','uses'=>'StaffController@Search' ]);
 
+
+    /*
+     * 2017/09/29   金句資料維護 Route
+     * */
+    Route::get('/MA_Verses',['as'=>'MA_Verses','uses'=>'VersesController@MAVerses']);
+    Route::post('/MAVersesEdit',['as'=>'MAVersesEdit','uses'=>'VersesController@editItem']);
+    Route::post('/MAVersesAdd',['as'=>'MAVersesAdd','uses'=>'VersesController@InsertItem']);
+    Route::post('/MAVersesShow',['as'=>'MAVersesShow','uses'=>'VersesController@ChangeShow']);
+    Route::post('/MAVersesDelete',['as'=>'MAVersesDelete','uses'=>'VersesController@DeleteItem']);
 });
 
 Route::get('/', function () {

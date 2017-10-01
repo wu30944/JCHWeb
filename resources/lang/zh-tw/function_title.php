@@ -23,6 +23,7 @@ return array(
     ,'MANews'=>'最新消息維護'
     ,'SundayPreview'=>'主日信息預告'
     ,'MAStaffIntroduction'=>'職務介紹資料維護'
+    ,'MAVerses'=>'金句資料維護'
 	);
 
  ?>

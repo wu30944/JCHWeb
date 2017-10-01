@@ -40,7 +40,7 @@ class IndexController extends Controller
     public function index()
     {
        $dtfellowship =fellowship::all();
-       $dtVerse=verse::all()->where('id','1');
+       $dtVerse=verse::all()->where('is_show','1');
           // \Debugbar::info($dtVerse);
        $photo_link = $this->dtPhoto_action->getAll();
 

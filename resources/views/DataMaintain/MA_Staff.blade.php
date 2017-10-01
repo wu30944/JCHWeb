@@ -117,7 +117,7 @@
 			{{-- 搜尋測試區塊 --}}
 
             <div class="row">
-				{!! Form::open(['route'=>'MA_Insert_Staff','id'=>'form_add','files'=>true,'class'=>'hide']) !!} 
+				{!! Form::open(['route'=>'admin.MA_Insert_Staff','id'=>'form_add','files'=>true,'class'=>'hide']) !!}
 	            {{-- <form id="form_link_add" method="post" action="{{ url('MA_Insert_Sunday_Video') }}"> --}}
 		            <div class="col-md-4 text-center " id="div_add" >
 			                <div class="thumbnail">
@@ -553,7 +553,7 @@
 		            formData.append('id',$('#fellowship_id').val());
 		            formData.append('_token',$('input[name=_token]').val());
 		            $.ajax({
-		                    url: 'MA_Fellowship_Photo',
+		                    url: '/admin/MA_Fellowship_Photo',
 		                    data: formData,
 		                    cache: false,
 		                    contentType: false,
@@ -612,7 +612,7 @@
 			            formData.append('_token',$('input[name=_token]').val());
 
 			            $.ajax({
-			                    url: 'MA_Update_Staff',
+			                    url: '/admin/MA_Update_Staff',
 			                    data: formData,
 			                    cache: false,
 			                    contentType: false,
@@ -642,7 +642,7 @@
 
 			        	$.ajax({
 				            type: 'post',
-				            url: '/MA_Update_Staff',
+				            url: '/admin/MA_Update_Staff',
 				            data: {
 				                '_token': $('input[name=_token]').val(),
 				                'id':id,
@@ -686,7 +686,7 @@
 			 	// alert($('#action_video_id').val());	
 		        $.ajax({
 		            type: 'post',
-		            url: '/MA_Delete_Staff',
+		            url: '/admin/MA_Delete_Staff',
 		            data: {
 		                '_token': $('input[name=_token]').val(),
 		                'id':  $('#staff_id').val()
