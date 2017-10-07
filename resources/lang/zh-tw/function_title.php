@@ -24,6 +24,7 @@ return array(
     ,'SundayPreview'=>'主日信息預告'
     ,'MAStaffIntroduction'=>'職務介紹資料維護'
     ,'MAVerses'=>'金句資料維護'
+    ,'MACarousel'=>'輪播圖片資料維護'
 	);
 
  ?>

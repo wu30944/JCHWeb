@@ -129,6 +129,18 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post('/MAVersesAdd',['as'=>'MAVersesAdd','uses'=>'VersesController@InsertItem']);
     Route::post('/MAVersesShow',['as'=>'MAVersesShow','uses'=>'VersesController@ChangeShow']);
     Route::post('/MAVersesDelete',['as'=>'MAVersesDelete','uses'=>'VersesController@DeleteItem']);
+
+    /*
+     * 2017/10/04   輪播圖片資料維護 Route
+     * */
+    Route::get('MA_Carousel',['as'=>'MA_Carousel','uses'=>'CarouselController@MACarousel']);
+    Route::post('MACreateCarousel',['as'=>'MACreateCarousel','uses'=>'CarouselController@InsertItem']);
+    Route::get('MACarouselShow',['as'=>'MACarouselShow','uses'=>'CarouselController@CarouselShow']);
+    Route::post('MAPhotoUpload',['as'=>'MAPhotoUpload','uses'=>'CarouselController@UpdateItem']);
+    Route::post('MADeleteCarousel',['as'=>'MADeleteCarousel','uses'=>'CarouselController@DeleteItem']);
+    Route::post('MACarouselIsShow',['as'=>'MACarouselIsShow','uses'=>'CarouselController@IsShowItem']);
+
+
 });
 
 Route::get('/', function () {

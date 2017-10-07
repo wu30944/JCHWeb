@@ -16,6 +16,7 @@ use App\Repositories\MoreYoutubeRepository;
 use App\Repositories\NewsRepository;
 use App\Repositories\FellowshipRepository;
 use App\Repositories\MeetingRepository;
+use App\Repositories\CarouselRepository;
 
 class IndexController extends Controller
 {
@@ -24,16 +25,19 @@ class IndexController extends Controller
     public $dtMoreYoutube;
     public $dtNews;
     public $dtMeetingInfo;
+    public $objCarousel;
 
     public function __construct(ActionPhotosRepository $ActionPhotosRepository,MoreYoutubeRepository $MoreYoutubeRepository,NewsRepository $NewsRepository,
         FellowshipRepository $FellowshipRepository,
-        MeetingRepository $MeetingRepository)
+        MeetingRepository $MeetingRepository,
+        CarouselRepository $CarouselRepository)
     {   
         $this->dtPhoto_action=$ActionPhotosRepository;
         $this->dtMoreYoutube=$MoreYoutubeRepository;
         $this->dtNews=$NewsRepository; 
         $this->dtFellowship=$FellowshipRepository;
         $this->dtMeetingInfo=$MeetingRepository;
+        $this->objCarousel = $CarouselRepository;
     }
 
     //
@@ -63,7 +67,12 @@ class IndexController extends Controller
 
         $WidgetMeetingInfo=$this->dtMeetingInfo->getWidgetMeetingInfo($ItemAll);
 
-        return view('home.index')->with('dtfellowship',$dtfellowship)->with('dtVerse',$dtVerse)->with('photo_link',$photo_link)->with('NewVideo',$NewVideo)->with('WidgetNews',$WidgetNews)->with('WidgetMeetingInfo',$WidgetMeetingInfo);
+        $dtCarousel = $this->objCarousel->getIsShowCarousel();
+
+        \Debugbar::info($dtCarousel);
+        return view('home.index')->with('dtfellowship',$dtfellowship)->with('dtVerse',$dtVerse)->with('photo_link',$photo_link)->with('NewVideo',$NewVideo)
+                    ->with('WidgetNews',$WidgetNews)->with('WidgetMeetingInfo',$WidgetMeetingInfo)
+                    ->with('dtCarousel',$dtCarousel);
     }
 
     public function more_youtube()

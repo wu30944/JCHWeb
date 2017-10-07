@@ -6,6 +6,7 @@ return [
      * */
     'fellowship_photo_path'=>'/photo/fellowship',
     'news_photo_path'=>'/photo/news',
+    'carousel_photo_path'=>'/photo/carousel',
     /*
     |--------------------------------------------------------------------------
     | Application Name

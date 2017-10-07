@@ -60,6 +60,8 @@ return array(
     ,'update'=>'更新'
     ,'chapter'=>'章節'
     ,'verses'=>'聖經內容'
+    ,'elder'=>'長老'
+    ,'deacon'=>'執事'
 	);
 
  ?>
