@@ -7,39 +7,46 @@
 <header id="myCarousel" class="carousel slide">
 <div class="content full">
 	<!-- Indicators -->
-	<ol class="carousel-indicators">
-		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-		<li data-target="#myCarousel" data-slide-to="1"></li>
-		<li data-target="#myCarousel" data-slide-to="2"></li>
-	</ol>
+	@if(isset($dtCarousel) && count($dtCarousel)>0)
+		<ol class="carousel-indicators">
+			@for($i=0;$i<count($dtCarousel);$i++)
+				@if($i==0)
+					<li data-target="#myCarousel" data-slide-to="{{$i}}" class="active"></li>
+				@else
+					<li data-target="#myCarousel" data-slide-to="{{$i}}"></li>
+				@endif
+			@endfor
+		</ol>
+	@endif
+
+
 
 	<!-- Wrapper for slides -->
-	<div class="carousel-inner">
-		<div class="item active">
-			<div class="fill">
-					<img class="img-responsive"  alt="" id="preview" src="/photo/carousel/測試.png" >
-				</div>
-			<div class="carousel-caption">
-				{{-- <h2>Caption 1 Test</h2> --}}
-			</div>
+	@if(isset($dtCarousel) && count($dtCarousel)>0)
+		<div class="carousel-inner">
+			@for($i=0;$i<count($dtCarousel);$i++)
+				@if($i==0)
+					<div class="item active">
+						<div class="fill">
+							<img class="img-responsive"  alt="" id="preview" src="{{$dtCarousel[$i]->photo_path}}" style="width: 2156px; height: 280px;">
+						</div>
+						<div class="carousel-caption">
+							{{-- <h2>Caption 1 Test</h2> --}}
+						</div>
+					</div>
+				@else
+					<div class="item">
+						<div class="fill">
+							<img class="img-responsive"  alt="" id="preview" src="{{$dtCarousel[$i]->photo_path}}"  style="width: 2156px; height: 280px;">
+						</div>
+						<div class="carousel-caption">
+							{{-- <h2>Caption 2</h2> --}}
+						</div>
+					</div>
+				@endif
+			@endfor
 		</div>
-		<div class="item">
-			<div class="fill">
-					<img class="img-responsive"  alt="" id="preview" src="/photo/carousel/測試.png" >
-				</div>
-			<div class="carousel-caption">
-				{{-- <h2>Caption 2</h2> --}}
-			</div>
-		</div>
-		<div class="item">
-			<div class="fill">
-				<img class="img-responsive"  alt="" id="preview" src="/photo/carousel/測試.png" >
-			</div>
-			<div class="carousel-caption">
-				{{-- <h2>Caption 3</h2> --}}
-			</div>
-		</div>
-	</div>
+	@endif
 
 	<!-- Controls -->
 	<a class="left carousel-control" href="#myCarousel" data-slide="prev">
