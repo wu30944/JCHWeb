@@ -244,17 +244,32 @@
                     $('#myModal').modal('show');
                 }
                 else {
+//                    alert(data['data'].is_show);
+                    if(data['data'].is_show=='1')
+                    {
+                        $('.item' + data['data'].id).replaceWith("" +
+                            "<tr class='item" + data['data'].id + "'>" +
+                            "<td>" + "<input name='choice' type='radio' value='" + data['data'].is_show + "' id='" +data['data'].id + "' checked='true'>" + "</td>" +
+                            "<td align='left'>" + data['data'].content + "</td>" +
+                            "<td align='left'>" + data['data'].chapter + "</td>" +
+                            "<td>" + data['data'].created_at + "</td>" +
+                            "<td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
+                            "<span class='glyphicon glyphicon-edit'></span> 編輯</button> " +
+                            "<button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
+                            "<span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
+                    }else{
+                        $('.item' + data['data'].id).replaceWith("" +
+                            "<tr class='item" + data['data'].id + "'>" +
+                            "<td>" + "<input name='choice' type='radio' value='" + data['data'].is_show + "' id='" +data['data'].id + "'>" + "</td>" +
+                            "<td align='left'>" + data['data'].content + "</td>" +
+                            "<td align='left'>" + data['data'].chapter + "</td>" +
+                            "<td>" + data['data'].created_at + "</td>" +
+                            "<td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
+                            "<span class='glyphicon glyphicon-edit'></span> 編輯</button> " +
+                            "<button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
+                            "<span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
+                    }
 
-                $('.item' + data['data'].id).replaceWith("" +
-                    "<tr class='item" + data['data'].id + "'>" +
-                    "<td>" + "<input name='choice' type='radio' value='" + data['data'].is_show + "' id='" +data['data'].id + "'>" + "</td>" +
-                    "<td align='left'>" + data['data'].content + "</td>" +
-                    "<td align='left'>" + data['data'].chapter + "</td>" +
-                    "<td>" + data['data'].created_at + "</td>" +
-                    "<td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
-                    "<span class='glyphicon glyphicon-edit'></span> 修改</button> " +
-                    "<button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
-                    "<span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
                 }
             }
         });
@@ -318,7 +333,7 @@
         $('#Chapter').val(details[2]);
         $('#Content').val(details[1]);
         $('#id').val(details[0]);
-//        alert($('#show_'+details[0]).attr('checked'));
+
     }
 
     $("#addbtn").click(function() {
