@@ -296,6 +296,7 @@
         
         if($('#news_id').val()!="")
         {
+            alert('上傳照片');
             saveImg(objImg);
         }else
         {
@@ -439,6 +440,7 @@
 
 
     $('#addbtn').on('click', function() {
+
          // alert(GetContents(objEditor1));
         $.ajax({
             type: 'post',
@@ -454,17 +456,22 @@
                    }
             , success: function(data){
                 //如果＃news_id是空的，表示一開始是沒有值的，所以就要新增到畫面上
-                
+
                 if($('#news_id').val()=="")
                 {
+                    alert(data['data'].id);
                     $('#gridview').append("<tr class='item" + data['data'].id + "'><td align='left'>" + data['data'].title + "</td><td>" + data['data'].action_date + "</td><td align='left'>" + data['content'].substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data.id+","+data['data'].title+","+data['content']+","+data['data'].action_date+"' data-id='" + data['data'].id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['content']+"' data-id='" + data['data'].id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
 
-                    $('#news_id').val(data.id);
+                    /*
+                    *   修正新增訊息在第一次上傳照片會錯誤的問題
+                    * */
+                    $('#news_id').val(data['data'].id);
 
                     /*
                         此處要判斷是否有上傳照片，如果該參數是未定義，
                         就不需要跑saveImg這個Function
                     */
+
                     if(typeof(objImg) != "undefined")
                         saveImg(objImg);
 
@@ -473,15 +480,18 @@
                     // alert(data['content']);
                     $('.item' + data['data'].id).replaceWith("<tr class='item" + data['data'].id + "'><td align='left'>" + data['data'].title + "</td><td>" + data['data'].action_date + "</td><td align='left'>" + data['content'].substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['data'].content+"' data-id='" + data['data'].id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['content']+"' data-id='" + data['data'].id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
 
-                }  
-                
-                $('.second').addClass('hide');
-                $('.first').removeClass('hide');
-                alert('儲存成功');
-                $("#ShowImg").removeAttr("src");
+                }
+                /*
+                * 2017/10/09  修改為，當新增完畢後就重新刷新頁面
+                * */
+                location.reload();
+//                $('.second').addClass('hide');
+//                $('.first').removeClass('hide');
+//                alert('儲存成功');
+//                $("#ShowImg").removeAttr("src");
             },error: function(e)
             {
-                
+
             }
 
         });
@@ -533,6 +543,10 @@
         $('#edit_photo_text').addClass('glyphicon-plus');
         $('#spUpdatePhoto').text("確認");
         $('#ShowImg').attr('src','/photo/sample900_300.jpg');
+        /*
+        * 按下新增按鈕就把儲存ID的隱藏控制項內容清空
+        * */
+        $('#news_id').val('');
     });
 
 </script>

@@ -159,7 +159,7 @@ class NewsController extends Controller
     }
 
     public function PhotoUpload(Request $request)
-    {
+    {   
         $file = $request->file('image');
         // \Debugbar::info($file);
         $catalog='/news';
