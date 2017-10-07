@@ -459,7 +459,6 @@
 
                 if($('#news_id').val()=="")
                 {
-                    alert(data['data'].id);
                     $('#gridview').append("<tr class='item" + data['data'].id + "'><td align='left'>" + data['data'].title + "</td><td>" + data['data'].action_date + "</td><td align='left'>" + data['content'].substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data.id+","+data['data'].title+","+data['content']+","+data['data'].action_date+"' data-id='" + data['data'].id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['content']+"' data-id='" + data['data'].id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
 
                     /*
