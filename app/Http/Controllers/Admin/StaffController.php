@@ -92,7 +92,7 @@ class StaffController extends Controller
 
 
   public function InsertItem(Request $request)
-  {     
+  {
        // $this->staff->save($request);
        $Result = $this->staff->save($request);
 
@@ -100,11 +100,11 @@ class StaffController extends Controller
        $filename = $request->name;
 
         if($Result['ServerNo']=='200')
-        {   
+        {
             if(!empty($request->file('image')))
             {
                 $UploadResult = $this->staff->PhotoUpload($request,$Result['id']);
-                
+
                 if ($UploadResult['ServerNo']=='404')
                 {
                     return back()->with('fails', $UploadResult['Result']);

@@ -117,7 +117,7 @@
 			{{-- 搜尋測試區塊 --}}
 
             <div class="row">
-				{!! Form::open(['route'=>'admin.MA_Insert_Staff','id'=>'form_add','files'=>true,'class'=>'hide']) !!}
+				{!! Form::open(['route'=>'MA_Insert_Staff','id'=>'form_add','files'=>true,'class'=>'hide']) !!}
 	            {{-- <form id="form_link_add" method="post" action="{{ url('MA_Insert_Sunday_Video') }}"> --}}
 		            <div class="col-md-4 text-center " id="div_add" >
 			                <div class="thumbnail">

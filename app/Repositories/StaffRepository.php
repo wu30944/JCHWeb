@@ -201,15 +201,19 @@
         public function getElder()
         {
             $strType='duty';
+            $strDepart='depart';
             $strStaff='2';
             return  $dtNews=DB::select('select a.id,a.name,a.image_path,a.sdate
-                                ,a.edate,b.cod_val
+                                ,a.edate,b.cod_val,c.cod_val as depart
                                  from staffs a
                                  join codtbld b
                                  on b.cod_type= ?
                                  and b.cod_id=a.cod_id 
+                                 join codtbld c 
+                                 on c.cod_type= ?
+                                 and c.cod_id=a.depart_id
                                  where a.cod_id= ?
-                                 and a.edate >= CURDATE()', [$strType,$strStaff]);
+                                 and a.edate >= CURDATE()', [$strType,$strDepart,$strStaff]);
         }
 
         /*
@@ -235,15 +239,19 @@
         public function getDeacon()
         {
             $strType='duty';
+            $strDepart='depart';
             $strStaff='3';
             return  $dtNews=DB::select('select a.id,a.name,a.image_path,a.sdate
-                                ,a.edate,b.cod_val
+                                ,a.edate,b.cod_val,c.cod_val as depart
                                  from staffs a
                                  join codtbld b
                                  on b.cod_type= ?
                                  and b.cod_id=a.cod_id 
+                                 join codtbld c 
+                                 on c.cod_type= ?
+                                 and c.cod_id=a.depart_id
                                  where a.cod_id= ?
-                                 and a.edate >= CURDATE()', [$strType,$strStaff]);
+                                 and a.edate >= CURDATE()', [$strType,$strDepart,$strStaff]);
         }
 
         /*
