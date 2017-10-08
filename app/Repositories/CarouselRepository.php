@@ -96,12 +96,22 @@
             }
         }
 
+        /*
+         * 2017/10/08  當刪除資料時也必須要將照片給刪除
+         * */
         public function delete($id)
         {
             try {
+                /*
+                 * 照片名稱都是該資料列的id，所以要取出刪除照片名稱就是取出ＩＤ
+                 * */
+                $PhotoName=$this->dtCarousel->where('id','=',$id)->first();
+                $this->DeletePhoto($PhotoName->id.'.jpg');
+
                 DB::connection()->getPdo()->beginTransaction();
                 $this->dtCarousel->find($id)->delete();
                 DB::connection()->getPdo()->commit();
+
                 return  collect(['ServerNo'=>'success','Message' =>'刪除成功！']);
 
             } catch (\PDOException $e) {
@@ -110,63 +120,20 @@
             }
         }
 
-        /*
-            撈出長老
-        */
-        public function getElder()
+
+        public function DeletePhoto($FileName)
         {
-            $strType='duty';
-            $strDepart='depart';
-            $strStaff='2';
-            return  $dtNews=DB::select('select a.id,a.name,a.image_path,a.sdate
-                                ,a.edate,b.cod_val,c.cod_val as depart
-                                 from staffs a
-                                 join codtbld b
-                                 on b.cod_type= ?
-                                 and b.cod_id=a.cod_id 
-                                 join codtbld c 
-                                 on c.cod_type= ?
-                                 and c.cod_id=a.depart_id
-                                 where a.cod_id= ?
-                                 and a.edate >= CURDATE()', [$strType,$strDepart,$strStaff]);
+            $destinationPath = public_path().config('app.carousel_photo_path').'/'.$FileName;
+            if(file_exists($destinationPath)){
+                unlink($destinationPath);//將檔案刪除
+            }else{
+                echo 'Not Found Photo';
+            }
         }
 
         public function getOrderByPageing($num)
         {
              return $this->dtCarousel->orderBy('show_date','desc')->paginate($num);
-        }
-
-        /*
-         * 2017/09/28   新增 職務查詢
-         * */
-        public function query(Request $request)
-        {
-            // \Debugbar::info($request->SearchSpeaker);
-            $empty='';
-            $query = DB::select( DB::raw('select * from  staffs
-                                                where (name = ? or ? = ?)
-                                                and (cod_id= ? or ?= ?)
-                                                and (depart_id= ? or ? = ?)
-                                                and (sdate between ? and ?)' )
-                ,[$request->SearchName,
-                    $request->SearchName,
-                    $empty,
-                    $request->SearchStaff,
-                    $request->SearchStaff,
-                    $empty,
-                    $request->SearchDepart,
-                    $request->SearchDepart,
-                    $empty,
-                    $request->SearchSDate,
-                    $request->SearchEDate]);
-
-            $page = Paginator::resolveCurrentPage("page");
-            $perPage = 9; //實際每頁筆數
-            $offset = ($page * $perPage) - $perPage;
-
-            $data = new LengthAwarePaginator(array_slice($query, $offset, $perPage, true), count($query), $perPage, $page, ['path' =>  Paginator::resolveCurrentPath()]);
-
-            return $data;
         }
 
         /*

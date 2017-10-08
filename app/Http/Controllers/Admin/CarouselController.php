@@ -79,7 +79,7 @@ class CarouselController extends Controller
 
   public function DeleteItem(Request $request)
   {
-        \Debugbar::info($request->DeleteCarouselID);
+        //\Debugbar::info($request->DeleteCarouselID);
          $Result = $this->objCarousel->delete($request->DeleteCarouselID);
 
         return back()->with($Result['ServerNo'], $Result['Message']);
