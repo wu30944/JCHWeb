@@ -139,6 +139,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post('MAPhotoUpload',['as'=>'MAPhotoUpload','uses'=>'CarouselController@UpdateItem']);
     Route::post('MADeleteCarousel',['as'=>'MADeleteCarousel','uses'=>'CarouselController@DeleteItem']);
     Route::post('MACarouselIsShow',['as'=>'MACarouselIsShow','uses'=>'CarouselController@IsShowItem']);
+    Route::post('MAEditCarousel',['as'=>'MAEditCarousel','uses'=>'CarouselController@EditItem']);
 
 
 });

@@ -20,7 +20,9 @@
                             </p>
                             <p>
                                 <small>@lang('default.speaker'): {{$NewVideo->name}}</small>
-                                                        
+                            </p>
+                            <p>
+                                <small>@lang('default.date'): {{$NewVideo->video_date}}</small>
                             </p>
                         </div>
                         

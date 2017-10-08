@@ -28,7 +28,7 @@ class userActionListener implements ShouldQueue
      */
     public function handle(userActionEvent $event)
     {
-        $str = '管理员:' . $event->adminName . '(id:' . $event->uid . ')' . $event->content;
+        $str = '管理員:' . $event->adminName . '(id:' . $event->uid . ')' . $event->content;
 
         Log::info($str);
 //        $log=new \App\Models\OperatorLog();

@@ -64,7 +64,7 @@
                             @endif
 
                             @if ( !empty($News->image))
-                                <div align="center">
+                                <div align="left">
                                  <img class="img-responsive img-hover" src="{{$News->image}}" alt="" style="max-width: 550; max-height: 300px;">
                                 <br>
                                   </div>  

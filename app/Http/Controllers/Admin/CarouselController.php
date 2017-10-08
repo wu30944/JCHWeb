@@ -132,10 +132,16 @@ class CarouselController extends Controller
       $CarouselID=$request->id;
 
       $Result= $this->objCarousel->getCarousel($CarouselID);
-        \Debugbar::info($Result['Data']);
       return   response()->json(['ServerNo' => $Result['ServerNo'],'Message' => $Result['Message']
                         ,'Data'=>$Result['Data']]);
+  }
 
+  public function EditItem(Request $request)
+  {
+      $CarouselID=$request->id;
+      $Result= $this->objCarousel->getCarousel($CarouselID);
+      return   response()->json(['ServerNo' => $Result['ServerNo'],'Message' => $Result['Message']
+          ,'Data'=>$Result['Data']]);
   }
 
   /*
@@ -184,6 +190,7 @@ class CarouselController extends Controller
     {
         $Result = $this->objCarousel->IsShow($request);
         return response()->json(['ServerNo' => $Result['ServerNo'],'Message'=>$Result['Message']]);
+
     }
 
 }

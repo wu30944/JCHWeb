@@ -470,7 +470,6 @@
                         此處要判斷是否有上傳照片，如果該參數是未定義，
                         就不需要跑saveImg這個Function
                     */
-
                     if(typeof(objImg) != "undefined")
                         saveImg(objImg);
 

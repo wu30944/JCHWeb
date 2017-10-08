@@ -122,7 +122,7 @@
                                         {!!form::text('show_date','',['class'=>'form-control datepicker','id'=>'show_date'])!!}
                                     </div>
                             </div>
-                            {!!form::text('CarouselID','',['class'=>'form-control','id'=>'CarouselID'])!!}
+                            {!!form::text('CarouselID','',['class'=>'form-control hide','id'=>'CarouselID'])!!}
                             <div class="size"></div>
                             <div align="center">
                                 <img class="img-responsive preview"  alt="" id="preview" src="http://via.placeholder.com/2156x350">
@@ -146,7 +146,7 @@
                         <span id="update_action_button" class='glyphicon'> </span>
                     </button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal" id="ctlCANCEL">
-                        <span class='glyphicon glyphicon-remove'></span> 取消
+                        <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
                     </button>
                 </div>
             </div>
@@ -316,7 +316,7 @@
                     success: function(data){
                         if(data['ServerNo']=='200'){
                             // 如果成功
-                            alert( data['Data'][0].photo_path);
+
                             $('#ShowImg').attr('src', data['Data'][0].photo_path);
 
                             // $('input[name=ShowImg]').val(data);
@@ -344,7 +344,7 @@
 
             $('.first').addClass('hide');
             $('.second').removeClass('hide');
-            $('#update_action_button').text(" 更新");
+            $('#update_action_button').text("更新");
             $('#update_action_button').addClass('glyphicon-check');
             $('#update_action_button').removeClass('glyphicon-trash');
             $('.actionBtn').addClass('btn-success');
@@ -352,14 +352,13 @@
             $('.actionBtn').addClass('edit');
 
             $.ajax({
-                type: 'get',
-                url: '/admin/MACarouselShow',
+                type: 'post',
+                url: '/admin/MAEditCarousel',
                 data: {
                     '_token': $('input[name=_token]').val(),
                     'id':stuff,
                 },
                 success: function(data){
-
                     if(data['ServerNo']=='200')
                     {
                         $('#photo_name').val(data['Data'][0].photo_name);
@@ -371,8 +370,6 @@
                             $('#preview').attr('src','http://via.placeholder.com/2156x350');
                         }else{
                             $('#preview').attr('src',data['Data'][0].photo_path);
-
-
                         }
                     }else{
 
@@ -397,7 +394,9 @@
             $("#DivSecond").find(":text,textarea,input").each(function() {
                 $(this).val("");
             });
-//            alert($('#photo_name').val());
+            //當按下取消後，將編輯的照片內容改為預設照片
+            $('#preview').attr('src','http://via.placeholder.com/2156x350');
+
         });
 
         $('#add').on('click',function(){
