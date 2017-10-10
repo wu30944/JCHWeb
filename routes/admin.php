@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::get('/MA_MoreYoutube',['as'=>'MA_MoreYoutube','uses'=>'VideosController@MA_MoreYoutube']);
     Route::post('/MA_Delete_Sunday_Video',['as'=>'MA_Delete_Sunday_Video','uses'=>'VideosController@DeleteItem']);
     Route::post('/MA_Edit_Sunday_Video',['as'=>'MA_Edit_Sunday_Video','uses'=>'VideosController@EditItem']);
-    Route::post('/MA_Insert_Sunday_Video',['as'=>'MA_Insert_Sunday_Video','uses'=>'MoreYoutubeController@InsertItem']);
+    Route::post('/MA_Insert_Sunday_Video',['as'=>'MA_Insert_Sunday_Video','uses'=>'VideosController@InsertItem']);
     Route::any('/MA_SearchMoreYoutube',['as'=>'MA_SearchMoreYoutube','uses'=>'VideosController@Search']);
 
     /*
@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
         2017/09/20. 團契資料維護 Route
     */
     Route::get('/MA_Fellowship',['as'=>'MA_Fellowship','uses'=>'FellowshipController@MA_Fellowship']);
-    Route::get('/MA_Fellowship_D',['as'=>'MA_Fellowship_D','uses'=>'FellowshipController@MA_Fellowship_D']);
+    Route::post('/MA_Fellowship_D',['as'=>'MA_Fellowship_D','uses'=>'FellowshipController@MA_Fellowship_D']);
     Route::post('/MA_Fellowship_D_Edit',['as'=>'MA_Fellowship_D_Edit','uses'=>'FellowshipController@editItem']);
     Route::post('/MA_Fellowship_Photo',['as'=>'MA_Fellowship_Photo','uses'=>'FellowshipController@PhotoUpload']);
     Route::post ( '/MADeleteFellowship', ['as' => 'MADeleteFellowship','uses'=>'FellowshipController@DeleteItem' ]);
@@ -140,6 +140,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post('MADeleteCarousel',['as'=>'MADeleteCarousel','uses'=>'CarouselController@DeleteItem']);
     Route::post('MACarouselIsShow',['as'=>'MACarouselIsShow','uses'=>'CarouselController@IsShowItem']);
     Route::post('MAEditCarousel',['as'=>'MAEditCarousel','uses'=>'CarouselController@EditItem']);
+
 
 
 });

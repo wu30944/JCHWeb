@@ -414,7 +414,7 @@
         $('.actionBtn').addClass('edit');
 
         $.ajax({
-            type: 'get',
+            type: 'post',
             url: '/admin/MA_Fellowship_D',
             data: {
                 '_token': $('input[name=_token]').val(),
