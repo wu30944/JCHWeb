@@ -3,13 +3,6 @@
 @section('pageDesc','DashBoard')
 @section('content')
 
-<section class='container box'>
-<style>
-.table-borderless tbody tr td, .table-borderless tbody tr th,
-    .table-borderless thead tr th {
-    border: none;
-}
-</style>
 
 <body>
     <div class="content full ">
@@ -42,7 +35,22 @@
                         </div>
 
                     @endif
-                </div>
+            </div>
+
+            <div class="alert alert-block alert-success hide " id="SuccessAlter">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>
+                    <input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveSuccess')">
+                </strong>
+            </div>
+
+            <div class="alert alert-block alert-danger hide" id="FailAlter">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>
+                    <input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveFail')">
+                </strong>
+            </div>
+
             {{ csrf_field() }}
             <div class="table-responsive text-center">
                 {{-- <table class="table table-borderless table-striped" id="gridview"> --}}
@@ -257,9 +265,9 @@
                     {!! Form::open(['route'=>'MACreateFellowship','id'=>'form_add','class'=>'form-horizontal']) !!}
 
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="Addfellowship_name">團契名稱:</label>
+                            <label class="control-label col-sm-2" for="fellowship_name">團契名稱:</label>
                             <div class="col-sm-10">
-                                {!!form::text('fellowship_name','',['class'=>'form-control','id'=>'fellowship_name'])!!}
+                                {!!form::text('fellowship_name','',['class'=>'form-control','id'=>'fellowship_name','type'=>'text'])!!}
                             </div>
                         </div>
 
@@ -285,7 +293,7 @@
 
     @section('js')
     <script src="../js/jquery.validate.js"></script>
-
+    <link rel="stylesheet" href="{{ asset('css/screen.css')}}" >
     <script src="../ckeditor/ckeditor.js"></script>
     <script src="../js/ckeditor_api.js"></script>
     {{--<script src="js/jquery.shCircleLoader.js" type="text/javascript"></script>--}}
@@ -310,6 +318,7 @@
                 }
             });
         });
+
     var objImg;
     var ImgURL;
     /**
@@ -545,11 +554,17 @@
                 if(data['ServerNo']=='200') {
                     $('.second').addClass('hide');
                     $('.first').removeClass('hide');
-                    alert('儲存成功');
                     $("#ShowImg").removeAttr("src");
+                    $('#div_alert').addClass('alert-success');
+                    $('#SuccessAlter').removeClass('hide');
+                    $('#SuccessAlter').show();
                 }else if(data['ServerNo']=='404'){
                     alert(data['Result']);
+//                    $('#FailAlter').removeClass('hide');
                 }
+                setTimeout(function () {
+                    $(".alert-block").hide(200);
+                }, 3000);
 
             },error:function(data)
             {

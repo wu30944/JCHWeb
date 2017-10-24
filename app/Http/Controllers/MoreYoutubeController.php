@@ -52,11 +52,11 @@ class MoreYoutubeController extends Controller
 
     public function EditItem(Request $request)
     {
-         // \Debugbar::info($request->id);
         // \Debugbar::info($request->video_type);
         $Result= $this->videos->save($request);
         if($Result['ServerNo']=='200')
         {
+
             return response ()->json ( ['ServerNo'=>'200','ResultData' => $Result['Result'] ,'data'=>$Result['data']]);
         }
         else

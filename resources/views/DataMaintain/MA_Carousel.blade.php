@@ -9,6 +9,11 @@
             .table-borderless thead tr th {
                 border: none;
             }
+            .tooltip > .tooltip-inner {background-color: #ff0000; color: 000000;}
+            .tooltip.left .tooltip-arrow { border-left-color: #F7F7F7; }
+            .tooltip.top .tooltip-arrow { border-top-color: #ff0000; }
+            .tooltip.right .tooltip-arrow { border-right-color: #ff0000;}
+            .tooltip.bottom .tooltip-arrow { border-bottom-color: #F7F7F7; }
         </style>
 
         <body>
@@ -43,7 +48,22 @@
 
                     @endif
                 </div>
-                {{ csrf_field() }}
+
+                <div class="alert alert-block alert-success hide" id="SuccessAlter">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>
+                        <input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveSuccess')">
+                    </strong>
+                </div>
+
+                <div class="alert alert-block alert-danger hide" id="FailAlter">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>
+                        <input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveFail')">
+                    </strong>
+                </div>
+
+                    {{ csrf_field() }}
                 <div class="table-responsive text-center">
                     {{-- <table class="table table-borderless table-striped" id="gridview"> --}}
                     <table class="table table-borderless table-striped" id="gridview">
@@ -67,8 +87,8 @@
                                     <td class="hidden">{{$item->id}}</td>
                                     <td>{{Form::radio('choice'.$item->id,$item->id,$item->is_show,['id'=>'show_'.$item->id])}}
                                     </td>
-                                    <td>{{$item->photo_name}}</td>
-                                    <td>{{$item->show_date}}</td>
+                                    <td><p id = "photo_name{{$item->id}}">{{$item->photo_name}}</p></td>
+                                    <td><p id = "show_date{{$item->id}}">{{$item->show_date}}</p></td>
                                     <td>
                                         @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
                                             <button class="edit-modal btn btn-info"
@@ -111,13 +131,13 @@
                     <div class="col-md-12">
                         <div class="modal-body">
                             <div class="form-group row">
-                                <label class="control-label col-md-2 col-form-label" for="photo_name">輪播圖片名稱:</label>
-                                <div class="col-md-4">
+                                <label class="control-label col-sm-2 col-form-label" for="photo_name" align="right">輪播圖片名稱:</label>
+                                <div class="col-sm-4">
                                     {!!form::text('photo_name','',['class'=>'form-control','id'=>'photo_name'])!!}
                                 </div>
                             </div>
                             <div class="form-group row">
-                                    <label class="control-label col-md-2" for="show_date">顯示日期:</label>
+                                    <label class="control-label col-md-2" for="show_date" align="right">顯示日期:</label>
                                     <div class="col-md-2">
                                         {!!form::text('show_date','',['class'=>'form-control datepicker','id'=>'show_date'])!!}
                                     </div>
@@ -195,7 +215,7 @@
                     </div>
                     <div class="modal-body">
                         {{--<form class="form-horizontal" role="form" action="">--}}
-                        {!! Form::open(['route'=>'MACreateCarousel','id'=>'form_add','class'=>'form-horizontal']) !!}
+                        {!! Form::open(['route'=>'Carousel.Create','id'=>'form_add','class'=>'form-horizontal']) !!}
 
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="photo_name">輪播圖片名稱:</label>
@@ -232,7 +252,7 @@
 
 @section('js')
     <script src="../js/jquery.validate.js"></script>
-
+    <link rel="stylesheet" href="{{ asset('css/screen.css')}}" >
     <script src="../ckeditor/ckeditor.js"></script>
     <script src="../js/ckeditor_api.js"></script>
     {{--<script src="js/jquery.shCircleLoader.js" type="text/javascript"></script>--}}
@@ -242,14 +262,19 @@
 
             validator= $("#form_add").validate({
                 rules: {
-                    fellowship_name:{
+                    photo_name:{
                         required: true
+                    },
+                    show_date:{
+                        required:true
                     }
                 },
                 messages: {
-                    fellowship_name: "請輸入團契名稱"
+                    photo_name: "請輸入團契名稱",
+                    show_date:"請輸入顯示日期"
                 }
             });
+
         });
 
         var objImg;
@@ -297,46 +322,7 @@
         })
 
 
-        $("#editbtn").on('click', function(){
-            if(objImg.type.match('image.*'))
-            {
-                var formData = new FormData();
-                formData.append('image', objImg);
-                formData.append('id',$('#CarouselID').val());
-                formData.append('photo_name',$('#photo_name').val());
-                formData.append('show_date',$('#show_date').val());
-                formData.append('_token',$('input[name=_token]').val());
-                $.ajax({
-                    url: '/admin/MAPhotoUpload',
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    type: 'post',
-                    success: function(data){
-                        if(data['ServerNo']=='200'){
-                            // 如果成功
 
-                            $('#ShowImg').attr('src', data['Data'][0].photo_path);
-
-                            // $('input[name=ShowImg]').val(data);
-                            /*
-                             20170913 註解掉下面這段程式，會有錯誤
-                             $(obj).off('change');
-                            * */
-
-
-                        }else{
-                            alert('上傳失敗');
-                            // 如果失败
-                            // alert(data['ResultData']);
-                        }
-                    }
-                });
-
-            }
-
-        });
 
         $(document).on('click', '.edit-modal', function() {
 
@@ -375,6 +361,11 @@
 
                     }
 
+                },
+                error:function(e)
+                {
+                    var $errors=e.responseJSON;
+                    alert($errors.msg);
                 }
             });
         });
@@ -432,7 +423,9 @@
         });
 
         $('#addbtn').on('click', function() {
-            if(objImg.type.match('image.*'))
+            $strID=$('#CarouselID').val();
+
+            if(typeof(objImg) != "undefined" && objImg.type.match('image.*'))
             {
                 var formData = new FormData();
                 formData.append('image', objImg);
@@ -441,7 +434,7 @@
                 formData.append('show_date',$('#show_date').val());
                 formData.append('_token',$('input[name=_token]').val());
                 $.ajax({
-                    url: '/admin/MAPhotoUpload',
+                    url: '/admin/MAUpdateCarousel',
                     data: formData,
                     cache: false,
                     contentType: false,
@@ -453,9 +446,19 @@
 
                             $('#preview').attr('src', data['Data']);
 
+                            $('#photo_name'+$strID).text(data['Data'].photo_name);
+                            $('#show_date'+$strID).text(data['Data'].show_date);
+
                             $('.second').addClass('hide');
                             $('.first').removeClass('hide');
-                            alert(data['Message']);
+
+                            $('#SuccessAlter').removeClass('hide');
+                            $('#SuccessAlter').show();
+
+                            $("#DivSecond").find(":text,textarea,input").each(function() {
+                                $(this).val("");
+                            });
+                            $('#preview').attr('src','http://via.placeholder.com/2156x350');
 
                         }else{
                             alert(data['ServerNo']);
@@ -469,7 +472,51 @@
 
             }else{
 
+                $.ajax({
+                    type: 'post',
+                    url: '/admin/MAPhotoUpload',
+                    data: {
+                        '_token': $('input[name=_token]').val(),
+                        'photo_name': $('#photo_name').val(),
+                        'show_date': $('#show_date').val(),
+                        'id': $('#CarouselID').val(),
+                    }
+                    , success: function(data){
+
+                        $strTest='#photo_name'+$strID;
+
+                        $($strTest).text(data['Data'].photo_name);
+                        $('#show_date'+$strID).text(data['Data'].show_date);
+
+                        $('.second').addClass('hide');
+                        $('.first').removeClass('hide');
+
+                        $('#SuccessAlter').removeClass('hide');
+                        $('#SuccessAlter').show();
+
+                        $("#DivSecond").find(":text,textarea,input").each(function() {
+                            $(this).val("");
+                        });
+                        $('#preview').attr('src','http://via.placeholder.com/2156x350');
+
+                    },error: function(e)
+                    {
+                        var errors = e.responseJSON;
+                        //errors.Message.length 顯示傳回來有多少個元素
+                        //alert(errors.Message.length);
+                        //error.Message[] 這種方式為取出回傳元素個別的值
+
+//                        $(window).scrollTop(0);
+//                        MessageShow(errors.Key,errors.Message);
+                        alert(errors.msg);
+                    }
+
+                });
             }
+            $(window).scrollTop(0);
+            setTimeout(function () {
+                $(".alert-block").hide(200);
+            }, 3000);
 
         });
 
@@ -518,6 +565,16 @@
                     else {
 
                     }
+                },error: function(e)
+                {
+                    var errors = e.responseJSON;
+                    //errors.Message.length 顯示傳回來有多少個元素
+                    //alert(errors.Message.length);
+                    //error.Message[] 這種方式為取出回傳元素個別的值
+
+//                    $(window).scrollTop(0);
+//                    MessageShow(errors.Key,errors.Message);
+                    alert(errors.msg);
                 }
             });
             $(".alert-block").slideToggle(500);

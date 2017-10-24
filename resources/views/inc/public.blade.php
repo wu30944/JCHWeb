@@ -5,8 +5,10 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
+<meta name="description" content="建成基督長老教會">
+<meta name="keywords" content="建成教會,建成基督長老教會,教會,建成" />
 <meta name="author" content="">
+<meta http-equiv="Pragma" content="no-cache">
 {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> --}}
 <link rel="stylesheet" href="{{ asset('css/bootstrap.css')}}" >
 <link rel="stylesheet" href="{{ asset('css/modern-business.css')}}" >

@@ -304,51 +304,51 @@
 		    /*
 				按下新增按鈕會做的事情
 		    */
-		    // $(document).on('click', '.add-modal', function() {
-
-		    //     var video_link = $('#link').val();
-		    //     var theme = $('#theme').val();
-		    //     var speaker = $('#speaker').val();
-		    //     var video_date = $('#datepicker_add').val();
-		    //     var id="";
-
-		    //     $.ajax({
-		    //         type: 'post',
-		    //         url: '/MA_Edit_Sunday_Video',
-		    //         data: {
-		    //             '_token': $('input[name=_token]').val(),
-		    //             'video_link':video_link ,
-		    //             'theme':theme,
-		    //             'speaker': speaker  ,
-		    //             'video_date': video_date     
-		    //                 },
-		    //         success: function(data){ 
-		    //         	// alert(data['errors']);
-		    //             if(data['ServerNo']=='200')
-		    //             {	
-		    //             	alert('新增成功');
-		    //             	// $('#videolink_'+stuff).val(data['data'].link);
-			   //              // $('#theme_'+stuff).val(data['data'].theme);
-			   //              // $('#speaker_'+stuff).val(data['data'].name);
-			   //              // $('#datepicker_'+stuff).val(data['data'].video_date);
-			   //              // $('iframe_'+stuff).attr("src",data['data'].link);
-		    //             }else if(data['ServerNo']=='404')
-		    //             {
-		    //             	alert(data['errors']);
-		    //             	// $('#videolink_'+stuff).val(video_link);
-			   //              // $('#theme_'+stuff).val(theme);
-			   //              // $('#speaker_'+stuff).val(speaker);
-			   //              //  $('#datepicker_'+stuff).val(video_date);
-			   //              // $('iframe_'+stuff).attr("src",data.link);
-		    //             }
-		                
-		    //         }
-		    //     });
-		    // });
+		     $(document).on('click', '.add-modal', function() {
+				alert('新增');
+//		         var video_link = $('#link').val();
+//		         var theme = $('#theme').val();
+//		         var speaker = $('#speaker').val();
+//		         var video_date = $('#datepicker_add').val();
+//		         var id="";
+//
+//		         $.ajax({
+//		             type: 'post',
+//		             url: '/MA_Edit_Sunday_Video',
+//		             data: {
+//		                 '_token': $('input[name=_token]').val(),
+//		                 'video_link':video_link ,
+//		                 'theme':theme,
+//		                 'speaker': speaker  ,
+//		                 'video_date': video_date
+//		                     },
+//		             success: function(data){
+//		             	// alert(data['errors']);
+//		                 if(data['ServerNo']=='200')
+//		                 {
+//		                 	alert('新增成功');
+//		                 	// $('#videolink_'+stuff).val(data['data'].link);
+//			                 // $('#theme_'+stuff).val(data['data'].theme);
+//			                 // $('#speaker_'+stuff).val(data['data'].name);
+//			                 // $('#datepicker_'+stuff).val(data['data'].video_date);
+//			                 // $('iframe_'+stuff).attr("src",data['data'].link);
+//		                 }else if(data['ServerNo']=='404')
+//		                 {
+//		                 	alert(data['errors']);
+//		                 	// $('#videolink_'+stuff).val(video_link);
+//			                 // $('#theme_'+stuff).val(theme);
+//			                 // $('#speaker_'+stuff).val(speaker);
+//			                 //  $('#datepicker_'+stuff).val(video_date);
+//			                 // $('iframe_'+stuff).attr("src",data.link);
+//		                 }
+//
+//		             }
+//		         });
+		     });
 
 
 		    $(document).on('click', '.save-modal', function() {
-		       
+
 	             var stuff = $(this).data('info');
 	             // alert(stuff);
 		        var id = stuff;
@@ -368,12 +368,12 @@
 		                'photo_link':photo_link ,
 		                'theme':theme,
 		                'speaker': content  ,
-		                'photo_date': photo_date     
+		                'photo_date': photo_date
 		                    },
-		            success: function(data){ 
+		            success: function(data){
 		            	// alert(data['errors']);
 		                if(data['ServerNo']=='200')
-		                {	
+		                {
 		                	alert('修改成功');
 		                	$('#photo_link_'+stuff).val(data['data'].photo_link);
 			                $('#theme_'+stuff).val(data['data'].title);
@@ -387,7 +387,7 @@
 			                $('#content_'+stuff).val(content);
 			                 $('#datepicker_'+stuff).val(photo_date);
 		                }
-		                
+
 		            }
 		        });
 		    });

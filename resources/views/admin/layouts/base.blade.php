@@ -220,6 +220,7 @@ desired effect
     
 {{--2017/09/20 下方js是載入畫面轉轉轉的部分--}}
 <script src="../loading/LoadingScreen.js"></script>
+<script src="../message/message.js"></script>
 @yield('js')
         <!-- Main Footer -->
 @include('admin.layouts.mainFooter')

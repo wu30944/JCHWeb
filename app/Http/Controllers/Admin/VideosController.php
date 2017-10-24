@@ -58,12 +58,12 @@ class VideosController extends Controller
         $Result= $this->videos->save($request);
         if($Result['ServerNo']=='200')
         {
-            return response ()->json ( ['ServerNo'=>'200','ResultData' => $Result['Result'] ,'data'=>$Result['data']]);
+            return response ()->json (['ServerNo'=>'200','ResultData' => $Result['Result'] ,'data'=>$Result['data']]);
         }
         else
         {   
             // \Debugbar::info($Result['Result'][0]);
-             return response ()->json ( ['ServerNo'=>'404','ResultData'=> $Result['Result']]);
+             return response ()->json (['ServerNo'=>'404','ResultData'=> $Result['Result']]);
         }
        
     }
@@ -78,7 +78,6 @@ class VideosController extends Controller
             return back()->with('success', $Result['Result']);
         }else
         {
-            
             return back()->with('fails', $Result['Result'][0]);
         }
     }

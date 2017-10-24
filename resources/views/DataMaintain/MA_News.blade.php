@@ -9,6 +9,11 @@
     .table-borderless thead tr th {
     border: none;
 }
+.tooltip > .tooltip-inner {background-color: #ff0000; color: 000000;}
+.tooltip.left .tooltip-arrow { border-left-color: #F7F7F7; }
+.tooltip.top .tooltip-arrow { border-top-color: #ff0000; }
+.tooltip.right .tooltip-arrow { border-right-color: #ff0000;}
+.tooltip.bottom .tooltip-arrow { border-bottom-color: #F7F7F7; }
 </style>
 
 <body>
@@ -26,6 +31,15 @@
                 </div>
             </div>
             @endif
+
+            <div class="alert alert-block alert-success hide" id="SuccessAlter">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>
+                    <input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveSuccess')" id="SuccessMsg">
+                </strong>
+            </div>
+
+
             <div class="table-responsive text-center">
                 {{-- <table class="table table-borderless table-striped" id="gridview"> --}}
                 <table class="table table-borderless table-striped" id="gridview">
@@ -42,11 +56,11 @@
                     @if(isset($dtNews))
                         @foreach($dtNews as $item)
                         <tr class="item{{$item->id}}">
-                            <td align="left">{{$item->title}}</td>
-                            <td>{{$item->created_at}}</td>
+                            <td align="left"><p id="Title{{$item->id}}">{{$item->title}}</p></td>
+                            <td><p id="CreateAt{{$item->id}}">{{$item->created_at}}</p></td>
                             <td align="left">
-                                {{mb_substr(strip_tags ($item->content),0,25,"utf-8")}}...
-                                </td>
+                                <p id="Content{{$item->id}}">{{mb_substr(strip_tags ($item->content),0,25,"utf-8")}}...</p>
+                            </td>
 
                             <td>
                                 @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
@@ -78,31 +92,33 @@
             </div>
         </div>
         <div class="second hide">
-                         <!-- Intro Content -->
+
+             <!-- Intro Content -->
+            <p class="error text-center alert alert-danger hidden"></p>
             <h2>
-                <label >標題：</label>
-                <input type="text" id="news_title" >
+                <label class="control-label col-sm-2" for="photo_name" align="right">標題:</label>
+                {{--<input type="text" id="news_title" >--}}
+                <input type="text" id="news_title"  >
                 <input type="text" id="news_id" class="hide">
                 {{-- <a href="{{route('news_d',$News->title)}}">{{$News->title}}</a> --}}
             </h2>
-
-            <div class="input-append date col-md-12" id="dp3">
-            <label >日期：</label>
-              <input class="span2" size="16" type="text" id="datepicker">
-              <span class="add-on"><i class="icon-th"></i></span>
-              <label >時間：</label>
-                <input type="text" id="timepicker"/><br><br>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="action_date" align="right">日期:</label>
+                <input class="span2"  type="text" id="action_date" title="" >
             </div>
-            <div class="col-md-12">
-              <label >地點：</label>
-                <input type="text" id="action_postion"/>            <br><br>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="timepicker" align="right">時間:</label>
+                <input type="text" id="timepicker"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="action_postion" align="right">地點:</label>
+                <input type="text" id="action_postion"  />
             </div>
             <hr>
 
             <div class="col-md-12">
-                {{-- <img class="img-responsive show-update-img"  alt="" id="ShowImg" style="max-width: 500; max-height: 290px;"> --}}
                 <div align="center">
-                     <img class="img-responsive img-hover" src="/photo/sample900_300.jpg" alt="" id="ShowImg" style="max-width: width:100%; max-height: 400px;">
+                     <img class="img-responsive img-hover" src="http://placehold.it/900x300" alt="" id="ShowImg" style="max-width:100%; max-height: 400px;">
                 </div>
                 <button type="button" class="btn actionBtn" data-dismiss="modal" id="edit_photo">
                     <span id="edit_photo_text" class='glyphicon'></span>
@@ -110,17 +126,15 @@
             </div>
 
             <div class="col-md-12">
-             <hr>
-             <br>
-            {{-- <textarea id="editor1" style="width:100%;height:230px"></textarea> --}}
 
-            <textarea cols="100" id="NewsEditor" name="NewsEditor" rows="10"></textarea>
+                <hr>
+                {{-- <textarea id="editor1" style="width:100%;height:230px"></textarea> --}}
+
+                 <textarea id="news_content" name="news_content" ></textarea>
 
             </div>
 
             <div class="add_modal-footer">
-                <p class="error text-center alert alert-danger hidden"></p>
-
                     <button type="button" class="btn actionBtn" data-dismiss="modal" id="addbtn">
                         <span id="update_action_button" class='glyphicon'> </span>
                     </button>
@@ -185,8 +199,6 @@
                                 class="hidden did"></span>
                     </div>
                     <div class="modal-footer">
-                        <p class="error text-center alert alert-danger hidden"></p>
-
                         {{--{!!Form::submit('刪除',['class'=>'btn glyphicon-trash btn-danger','id'=>'btnDelete']) !!}--}}
                         <button type="button" class='btn  btn-danger' id="btnDelete">
                             <span class='glyphicon glyphicon-trash'></span>  @lang('default.delete')
@@ -212,7 +224,7 @@
     <script>
 
         // Replace the <textarea id="editor1"> with an CKEditor instance.
-            var objNewsEditor=CreateCKEDITOR('NewsEditor');
+            var objNewsEditor=CreateCKEDITOR('news_content');
 
 
     var objImg;
@@ -267,7 +279,7 @@
             format:顯示在畫面上日期格式 'Y/m/d',
             formatDate: 'Y/m/d'
         */
-      $('#datepicker').datetimepicker({
+      $('#action_date').datetimepicker({
             yearOffset:0,  
             lang:'zh-TW',
             timepicker:false,
@@ -276,10 +288,10 @@
       });
 
       /*
-            時間
-            datepicker:是否藏掉選擇日期的控制項 false,
-            format:選擇時間格式'H:i',
-            step:選擇時間的區間 30
+        時間
+        datepicker:是否藏掉選擇日期的控制項 false,
+        format:選擇時間格式'H:i',
+        step:選擇時間的區間 30
       */
       $('#timepicker').datetimepicker({
             datepicker:false,
@@ -296,7 +308,7 @@
         
         if($('#news_id').val()!="")
         {
-            alert('上傳照片');
+//            alert('上傳照片');
             saveImg(objImg);
         }else
         {
@@ -328,7 +340,7 @@
                            ShowImg(img);
                             // alert(data['ResultData']);
                            // $(obj).off('change');
-                            
+
                           }else if(data['ServerNo']=='404'){
                             alert(data['errors']);
                             // 如果失败
@@ -381,7 +393,7 @@
             success: function(data){
                 // alert(data[1].title);
                 $('#news_title').val(data.title);
-                $('#datepicker').val(data.action_date);
+                $('#action_date').val(data.action_date);
                 // $('#editor1').val(data.content);
                 InsertHTML(objNewsEditor,data.content);
                 $('#timepicker').val(data.action_time);
@@ -389,21 +401,22 @@
                 $('#news_id').val(data.id);
 
                 if(data.image==""){
+                    //alert('add');
                     $('#edit_photo_text').text("新增照片");
                     $('#edit_photo_text').addClass('glyphicon-check');
-                    $('#ShowImg').attr('src','/photo/sample900_300.jpg');
+                    $('#ShowImg').attr('src','http://placehold.it/900x300');
                     $('#spUpdatePhoto').text("上傳");
                    
 
                 }else{
-                    
+                    //alert('update');
                     $('#ShowImg').attr('src',data.image);
                     $('#edit_photo_text').text("更換照片");
                     $('#spUpdatePhoto').text("更新");
 
                     // alert(data[0].image_path);
                 }
-              
+                $(window).scrollTop(0);
                 //alert(data[0].id);
             }
         });
@@ -432,68 +445,95 @@
         $('.first').removeClass('hide');
         $("#ShowImg").removeAttr("src");
         ClearText(objNewsEditor);
-        // $(".container").find(":text,textarea,file").each(function() {
-        //         $(this).val("");
-        //     });
+
+        $('.error').text('');
+        $('.error').addClass('hidden');
+
+
+        $(window).scrollTop(0);
+
+
 
     });
 
 
     $('#addbtn').on('click', function() {
-
+        var $id = $('#news_id').val();
          // alert(GetContents(objEditor1));
         $.ajax({
             type: 'post',
-            url: '/admin/MA_News_Save',
+            url: '/admin/MA_News_Insert',
             data: {
                     '_token': $('input[name=_token]').val(),
                     'news_title': $('#news_title').val(),
-                    'action_date': $('#datepicker').val(),
+                    'action_date': $('#action_date').val(),
                     'action_time': $('#timepicker').val(),
                     'news_content': GetContents(objNewsEditor),//$('#editor1').val(),
                     'action_postion': $('#action_postion').val(),
-                    'id':$('#news_id').val()
+                    'id':$id
                    }
             , success: function(data){
                 //如果＃news_id是空的，表示一開始是沒有值的，所以就要新增到畫面上
+                if (data['ServerNo']=='404'){
 
-                if($('#news_id').val()=="")
-                {
-                    $('#gridview').append("<tr class='item" + data['data'].id + "'><td align='left'>" + data['data'].title + "</td><td>" + data['data'].action_date + "</td><td align='left'>" + data['content'].substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data.id+","+data['data'].title+","+data['content']+","+data['data'].action_date+"' data-id='" + data['data'].id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['content']+"' data-id='" + data['data'].id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
+                    $('.error').text(data['Message']);
+                    $('.error').removeClass('hidden');
 
-                    /*
-                    *   修正新增訊息在第一次上傳照片會錯誤的問題
-                    * */
-                    $('#news_id').val(data['data'].id);
+                }else if(data['ServerNo']=='200'){
+                    if($('#news_id').val()=="")
+                    {
+                        //$('#gridview').append("<tr class='item" + data['data'].id + "'><td align='left'>" + data['data'].title + "</td><td>" + data['data'].action_date + "</td><td align='left'>" + data['content'].substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data.id+","+data['data'].title+","+data['content']+","+data['data'].action_date+"' data-id='" + data['data'].id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['content']+"' data-id='" + data['data'].id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
 
-                    /*
-                        此處要判斷是否有上傳照片，如果該參數是未定義，
-                        就不需要跑saveImg這個Function
-                    */
-                    if(typeof(objImg) != "undefined")
-                        saveImg(objImg);
+                        /*
+                        *   修正新增訊息在第一次上傳照片會錯誤的問題
+                        * */
+                        $('#news_id').val(data['ResultData'].id);
 
-                }else
-                {
-                    // alert(data['content']);
-                    $('.item' + data['data'].id).replaceWith("<tr class='item" + data['data'].id + "'><td align='left'>" + data['data'].title + "</td><td>" + data['data'].action_date + "</td><td align='left'>" + data['content'].substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['data'].content+"' data-id='" + data['data'].id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['content']+"' data-id='" + data['data'].id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
+                        /*
+                            此處要判斷是否有上傳照片，如果該參數是未定義，
+                            就不需要跑saveImg這個Function
+                        */
+                        if(typeof(objImg) != "undefined")
+                            saveImg(objImg);
 
+                        /*
+                        * 2017/10/09  修改為，當新增完畢後就重新刷新頁面
+                        * */
+                            location.reload();
+
+                    }else
+                    {
+                        $('#Title'+$id).text(data['ResultData'].title);
+                        $('#Content'+$id).text(data['content']);
+                        $('.second').addClass('hide');
+                        $('.first').removeClass('hide');
+
+                        $('#SuccessAlter').removeClass('hide');
+                        $('#SuccessAlter').show();
+//                    $('.item' + data['data'].id).replaceWith("<tr class='item" + data['data'].id + "'><td align='left'>" + data['data'].title + "</td><td>" + data['data'].action_date + "</td><td align='left'>" + data['content'].substr(0,25) + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['data'].content+"' data-id='" + data['data'].id + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].title+","+data['data'].action_date+","+data['content']+"' data-id='" + data['data'].id + "' ><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
+
+                    }
+                    setTimeout(function () {
+                        $(".alert-block").hide(200);
+                    }, 3000);
+                    $(window).scrollTop(0);
                 }
-                /*
-                * 2017/10/09  修改為，當新增完畢後就重新刷新頁面
-                * */
-                location.reload();
-//                $('.second').addClass('hide');
-//                $('.first').removeClass('hide');
-//                alert('儲存成功');
-//                $("#ShowImg").removeAttr("src");
+
             },error: function(e)
             {
+                var errors = e.responseJSON;
+                //errors.Message.length 顯示傳回來有多少個元素
+                //alert(errors.Message.length);
+                //error.Message[] 這種方式為取出回傳元素個別的值
 
+                //var ControlID = errors.Message[1];
+
+                $(window).scrollTop(0);
+                MessageShow(errors.Key,errors.Message);
             }
 
         });
-
+        ClearText(objNewsEditor);
     });
 
 
@@ -540,7 +580,7 @@
         $('#edit_photo_text').text("新增照片");
         $('#edit_photo_text').addClass('glyphicon-plus');
         $('#spUpdatePhoto').text("確認");
-        $('#ShowImg').attr('src','/photo/sample900_300.jpg');
+        $('#ShowImg').attr('src','http://placehold.it/900x300');
         /*
         * 按下新增按鈕就把儲存ID的隱藏控制項內容清空
         * */

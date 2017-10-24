@@ -38,13 +38,19 @@ class MeetInfoController extends Controller
             'meeting_time'=>'required',
             'day'=>'required'
         );
-        $validator = Validator::make(Input::all(), $rules);
-        \Debugbar::info($rules);
+
+
+        $messages = ['floor.required' => '樓層欄位為必輸'
+            ,'meeting_time.required'=>'聚會時間欄位為必輸'
+            ,'day.required'=>'星期欄位為必輸'];
+
+        $validator = Validator::make ( $req->all(), $rules , $messages );
+
 
         // process the login
         if ($validator->fails()) {
-            //return 1;
-            return Response::json ( 
+            return response()->json ( ['Message'=>$validator->messages()->all() ],404);
+            return Response::json (
                 array ('errors' => $validator->messages()->all() ));
         } else {
             // store
@@ -57,7 +63,7 @@ class MeetInfoController extends Controller
 
             // redirect
             //\Session::flash('flash_message', 'Successfully updated nerd!');
-            return response ()->json ( $strMeetingInfo );
+            return response ()->json ( $strMeetingInfo ,200);
         }
     }
 

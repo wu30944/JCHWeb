@@ -89,7 +89,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post('/MA_Fellowship_D_Edit',['as'=>'MA_Fellowship_D_Edit','uses'=>'FellowshipController@editItem']);
     Route::post('/MA_Fellowship_Photo',['as'=>'MA_Fellowship_Photo','uses'=>'FellowshipController@PhotoUpload']);
     Route::post ( '/MADeleteFellowship', ['as' => 'MADeleteFellowship','uses'=>'FellowshipController@DeleteItem' ]);
-    Route::post ( '/MACreateFellowship', ['as' => 'MACreateFellowship','uses'=>'FellowshipController@AddItem' ]);
+    Route::post ( '/MACreateFellowship', ['as' => 'Fellowship.create','uses'=>'FellowshipController@AddItem' ]);
 
     /*
         2017/09/20  聚會時間資料維護 Route
@@ -104,7 +104,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     */      
     Route::get('/MA_News',['as'=>'MA_News','uses'=>'NewsController@MA_News']);
     Route::post('/MA_News_Edit',['as'=>'MA_News_Edit','uses'=>'NewsController@editItem']);
-    Route::post('/MA_News_Save',['as'=>'MA_News_Save','uses'=>'NewsController@saveItem']);
+    Route::post('/MA_News_Insert',['as'=>'MA_News_Insert','uses'=>'NewsController@InsertItem']);
     Route::post('/MA_News_Photo',['as'=>'MA_News_Photo','uses'=>'NewsController@PhotoUpload']);
     Route::post('/MA_News_Delete',['as'=>'MA_News_Delete','uses'=>'NewsController@DeleteItem']);
 
@@ -116,7 +116,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post('/MA_Update_Staff',['as'=>'MA_Update_Staff','uses'=>'StaffController@UpdateItem']);
     Route::post('/MA_Delete_Staff',['as'=>'MA_Delete_Staff','uses'=>'StaffController@DeleteItem']);   
     Route::get ( '/MA_OurPastor', ['as' => 'MA_OurPastor','uses'=>'StaffController@MA_our_pastor' ]);
-    Route::get ( '/MA_OurPastor_D', ['as' => 'MA_OurPastor_D','uses'=>'StaffController@MA_OurPastor_D' ]);
+    Route::post ( '/MA_OurPastor_D', ['as' => 'MA_OurPastor_D','uses'=>'StaffController@MA_OurPastor_D' ]);
     Route::post ( '/MA_Update_Staff_D', ['as' => 'MA_Update_Staff_D','uses'=>'StaffController@UpdateItemD' ]);
     Route::any ( '/MA_SearchStaff', ['as' => 'MA_SearchStaff','uses'=>'StaffController@Search' ]);
 
@@ -126,7 +126,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
      * */
     Route::get('/MA_Verses',['as'=>'MA_Verses','uses'=>'VersesController@MAVerses']);
     Route::post('/MAVersesEdit',['as'=>'MAVersesEdit','uses'=>'VersesController@editItem']);
-    Route::post('/MAVersesAdd',['as'=>'MAVersesAdd','uses'=>'VersesController@InsertItem']);
+    Route::post('/MAVersesAdd',['as'=>'Verses.Create','uses'=>'VersesController@InsertItem']);
     Route::post('/MAVersesShow',['as'=>'MAVersesShow','uses'=>'VersesController@ChangeShow']);
     Route::post('/MAVersesDelete',['as'=>'MAVersesDelete','uses'=>'VersesController@DeleteItem']);
 
@@ -134,12 +134,12 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
      * 2017/10/04   輪播圖片資料維護 Route
      * */
     Route::get('MA_Carousel',['as'=>'MA_Carousel','uses'=>'CarouselController@MACarousel']);
-    Route::post('MACreateCarousel',['as'=>'MACreateCarousel','uses'=>'CarouselController@InsertItem']);
+    Route::post('MACreateCarousel',['as'=>'Carousel.Create','uses'=>'CarouselController@InsertItem']);
     Route::get('MACarouselShow',['as'=>'MACarouselShow','uses'=>'CarouselController@CarouselShow']);
-    Route::post('MAPhotoUpload',['as'=>'MAPhotoUpload','uses'=>'CarouselController@UpdateItem']);
+    Route::post('MAUpdateCarousel',['as'=>'Carousel.Update','uses'=>'CarouselController@UpdateItem']);
     Route::post('MADeleteCarousel',['as'=>'MADeleteCarousel','uses'=>'CarouselController@DeleteItem']);
     Route::post('MACarouselIsShow',['as'=>'MACarouselIsShow','uses'=>'CarouselController@IsShowItem']);
-    Route::post('MAEditCarousel',['as'=>'MAEditCarousel','uses'=>'CarouselController@EditItem']);
+    Route::post('MAEditCarousel',['as'=>'Carousel.Edit','uses'=>'CarouselController@EditItem']);
 
 
 

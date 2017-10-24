@@ -35,35 +35,31 @@
         </div>
     @endif
     <div class="first">
-     @if(isset($dtPastor) && count($dtPastor)>0)
-        <div class="table-responsive text-center">      
-            <table class="table table-borderless table-striped" id="gridview" width="100%">
-                <thead>
-                    <tr>
-                        <th class="text-center">@lang('default.name')</th>
-                        <th class="text-center">@lang('default.action')</th>
+         @if(isset($dtPastor) && count($dtPastor)>0)
+            <div class="table-responsive text-center">
+                <table class="table table-borderless table-striped" id="gridview" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center">@lang('default.name')</th>
+                            <th class="text-center">@lang('default.action')</th>
+                        </tr>
+                    </thead>
+
+                    @foreach($dtPastor as $item)
+                    <tr class="item_{{$item->id}}">
+                        <td align="center">{{$item->name}}</td>
+                        <td align="center">
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
+                            <button class="edit-modal btn btn-info"
+                                data-info="{{$item->name}},{{$item->id}}" id="test">
+                                <span class="glyphicon glyphicon-edit"></span> @lang('default.edit')
+                            </button>
+                            @endif
+                        </td>
                     </tr>
-                </thead>
-                
-                @foreach($dtPastor as $item)
-                <tr class="item_{{$item->id}}">
-                    <td align="center">{{$item->name}}</td>
-                    <td align="center">
-                        @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
-                        <button class="edit-modal btn btn-info"
-                            data-info="{{$item->name}},{{$item->id}}" id="test">
-                            <span class="glyphicon glyphicon-edit"></span> @lang('default.edit')
-                        </button>
-                        @endif
-                        {{-- <button class="delete-modal btn btn-danger"
-                            data-info="{{$item->name}},{{$item->id}}">
-                            <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
-                        </button> --}}
-                    </td>
-                </tr>
-                @endforeach
-            </table>      
-        </div>
+                    @endforeach
+                </table>
+            </div>
           @else
             <div class="alert alert-danger alert-block">
                 <button type="button" class="close" data-dismiss="alert">×</button>
@@ -72,17 +68,12 @@
           @endif
 
     </div>
-{{--     <form action="#" method="post" class="">
-        <textarea cols="100" id="editor1" name="editor1" rows="10" ></textarea>
-         <input type = 'button' class="btn actionBtn alert-success" data-dismiss="modal" value = '送出' onclick = 'processData()'>
-    </form> --}}
 
     <div class="row">
         {!! Form::open(['url'=>'MA_Update_Staff_D','id'=>'form_edit','class'=>'hide']) !!} 
             <div class="thumbnail">
                 <div class="caption" align="left">
                     <textarea cols="100" id="editor1" name="editor1" rows="10"></textarea>
-   {{--                  <input type = 'button' class="btn actionBtn alert-success" data-dismiss="modal" value = '送出' onclick = 'processData()'> --}}
                    {!!form::text('staffd_id','',['id'=>'staffd_id','class'=>'hide'])!!}
                 </div>
                  <div align="right">                                
@@ -93,7 +84,7 @@
                         <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
                     </button>
 
-                    </div>
+                </div>
             </div>
         {!! Form::close() !!}
     </div>
@@ -130,7 +121,7 @@
             $('#form_edit').removeClass('hide');
 
              $.ajax({
-                    type: 'get',
+                    type: 'post',
                     url: '/admin/MA_OurPastor_D',
                     data: {
                         '_token': $('input[name=_token]').val(),
@@ -138,8 +129,8 @@
                         'id':stuff[1]
                             },
                     success: function(data){
-                      
- 
+
+
                         if(data['ServerNo']=="200"){
                             // alert(data['data'].content);
                            // $('#editor1').val(data['data']);
@@ -148,7 +139,7 @@
                         }else{
                             
                         }
-                      
+
                         //alert(data[0].id);
                     }
                 });
@@ -199,7 +190,9 @@
                     
                     var urlPath = $(this).attr('href');
                     var title = $(this).text(); 
-                    
+
+                    ClearText(objEditor1);
+
                     History.pushState({path: urlPath}, title, './?page=' + urlPath); // When we do this, History.Adapter will also execute its contents.      
                 });
                 
@@ -225,6 +218,18 @@
                    return(false);
                 }
             });
-         
+
+            $(function () {
+                $(".alert-block").click(function () {
+                    $(".alert-block").slideToggle(200);
+                    setTimeout(function () {
+                        $(".alert-block").hide(200);
+                    }, 3000);
+                });
+
+                // setTimeout(function () {
+                //     $(".alert-test").hide(200);
+                //   }, 3000);
+            });
         </script>
 @stop

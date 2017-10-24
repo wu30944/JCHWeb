@@ -59,22 +59,26 @@
 
         public function save(Request $request)
         {
+
             $rules = array (
             'news_title'=> 'required',
-            'action_date'=> 'required',
-            'news_content'=>'required',
+            'action_date'=> 'required'
             );
+            $messages = ['news_title.required' => '請輸入消息標題'
+                        ];
 
-            $validator = Validator::make ( $request->all(), $rules );
-            if ($validator->fails ()){       
-                 return Response::json ( 
-                    array ('errors' => $validator->messages()->all() ));
+            $validator = Validator::make ( $request->all(), $rules , $messages );
+            if ($validator->fails ()){
+                \Debugbar::info($validator->messages()->all());
+                return  collect(['ServerNo'=>'404','Message' =>  $validator->messages()->all()
+                ,               'Key'=>$validator->messages()->keys()]);
+//                 return Response::json (
+//                    array ('errors' => $validator->messages()->all() ));
             }
             else {
                 // \Debugbar::info($request);
                 if($request->get('id')=="")
                 {
-                    $data = new news();
                 }else{
                     $data = $this->dtNews->find($request->id);
                 }
@@ -86,10 +90,7 @@
                 $data->content = $request->news_content;
                 $data->save ();
 
-                 return Response::json ( 
-                    array ('data' => $data,'content'=>strip_tags($data->content) ));
-                // Session::flash('message', 'Successfully updated nerd!');
-                // return response ()->json ( 'data'=>$data,'content'=> strip_tags($data->content) );
+                return  collect(['ServerNo'=>'200','data'=>$data,'content'=>str_replace('&nbsp;','',mb_substr(strip_tags ($data->content),0,25,"utf-8")).'...','Message'=>'儲存成功！']);
             }
         }
 

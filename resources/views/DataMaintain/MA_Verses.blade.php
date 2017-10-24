@@ -57,7 +57,7 @@
                     <td align="left">{{$item->chapter}}</td>
                     <td>{{$item->created_at}}</td>
                     <td>
-                        @if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
+                        @if(Gate::forUser(auth('admin')->user())->check('admin.Carousel.Edit'))
                         <button class="edit-modal btn btn-info"
                             data-info="{{$item->id}},{{$item->content}},{{$item->chapter}}">
                             <span class="glyphicon glyphicon-edit"></span> @lang('default.edit')
@@ -244,31 +244,32 @@
                     $('#myModal').modal('show');
                 }
                 else {
+                    location.reload();
 //                    alert(data['data'].is_show);
-                    if(data['data'].is_show=='1')
-                    {
-                        $('.item' + data['data'].id).replaceWith("" +
-                            "<tr class='item" + data['data'].id + "'>" +
-                            "<td>" + "<input name='choice' type='radio' value='" + data['data'].is_show + "' id='" +data['data'].id + "' checked='true'>" + "</td>" +
-                            "<td align='left'>" + data['data'].content + "</td>" +
-                            "<td align='left'>" + data['data'].chapter + "</td>" +
-                            "<td>" + data['data'].created_at + "</td>" +
-                            "<td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
-                            "<span class='glyphicon glyphicon-edit'></span> 編輯</button> " +
-                            "<button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
-                            "<span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
-                    }else{
-                        $('.item' + data['data'].id).replaceWith("" +
-                            "<tr class='item" + data['data'].id + "'>" +
-                            "<td>" + "<input name='choice' type='radio' value='" + data['data'].is_show + "' id='" +data['data'].id + "'>" + "</td>" +
-                            "<td align='left'>" + data['data'].content + "</td>" +
-                            "<td align='left'>" + data['data'].chapter + "</td>" +
-                            "<td>" + data['data'].created_at + "</td>" +
-                            "<td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
-                            "<span class='glyphicon glyphicon-edit'></span> 編輯</button> " +
-                            "<button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
-                            "<span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
-                    }
+//                    if(data['data'].is_show=='1')
+//                    {
+//                        $('.item' + data['data'].id).replaceWith("" +
+//                            "<tr class='item" + data['data'].id + "'>" +
+//                            "<td>" + "<input name='choice' type='radio' value='" + data['data'].is_show + "' id='" +data['data'].id + "' checked='true'>" + "</td>" +
+//                            "<td align='left'>" + data['data'].content + "</td>" +
+//                            "<td align='left'>" + data['data'].chapter + "</td>" +
+//                            "<td>" + data['data'].created_at + "</td>" +
+//                            "<td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
+//                            "<span class='glyphicon glyphicon-edit'></span> 編輯</button> " +
+//                            "<button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
+//                            "<span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
+//                    }else{
+//                        $('.item' + data['data'].id).replaceWith("" +
+//                            "<tr class='item" + data['data'].id + "'>" +
+//                            "<td>" + "<input name='choice' type='radio' value='" + data['data'].is_show + "' id='" +data['data'].id + "'>" + "</td>" +
+//                            "<td align='left'>" + data['data'].content + "</td>" +
+//                            "<td align='left'>" + data['data'].chapter + "</td>" +
+//                            "<td>" + data['data'].created_at + "</td>" +
+//                            "<td><button class='edit-modal btn btn-info' data-info='"+ data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
+//                            "<span class='glyphicon glyphicon-edit'></span> 編輯</button> " +
+//                            "<button class='delete-modal btn btn-danger' data-info='"+data['data'].id+","+data['data'].content+","+data['data'].chapter+"' data-id='" + data['data'].id + "' data-name='" + data['data'].content + "'>" +
+//                            "<span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
+//                    }
 
                 }
             }
@@ -340,7 +341,7 @@
         // alert('test');
         $.ajax({
             type: 'post',
-            url: '/admin/MAVersesAdd',
+            url: '{{route('Verses.Create')}}',
             data: {
                  '_token': $('input[name=_token]').val(),
                 'content': $("#AddContent").val(),
@@ -348,14 +349,13 @@
             },
             success: function(data) {
                 if (data['ServerNo']=='404'){
-
                     $('.error').text(data['ResultData']);
                     $('.error').removeClass('hidden');
                     $('#AddModel').modal('show');
                 }
                 else {
                     $('.error').addClass('hidden');
-                      location.reload();
+//                      location.reload();
 //                    $('#table').append(
 //                        "<tr class='item" + data['data'].id + "'>" +
 //                        "<td>" + "<input name='choice' type='radio' value='" + data['data'].is_show + "' id='" +data['data'].id + "'>" + "</td>" +
@@ -368,7 +368,9 @@
 //                        "<span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>"
 //                        );
                 }
-            },
+            },error:function(e){
+                var errors = e.responseJSON;
+            }
 
         });
 

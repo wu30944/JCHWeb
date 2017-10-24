@@ -55,7 +55,8 @@
                     if ($validator->fails ()){
                          // return Response::json (
                          //    array ('errors' => $validator->messages()->all() ));
-                          return  collect(['ServerNo'=>'404','Message' =>  $validator->messages()->all()]);
+                          return  collect(['ServerNo'=>'404','Message' =>  $validator->messages()->all()
+                                           , 'Key'=>$validator->messages()->keys()]);
                     }
                     else {
 
@@ -81,7 +82,6 @@
 
                             $data->photo_name = $request->photo_name;
                             $data->show_date = $request->show_date;
-                            $data->is_show = 0;
                             $data->created_user=$user;
                             $data->modify_user=$user;
 
@@ -89,7 +89,7 @@
                         }
                         DB::connection()->getPdo()->commit();
 
-                        return  collect(['ServerNo'=>'200','Message' =>'儲存成功！','id'=>$data->id]);
+                        return  collect(['ServerNo'=>'200','Data'=>$data,'Message' =>'儲存成功！','id'=>$data->id]);
                     }
                 } catch (\PDOException $e) {
                 DB::connection()->getPdo()->rollBack();

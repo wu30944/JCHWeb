@@ -38,6 +38,20 @@
         </div>
         @endif
 
+        <div class="alert alert-block alert-success hide" id="SuccessAlter">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>
+                <input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveSuccess')">
+            </strong>
+        </div>
+
+        <div class="alert alert-block alert-danger hide" id="FailAlter">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>
+                <input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveFail')">
+            </strong>
+        </div>
+
         {{ csrf_field() }}
         <div class="table-responsive text-center">
             {{-- <table class="table table-borderless table-striped" id="gridview"> --}}
@@ -60,10 +74,10 @@
                 <tr class="item{{$item->id}}">
                     {{-- <td>{{$item->id}}</td> --}}
                     <td class="hidden">{{$item->id}}</td>
-                    <td>{{$item->name}}</td>
-                    <td>{{$item->meeting_time}}</td>
-                    <td>{{$item->day}}</td>
-                    <td>{{$item->floor}}</td>
+                    <td><p id = "Name{{$item->id}}">{{$item->name}}</p></td>
+                    <td><p id = "MeetingTime{{$item->id}}">{{$item->meeting_time}}</p></td>
+                    <td><p id = "Day{{$item->id}}">{{$item->day}}</p></td>
+                    <td><p id = "Floor{{$item->id}}">{{$item->floor}}</p></td>
                     <td>
                         @if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
                         <button class="edit-modal btn btn-info"
@@ -103,7 +117,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="fellowship_name">團契名稱:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="fellowship_name" >
+                                <input type="text" class="form-control" id="fellowship_name" disabled="disabled">
                             </div>
                         </div>
                         <div class="form-group">
@@ -242,10 +256,7 @@
         $('.modal-title').text('修改');
         $('.deleteContent').hide();
         $('.form-horizontal').show();
-        // $('#fellowship_name').val($(this).data('id'));
-        // $('#meeting_time').val($(this).data('name'));
-        // $('#day').val($(this).data('name'));
-        // $('#floor').val($(this).data('name'));
+
         var stuff = $(this).data('info').split(',');
         // alert(stuff);
         fillmodalData(stuff);
@@ -253,26 +264,50 @@
     });
 
     $('.modal-footer').on('click', '.edit', function() {
+        var $id = $("#id").val();
         $.ajax({
             type: 'post',
             url: '/admin/meeting_edit',
             data: {
                 '_token': $('input[name=_token]').val(),
-                'id':$("#id").val(),
+                'id': $id,
                 'fellowship_name': $("#fellowship_name").val(),
                 'meeting_time': $('#meeting_time').val(),
                 'day': $('#day').val(),
                 'floor': $('#floor').val()
             },
             success: function(data) {
-             if ((data.errors)){
-                    $('.error').removeClass('hidden');
-                    $('.error').text(data.errors);
-                    $('#myModal').modal('show');
-                }
-                else {
-                $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td class='hidden'>" + data.id + "</td><td>" + data.name + "</td><td>" + data.meeting_time + "</td><td>" + data.day + "</td><td>" + data.floor + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data.name+","+data.meeting_time+","+data.day+","+data.floor+","+ data.id+"' data-id='" + data.id + "' data-name='" + data.name + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data.name+","+data.meeting_time+","+data.day+","+data.floor+","+ data.id+"' data-id='" + data.id + "' data-name='" + data.name + "'><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
-                }
+
+                $('#SuccessAlter').removeClass('hide');
+                $('#SuccessAlter').show();
+                /*
+
+                 if ((data.errors)){
+                        $('.error').removeClass('hidden');
+                        $('.error').text(data.errors);
+                        $('#myModal').modal('show');
+                        $('#SuccessAlter').removeClass('hide');
+                        $('#SuccessAlter').show();
+                    }
+                else{
+                     $('#MeetingTime'+$id).text(data.meeting_time);
+                     $('#Day'+$id).text(data.day);
+                     $('#Floor'+$id).text(data.floor);
+                     $('#FailAlter').removeClass('hide');
+                     $('#FailAlter').show();
+    //                $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td class='hidden'>" + data.id + "</td><td>" + data.name + "</td><td>" + data.meeting_time + "</td><td>" + data.day + "</td><td>" + data.floor + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data.name+","+data.meeting_time+","+data.day+","+data.floor+","+ data.id+"' data-id='" + data.id + "' data-name='" + data.name + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data.name+","+data.meeting_time+","+data.day+","+data.floor+","+ data.id+"' data-id='" + data.id + "' data-name='" + data.name + "'><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
+                    }
+                 */
+                setTimeout(function () {
+                    $(".alert-block").hide(200);
+                }, 3000);
+
+            },error:function(e)
+            {
+                var errors = e.responseJSON;
+                $('.error').removeClass('hidden');
+                $('.error').text(errors.Message);
+                $('#myModal').modal('show');
             }
         });
     });

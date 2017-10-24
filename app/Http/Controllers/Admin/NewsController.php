@@ -154,8 +154,40 @@ class NewsController extends Controller
 
     public function saveItem(Request $request)
     {   
-        // \Debugbar::info($request);
-        return $this->dtNews->save($request);
+//         \Debugbar::info('1');
+        //return $this->dtNews->save($request);
+        $Result = $this->dtNews->save($request);
+
+        if($Result['ServerNo']=='200')
+        {
+            return response ()->json (['ServerNo'=>'200','content'=>$Result['content'],'Message'=>$Result['Message']]);
+
+            //return response ()->json ( ['ServerNo'=>'200','ResultData'=> $Result['Result'],'data'=>$Result['data']]);
+        }else
+        {
+            return response ()->json ( ['ServerNo'=>'404','Message'=>$Result['Message']]);
+        }
+    }
+
+
+
+    /*
+        2017/10/16    參考金句資料維護功能的新增function
+
+    */
+    public function InsertItem(Request $request) {
+
+
+        $Result=$this->dtNews->save($request);
+
+
+        if($Result['ServerNo']=='200')
+        {
+            return response ()->json ( ['ServerNo'=>'200','ResultData'=> $Result['data'],'Message'=>$Result['Message'],'content'=>$Result['content']],200);
+        }else
+        {
+            return response ()->json ( ['ServerNo'=>'404','Message'=>$Result['Message'],'Key'=>$Result['Key']],404);
+        }
     }
 
     public function PhotoUpload(Request $request)

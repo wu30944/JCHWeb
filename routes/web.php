@@ -150,7 +150,7 @@ Route::group(['middleware'=>'auth:admin'],function(){
 
     Route::get('/MA_Staff',['as'=>'MA_Staff','uses'=>'StaffController@MA_Staff']);
 
-    Route::post('/MA_Insert_Staff',['as'=>'MA_Insert_Staff','uses'=>'StaffController@InsertItem']);
+//    Route::post('/MA_Insert_Staff',['as'=>'MA_Insert_Staff','uses'=>'StaffController@InsertItem']);
 
     Route::post('/MA_Update_Staff',['as'=>'MA_Update_Staff','uses'=>'StaffController@UpdateItem']);
 
@@ -178,6 +178,7 @@ Route::group(['middleware'=>'auth:admin'],function(){
 
     Route::post('/MA_SearchMoreYoutube',['as'=>'MA_SearchMoreYoutube','uses'=>'MoreYoutubeController@Search']);
 
+//   Route::post('/MAVersesEdit',['as'=>'MAVersesEdit','uses'=>'VersesController@editItem']);
 });
 
 //維護的路由

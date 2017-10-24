@@ -54,63 +54,63 @@
             </div>
 
              <div id="AddModel" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4>@lang('default.add')</h4>
-                </div>
-                <div class="modal-body">
-                    {{--<form class="form-horizontal" role="form" action="">--}}
-                    {!! Form::open(['route'=>'MA_Insert_Sunday_Video','id'=>'form_link_add','class'=>'form-horizontal']) !!}
-	                             <div class="form-group">
-	                                {!!form::label('video_type','影音類型:',['class'=>'control-label col-sm-2'])!!}
-	                                <div class="col-sm-10">
-										{!! Form::select('video_type',$ItemAll, old('video_type'), ['placeholder'=>'請選擇影片類型','style'=>'width:120px']) !!}
-	                                </div>
-	                            </div>
+				<div class="modal-dialog">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4>@lang('default.add')</h4>
+						</div>
+						<div class="modal-body">
+							{{--<form class="form-horizontal" role="form" action="">--}}
+							{!! Form::open(['route'=>'MA_Insert_Sunday_Video','id'=>'form_link_add','class'=>'form-horizontal']) !!}
+									 <div class="form-group">
+										{!!form::label('video_type','影音類型:',['class'=>'control-label col-sm-2'])!!}
+										<div class="col-sm-10">
+											{!! Form::select('video_type',$ItemAll, old('video_type'), ['placeholder'=>'請選擇影片類型','style'=>'width:120px']) !!}
+										</div>
+									</div>
 
-	                            <div class="form-group">
-	                                <label class="control-label col-sm-2" for="video_link">影片連結：</label>
-	                                <div class="col-sm-10">
-	                                 <input type="text" class="form-control" id="video_link" name="video_link">
-	                                </div>
-	                            </div>
-	                         <div class="form-group">
-                                	<label class="control-label col-sm-2" for="theme">主題：</label>
-                            	<div class="col-sm-10">
-                                    <input type="text" class="form-control" id="theme" name="theme">
-                                </div>
-                            </div>
-                           <div class="form-group">
-                                	<label class="control-label col-sm-2" for="speaker">專講人員：</label>
-                            	<div class="col-sm-10">
-                                    <input type="text" class="form-control" id="speaker" name="speaker">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                	<label class="control-label col-sm-2" for="video_date">日期：</label>
-                            	<div class="col-sm-10">
-                                    <input type="text" class="date-modal form-control" id="datepicker_add" name="video_date">
-                                </div>
-                            </div>
-                        <div class="add_modal-footer" align="right">
-                            <p class="error text-center alert alert-danger hidden"></p>
-                            <button type="submit" class='btn btn-success' id="btnSave" onclick="Insert()">
-                                <span class='glyphicon glyphicon-plus'></span>  @lang('default.add')
-                            </button>
+									<div class="form-group">
+										<label class="control-label col-sm-2" for="video_link">影片連結：</label>
+										<div class="col-sm-10">
+										 <input type="text" class="form-control" id="video_link" name="video_link">
+										</div>
+									</div>
+									 <div class="form-group">
+											<label class="control-label col-sm-2" for="theme">主題：</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="theme" name="theme">
+										</div>
+									</div>
+								   <div class="form-group">
+											<label class="control-label col-sm-2" for="speaker">專講人員：</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" id="speaker" name="speaker">
+										</div>
+									</div>
+									<div class="form-group">
+											<label class="control-label col-sm-2" for="video_date">日期：</label>
+										<div class="col-sm-10">
+											<input type="text" class="date-modal form-control" id="datepicker_add" name="video_date">
+										</div>
+									</div>
+								<div class="add_modal-footer" align="right">
+									<p class="error text-center alert alert-danger hidden"></p>
+									<button type="submit" class='btn btn-success' id="btnSave" onclick="Insert()">
+										<span class='glyphicon glyphicon-plus'></span>  @lang('default.add')
+									</button>
 
-                            <button type="button" class="btn btn-warning btn-cancel" data-dismiss="modal">
-                                <span class='glyphicon glyphicon-remove'></span>  取消
-                            </button>
-                        </div>
-                    {{--</form>--}}
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-    </div>
+									<button type="button" class="btn btn-warning btn-cancel" data-dismiss="modal">
+										<span class='glyphicon glyphicon-remove'></span>  取消
+									</button>
+								</div>
+							{{--</form>--}}
+							{!! Form::close() !!}
+						</div>
+					</div>
+				</div>
+			</div>
 
             {{-- 搜尋測試區塊 --}}
             {!! Form::open(['route'=>'MA_SearchMoreYoutube','id'=>'form_search']) !!} 
@@ -187,12 +187,20 @@
 		    			@foreach($more_youtube as $item)
 					    	 <div class="col-md-4 text-center" id="container_{{$item->id}}">
 				                <div class="thumbnail">
-				                	<div class="alert alert-block hide" id="div_alert_{{$item->id}}">
+
+				                	<div class="alert alert-block alert-danger hide" id="FailAlter_{{$item->id}}">
 							            <button type="button" class="close" data-dismiss="alert">×</button>
 							            <strong>
-							            	<input  style="background-color:   transparent;   border:   0px" readonly="true" id="alert_msg_{{$item->id}}">
+							            	<input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveFail')" id="FailMsg_{{$item->id}}">
 							            </strong>
 							        </div>
+									<div class="alert alert-block alert-success hide" id="SuccessAlter_{{$item->id}}">
+										<button type="button" class="close" data-dismiss="alert">×</button>
+										<strong>
+											<input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveSuccess')" id="SuccessMsg_{{$item->id}}">
+										</strong>
+									</div>
+
 				                     <div class="embed-responsive embed-responsive-4by3">
 		                           		 <iframe class="embed-responsive-item" src="{{$item->link}}" frameborder="0" allowfullscreen id="iframe_{{$item->id}}"></iframe>
 		                        	</div>
@@ -206,22 +214,23 @@
 			                    				{!! Form::select('video_type_'.$item->id,$ItemAll, $item->type, ['placeholder'=>'請選擇影片類型','style'=>'width:130px','disabled'=>'disabled','class'=>'span4','id'=>'video_type_'.$item->id]) !!}
 			                    				</div>
 			                        	 </p>
-				                        <p>	
-		                            		<label >影片連結:</label><br>
+				                        <p>
+		                            		<label >@lang('default.video_link'):</label><br>
 		                            			{{-- {{$more_youtube->link}} --}}
-		                        				<input class="span2" size="16" type="text" style="width:100%;border-style:none;outline:none" readonly="true" id="videolink_{{$item->id}}" value="{{$item->link}}" >
+											<input class="span2" size="16" type="text" style="width:100%;border-style:none;outline:none" readonly="true" id="videolink_{{$item->id}}" value="{{$item->link}}" >
 		                				</p>
 
 		                				<p>
-		                        				<h3>主題:<input class="span3" size="16" type="text" id="theme_{{$item->id}}" value="{{$item->theme}}" style="border-style:none;outline:none" readonly="true" ></h3>
+											<label >@lang('default.subject'):</label>
+											<input class="span3" size="16" type="text" id="theme_{{$item->id}}" value="{{$item->theme}}" style="border-style:none;outline:none" readonly="true" >
+
 		                				</p>
 		                				<p>
-				                            <small>專講人員:<input class="span3" size="16" type="text" id="speaker_{{$item->id}}" value="{{$item->name}}" style="border-style:none;outline:none" readonly="true" ></small>
-		                                     
-				                        
+											<label >@lang('default.speaker'):</label>
+											<input class="span3" size="16" type="text" id="speaker_{{$item->id}}" value="{{$item->name}}" style="border-style:none;outline:none" readonly="true" >
 				                        </p>
 				                        <p>
-				                        <label >日期:</label>
+				                        <label >@lang('default.date'):</label>
 		            						  <input class="date-modal" size="16" type="text" id="datepicker_{{$item->id}}" style="border-style:none;outline:none" readonly="true" value="{{$item->video_date}}">
 		    						  </p>
 			                            <div align="right">                                
@@ -560,45 +569,28 @@
 		            success: function(data){ 
 		            	// alert(data['errors']);
 		                if(data['ServerNo']=='200')
-		                {	
-		                	// alert(data['message']);
-		                	// $('#videolink_'+id).val(data['data'].link);
-			                // $('#speaker_'+id).val(data['data'].name);
-			                // $('#theme_'+id).val(data['data'].theme);
-			                // $('#datepicker_'+id).val(data['data'].video_date);
-			                // $('#video_type_'+id).val(data['data'].type);
-			                $('#div_alert_'+id).removeClass('alert-danger');
-		                	 $('#alert_msg_'+id).val(data['ResultData']);
-		                	 $('#div_alert_'+id).addClass('alert-success');
-		                	 $('#div_alert_'+id).removeClass('hide');       
+		                {
+		                    //alert(data['ResultData']);
+							$('#SuccessAlter_'+id).removeClass('hide');
+							$('#SuccessAlter_'+id).show();
+							$('#SuccessMsg_'+id).val(data['ResultData']);
 		                }else if(data['ServerNo']=='404')
 		                {
-		                	// alert(data['message']);
-		                	// $('#message').val(data['message']);
-		                	// $('#alert_block').removeClass('hide');
-		                // 	alert(data['message']);
-		                // 	$('#videolink_'+id).val(videolink);
-			               //  $('#speaker_'+id).val(speaker);
-			               //  $('#theme_'+id).val(theme);
-			               //  $('#datepicker_'+id).val(datepicker);
-			              	// $('#video_type_'+id).val(videotype);
-			              	$('#div_alert_'+id).removeClass('alert-danger');
-		                	 $('#alert_msg_'+id).val(data['ResultData']);
-		                	 $('#div_alert_'+id).addClass('alert-success');
-		                	 $('#div_alert_'+id).removeClass('hide');       
+							$('#SuccessAlter_'+id).removeClass('hide');
+							$('#SuccessMsg_'+id).val(data['ResultData']);
+							$('#SuccessAlter'+id).show();
 			              }
 		            },error:function(data)
 		            {
-		            		$('#div_alert_'+id).removeClass('alert-success');
-		                	 $('#alert_msg_'+id).val(data['ResultData']);
-		                	 $('#div_alert_'+id).addClass('alert-danger');
-		                	 $('#div_alert_'+id).removeClass('hide');   
+						 $('#FailMsg_'+id).val(data['ResultData']);
+						 $('#FailAlter_'+id).removeClass('hide');
+						 $('#FailAlter'+id).show();
 		            }
 
 		        });
 		         setTimeout(function () {
 	                  $(".alert-block").hide(200);
-	                }, 5000); 
+	                }, 5000);
 		    });
 
 			 $('.modal-footer').on('click', '.delete', function() {
@@ -692,7 +684,7 @@
                   $(".alert-block").hide(200);
                 }, 3000);
               });
-              
+
               // setTimeout(function () {
               //     $(".alert-test").hide(200);
               //   }, 3000);

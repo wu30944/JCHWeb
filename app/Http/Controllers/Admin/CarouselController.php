@@ -169,16 +169,20 @@ class CarouselController extends Controller
 
                 if ($UploadResult['ServerNo']=='404')
                 {
-                    return response()->json(['ServerNo' => $UploadResult['ServerNo'],'Message' => $UploadResult['Message']]);
+                    return response()->json(['ServerNo' => $UploadResult['ServerNo'],'Message' => $UploadResult['Message']],404);
 
                 }
             }
 
-            return response()->json(['ServerNo' => $UploadResult['ServerNo'],'Data' => $UploadResult['Data'],'Message'=>$UploadResult['Message']]);
+            return response()->json(['ServerNo' => $Result['ServerNo'],
+                                    'Data' => $Result['Data'],
+                                    'Message'=>$Result['Message']],200);
 
         }else
         {
-            return response()->json(['ServerNo' => $Result['ServerNo'],'Data' => $Result['Data'],'Message'=>$Result['Message']]);
+            return response()->json(['ServerNo' => $Result['ServerNo'],
+                                    'Message'=>$Result['Message'],
+                                    'Key'=>$Result['Key']],404);
         }
 
     }

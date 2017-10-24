@@ -27,7 +27,7 @@
 	    <div class="container" >
             <div class="form-group row add">
             <br>
-                <div class="col-md-4">
+                <div class="col-md-8">
 					<button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btnSearch" onclick="Search()">
 						<span class='glyphicon glyphicon-search'> </span> @lang('default.search')
 					</button>
@@ -116,78 +116,74 @@
 			{!! Form::close() !!}
 			{{-- 搜尋測試區塊 --}}
 
-            <div class="row">
-				{!! Form::open(['route'=>'MA_Insert_Staff','id'=>'form_add','files'=>true,'class'=>'hide']) !!}
-	            {{-- <form id="form_link_add" method="post" action="{{ url('MA_Insert_Sunday_Video') }}"> --}}
-		            <div class="col-md-4 text-center " id="div_add" >
-			                <div class="thumbnail">
-			                   <div align="left">     
-			                        <label for="upload-profile-picture">                           
-			                             <input name="image" id="image" type="file" class="manual-file-chooser js-manual-file-chooser js-avatar-field upl" style="width:200px">
 
-			                        </label>
-		                    	</div>
-			                    <div class="caption" align="left">
-			                    	<p>
-			  		                    <div align="center">
-				                        	 <img class="img-responsive preview img-circle"  alt="" id="preview" src="http://via.placeholder.com/200x200" style="width: 200px; height: 200px;">
-				                        </div>
-			                    		{{-- <img class="img-responsive preview img-circle"  alt="" id="preview" src="/photo/sample.jpg">
-	 --}}		                    </p>
-			                        <p>
-										<label for="">@lang('default.name') :</label>
-											{{--{!!form::label('name','姓名:')!!}--}}
-										<div style="display: inline;">
-											{!!form::text('name','',['class'=>'name'])!!}
-										</div>
-		                    		</p>
-	                				<p>
-	                					<div style="display: inline;">
-										<label for="">@lang('default.staff')</label>
-	            						{{--{!!form::label('duty','職務:')!!}--}}
-	            						</div>
-	                    				<div style="display: inline;">
-	                    				{!! Form::select('duty',$ItemAll, old('duty'), ['placeholder'=>'請選擇職務','style'=>'width:100px']) !!}
-	                    				</div>
-			                         </p>
-									<p>
-										<div style="display: inline;">
-										<label for="">@lang('default.depart')</label>
-											{{--{!!form::label('depart','部門:')!!}--}}
-										</div>
-										<div style="display: inline;">
-											{!! Form::select('depart',$ItemDepartAll, old('depart'), ['placeholder'=>'請選擇部','style'=>'width:100px','clase'=>'form-control']) !!}
-										</div>
-									</p>
-			                          <p>
-										<div style="display: inline;">
-											<label for="">@lang('default.sdate')</label>
-											{{--{!!form::label('depart','部門:')!!}--}}
-										</div>
-			                          	 {{--{!!form::label('sdate','開始日期:')!!}--}}
+			<div id="AddModel" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4>@lang('default.add')</h4>
+						</div>
+						<div class="modal-body">
+							{!! Form::open(['route'=>'MA_Insert_Staff','id'=>'form_add','files'=>true,'class'=>'hide form-horizontal']) !!}
+							<div align="left">
+								<label for="upload-profile-picture">
+									<input name="image" id="image" type="file" class="manual-file-chooser js-manual-file-chooser js-avatar-field upl" style="width:200px">
 
-		        						  <input class="date-modal" size="16" type="text" id="sdate" name="sdate" >
-	        						  </p>
-	  	                             <p>
-										<div style="display: inline;">
-											<label for="">@lang('default.edate')</label>
-											{{--{!!form::label('depart','部門:')!!}--}}
-										</div>
-			                        	  {{--{!!form::label('edate','結束日期:')!!}--}}
-		        						  <input class="date-modal" size="16" type="text" id="edate" name="edate" >
-	        						  </p>
-		                            <div align="right">                                
-			                            <button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btn_add" >
-		                        			<span class='glyphicon glyphicon-check'> </span>加入
-		                    			</button>	
-		                    			{{-- <input class="submit" type="submit" value="加入"/> --}}
-		                    		</div>
-			                    </div>
-			                </div>
-		            </div>
-	            {{-- </form> --}}
-	            {!! Form::close() !!}
-            </div>
+								</label>
+							</div>
+
+							<div align="center">
+								<img class="img-responsive preview img-circle"  alt="" id="preview" src="http://via.placeholder.com/200x200" style="width: 200px; height: 200px;">
+							</div>
+							<div class="form-group">
+								<label for="name" class="control-label col-sm-2">@lang('default.name')：</label>
+								<div class="col-sm-10">
+									{!!form::text('name','',['class'=>'name form-control','id'=>'name','type'=>'text'])!!}
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="duty" class="control-label col-sm-2">@lang('default.staff')：</label>
+								<div class="col-sm-10">
+									{!! Form::select('duty',$ItemAll, old('duty'), ['placeholder'=>'請選擇職務','style'=>'width:120px','class'=>'form-control','id'=>'duty']) !!}
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="depart" class="control-label col-sm-2">@lang('default.depart')：</label>
+								<div class="col-sm-10">
+									{!! Form::select('depart',$ItemDepartAll, old('depart'), ['placeholder'=>'請選擇部','style'=>'width:120px','class'=>'form-control','id'=>'depart']) !!}
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="sdate" class="control-label col-sm-2">@lang('default.sdate')</label>
+								<div class="col-sm-10">
+									<input class="date-modal form-control" size="16" type="text" id="sdate" name="sdate" >
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="edate" class="control-label col-sm-2">@lang('default.edate')</label>
+								<div class="col-sm-10">
+									<input class="date-modal form-control" size="16" type="text" id="edate" name="edate" >
+								</div>
+							</div>
+
+							<div class="add_modal-footer" align="right">
+								<p class="error text-center alert alert-danger hidden"></p>
+								<button type="submit" class='btn btn-success' id="btnSave" >
+									<span class='glyphicon glyphicon-plus'></span>  @lang('default.add')
+								</button>
+								<button type="button" class="btn btn-warning btn-cancel" data-dismiss="modal">
+									<span class='glyphicon glyphicon-remove'></span>  取消
+								</button>
+							</div>
+							{{--</form>--}}
+							{!! Form::close() !!}
+						</div>
+					</div>
+				</div>
+			</div>
+
 
              @if (isset($dtStaff))
 		    	{{-- expr --}}
@@ -468,6 +464,8 @@
 
 		    	$('#edit').attr('disabled',"disabled");
 		    	$('#form_add').removeClass('hide');
+
+                $('#AddModel').modal('show');
 		    });
 
     	    var objImg;
@@ -728,7 +726,7 @@
               // setTimeout(function () {
               //     $(".alert-test").hide(200);
               //   }, 3000);
-            })
+            });
 
 			$('select[class="staff"]').change(function(){
 //			alert($(this).data('info'));
