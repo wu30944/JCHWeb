@@ -140,7 +140,7 @@ class NewsController extends Controller
     }
 
     public function editItem(Request $request)
-    {   
+    {
          \Debugbar::info( $request->id );
 
         $data=$this->dtNews->find($request->id);
@@ -150,6 +150,7 @@ class NewsController extends Controller
 
         return response ()->json ( $data );
     }
+
 
 
     public function saveItem(Request $request)
@@ -175,18 +176,90 @@ class NewsController extends Controller
         2017/10/16    參考金句資料維護功能的新增function
 
     */
-    public function InsertItem(Request $request) {
+    public function UpdateItem(Request $request) {
+//
+//        if(!empty($request->file('image')))
+//        {
+//            \Debugbar::info('有照片');
+//        }else{
+//            \Debugbar::info('無照片');
+//        }
+        try{
+            DB::connection()->getPdo()->beginTransaction();
 
+            $Result=$this->dtNews->save($request);
 
-        $Result=$this->dtNews->save($request);
+            if($Result['ServerNo']=='200')
+            {
+                if(!empty($request->file('image')))
+                {
+                    $UploadResult = $this->dtNews->CreatePhotoUpload($request,$Result['id']);//$this->staff->PhotoUpload($request,$Result['id']);
 
+                    if ($UploadResult['ServerNo']=='404')
+                    {
+                        DB::connection()->getPdo()->rollBack();
+                        return response ()->json ( ['ServerNo'=>'404','Message'=>$UploadResult['Result']],404);
+                    }
+                }
+                DB::connection()->getPdo()->commit();
+                return response ()->json ( ['ServerNo'=>'200','ResultData'=> $Result['data'],'Message'=>$Result['Message'],'content'=>$Result['content']],200);
+            }else
+            {
+                DB::connection()->getPdo()->rollBack();
+                return response ()->json ( ['ServerNo'=>'404','Message'=>$Result['Message'],'Key'=>$Result['Key']],404);
+            }
 
-        if($Result['ServerNo']=='200')
+        }catch (\PDOException $e)
         {
-            return response ()->json ( ['ServerNo'=>'200','ResultData'=> $Result['data'],'Message'=>$Result['Message'],'content'=>$Result['content']],200);
-        }else
-        {
+            DB::connection()->getPdo()->rollBack();
             return response ()->json ( ['ServerNo'=>'404','Message'=>$Result['Message'],'Key'=>$Result['Key']],404);
+        }
+
+    }
+
+
+    /*
+     * 20171102  將try catch從裡邊拿出來，直接放在外面
+     * */
+    public function InsertItem(Request $request)
+    {
+//        if(!empty($request->file('image')))
+//        {
+//            return '有照片';
+//            //\Debugbar::info('有照片');
+//        }else{
+//
+//            return '無照片';
+//            //\Debugbar::info('無照片');
+//        }
+
+        try{
+            DB::connection()->getPdo()->beginTransaction();
+            $Result = $this->dtNews->save($request);
+
+            if($Result['ServerNo']=='200')
+            {
+                if(!empty($request->file('image')))
+                {
+                    $UploadResult = $this->dtNews->CreatePhotoUpload($request,$Result['id']);//$this->staff->PhotoUpload($request,$Result['id']);
+
+                    if ($UploadResult['ServerNo']=='404')
+                    {
+                        return back()->with('fails', $UploadResult['Result']);
+                    }
+                }
+                DB::connection()->getPdo()->commit();
+                return back()->with('success', $Result['Message']);
+            }else
+            {
+                DB::connection()->getPdo()->rollBack();
+                return back()->with('fails', $Result['Message']);
+            }
+
+        }catch (\PDOException $e)
+        {
+            DB::connection()->getPdo()->rollBack();
+            return back();
         }
     }
 
@@ -236,9 +309,24 @@ class NewsController extends Controller
         }
     }
 
+
+
     public function DeleteItem(Request $request)
     {
         return $this->dtNews->delete($request->get('id'));
+    }
+
+    public function DeletePhoto($FileName)
+    {
+        $destinationPath = public_path().config('app.fellowship_photo_path').'/'.$FileName;
+        if(file_exists($destinationPath)){
+            unlink($destinationPath);//將檔案刪除
+        }else if(file_exists($destinationPath)){
+
+            unlink($destinationPath);
+        }else{
+            echo 'Not Found Photo';
+        }
     }
 
     // 2017/06/03  增加最新消息頁面，點選畫面中Read More 進入消息明細

@@ -59,7 +59,6 @@
 
         public function save(Request $request)
         {
-
             $rules = array (
             'news_title'=> 'required',
             'action_date'=> 'required'
@@ -69,29 +68,37 @@
 
             $validator = Validator::make ( $request->all(), $rules , $messages );
             if ($validator->fails ()){
-                \Debugbar::info($validator->messages()->all());
+//                \Debugbar::info($validator->messages()->all());
                 return  collect(['ServerNo'=>'404','Message' =>  $validator->messages()->all()
-                ,               'Key'=>$validator->messages()->keys()]);
-//                 return Response::json (
-//                    array ('errors' => $validator->messages()->all() ));
+                ,               'Key'=>$validator->messages()->keys(),'Message'=>'儲存失敗']);
+
             }
             else {
+//                    DB::connection()->getPdo()->beginTransaction();
                 // \Debugbar::info($request);
                 if($request->get('id')=="")
                 {
+
+                    $data = new news();
+
                 }else{
                     $data = $this->dtNews->find($request->id);
                 }
-               
+
                 $data->title = $request->news_title;
                 $data->action_date = $request->action_date;
                 $data->action_time = $request->action_time;
-                $data->action_postion=$request->action_postion;
+                $data->action_position=$request->action_position;
                 $data->content = $request->news_content;
                 $data->save ();
 
-                return  collect(['ServerNo'=>'200','data'=>$data,'content'=>str_replace('&nbsp;','',mb_substr(strip_tags ($data->content),0,25,"utf-8")).'...','Message'=>'儲存成功！']);
+//              DB::connection()->getPdo()->commit();
+                return  collect(['ServerNo'=>'200','data'=>$data,'content'=>str_replace('&nbsp;','',mb_substr(strip_tags ($data->content),0,25,"utf-8")).'...','Message'=>'儲存成功！','id'=>$data->id]);
             }
+//            }catch (\PDOException $e)
+//            {
+//                DB::connection()->getPdo()->rollBack();
+//            }
         }
 
         public function delete($id)
@@ -137,5 +144,55 @@
                             FROM news 
                             order by action_date desc
                             limit 3' );
+        }
+
+        /*
+              上傳圖片的function
+              2017/05/13
+          */
+        public function CreatePhotoUpload(Request $request,$id)
+        {
+            $file = $request->file('image');
+
+            \Debugbar::info($id);
+
+            //必須是image的驗證
+            $input = array('image' => $file);
+            $rules = array(
+                'image' => 'image'
+            );
+
+            $validator = \Validator::make($input, $rules);
+            if ( $validator->fails() ) {
+                return collect(['ServerNo'=>'404','Result' =>$validator->getMessageBag()->toArray()]);
+            }else{
+
+                $destinationPath = public_path().config('app.news_photo_path');
+
+
+                if (!is_dir($destinationPath))
+                {
+                    mkdir($destinationPath);
+                }
+
+                //都將檔案存成jpg檔案 命名方式依照團契的ＩＤ命名,這樣就不會有重複的問題
+                $filename = $id.'.jpg';//$file->getClientOriginalName();
+
+                $data = news::find($id);
+                \Debugbar::info($filename);
+                $data->image = config('app.news_photo_path').'/'.$filename;
+                $data->save();
+
+
+                //  移動檔案
+                if(!$file->move($destinationPath,$filename)){
+                    // return response()->json(['ServerNo' => '404','Result' => '圖片儲存失敗！']);
+                    return collect(['ServerNo'=>'404','Result' => '圖片儲存失敗！']);
+                }
+
+                return collect(['ServerNo'=>'200','Result'=>'照片上傳成功！']);
+                // return response()->json(['ServerNo' => '200','Result' => '照片上傳成功！']);
+            }
+
         }
     } 

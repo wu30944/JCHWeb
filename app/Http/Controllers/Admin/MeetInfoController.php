@@ -11,8 +11,17 @@ use Input;
 use Validator;
 use Response;
 
+use  App\Repositories\MeetingRepository;
+
 class MeetInfoController extends Controller
 {
+
+    private $objMeetingInfo;
+
+    public function __construct(MeetingRepository $MeetingRepository)
+    {
+        $this->objMeetingInfo=$MeetingRepository;
+    }
 
     public function Ma_MeetingInfo()
     {
@@ -25,12 +34,12 @@ class MeetInfoController extends Controller
     }
 
     /*
-        編輯聚會資訊的fun
-    */
-    public function editItem(Request $req) {
+       更新聚會資訊的fun
+   */
+    public function UpdateItem(Request $req) {
 
         $id = Input::get('id');
-          // validate
+        // validate
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'floor'       => 'required',
@@ -49,9 +58,9 @@ class MeetInfoController extends Controller
 
         // process the login
         if ($validator->fails()) {
-            return response()->json ( ['Message'=>$validator->messages()->all() ],404);
+            return response()->json ( ['Message'=>$validator->messages()->all() ],403);
             return Response::json (
-                array ('errors' => $validator->messages()->all() ));
+                array ('errors' => $validator->messages()->all() ),403);
         } else {
             // store
             $strMeetingInfo = MeetingInfo::find($id);
@@ -65,6 +74,28 @@ class MeetInfoController extends Controller
             //\Session::flash('flash_message', 'Successfully updated nerd!');
             return response ()->json ( $strMeetingInfo ,200);
         }
+    }
+
+
+    /*
+        按下編輯聚會資訊的fun
+    */
+    public function EditItem(Request $request) {
+
+        $data=$this->objMeetingInfo->find($request->id);
+
+        //Debug專用
+        \Debugbar::info( count($data) );
+
+        if(count($data)>0)
+        {
+            return response ()->json ( $data,200 );
+        }else{
+            return response ()->json (  ['Message'=>'資料庫錯誤，請洽工程師'],403 );
+        }
+
+
+
     }
 
     /*

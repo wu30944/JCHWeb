@@ -16,13 +16,13 @@
 
          <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">聚會資訊
+                    <h1 class="page-header">@lang('function_title.meeting_info')
                         {{-- <small>Subheading</small> --}}
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="{{url('/')}}">首頁</a>
+                        <li><a href="{{url('/')}}">@lang('default.home')</a>
                         </li>
-                        <li class="active">聚會資訊</li>
+                        <li class="active">@lang('function_title.meeting_info')</li>
                     </ol>
 
                 </div>
@@ -61,11 +61,11 @@
                     <tr>
                         {{-- <th class="text-center">#</th> --}}
                         <th class="hidden"></th>
-                        <th class="text-center">團契名稱</th>
-                        <th class="text-center">聚會時間</th>
-                        <th class="text-center">星期</th>
-                        <th class="text-center">樓層</th>
-                        @if(Auth::check())
+                        <th class="text-center">@lang('default.fellowship_name')</th>
+                        <th class="text-center">@lang('default.time')</th>
+                        <th class="text-center">@lang('default.day')</th>
+                        <th class="text-center">@lang('default.floor')</th>
+                        @if(Gate::forUser(auth('admin')->user())->check('admin.MeetingInfo.Edit') or Gate::forUser(auth('admin')->user())->check('admin.MeetingInfo.Destory'))
                         <th class="text-center">Actions</th>
                         @endif
                     </tr>
@@ -79,16 +79,16 @@
                     <td><p id = "Day{{$item->id}}">{{$item->day}}</p></td>
                     <td><p id = "Floor{{$item->id}}">{{$item->floor}}</p></td>
                     <td>
-                        @if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
+                        @if(Gate::forUser(auth('admin')->user())->check('admin.MeetingInfo.Edit'))
                         <button class="edit-modal btn btn-info"
-                            data-info="{{$item->name}},{{$item->meeting_time}},{{$item->day}},{{$item->floor}},{{$item->id}}">
-                            <span class="glyphicon glyphicon-edit"></span> 修改
+                            data-info="{{$item->id}},{{$item->name}},{{$item->meeting_time}},{{$item->day}},{{$item->floor}}">
+                            <span class="glyphicon glyphicon-edit"></span> @lang('default.modify')
                         </button>
                         @endif
-                        @if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.MeetingInfo.Destory'))
                         <button class="delete-modal btn btn-danger"
                             data-info="{{$item->name}},{{$item->meeting_time}},{{$item->day}},{{$item->floor}},{{$item->id}}">
-                            <span class="glyphicon glyphicon-trash"></span> 刪除
+                            <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
                         </button>
                         @endif
                     </td>
@@ -115,42 +115,42 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="fellowship_name">團契名稱:</label>
+                            <label class="control-label col-sm-2" for="fellowship_name">@lang('default.fellowship_name'):</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="fellowship_name" disabled="disabled">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="meeting_time">聚會時間:</label>
+                            <label class="control-label col-sm-2" for="meeting_time">@lang('default.time'):</label>
                             <div class="col-sm-10">
                                 <input type="name" class="form-control" id="meeting_time">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="day">星期:</label>
+                            <label class="control-label col-sm-2" for="day">@lang('default.day'):</label>
                             <div class="col-sm-10">
                                 <input type="name" class="form-control" id="day">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="floor">樓層:</label>
+                            <label class="control-label col-sm-2" for="floor">@lang('default.floor'):</label>
                             <div class="col-sm-10">
                                 <input type="name" class="form-control" id="floor">
                             </div>
                         </div>
                     </form>
                     <div class="deleteContent">
-                        Are you Sure you want to delete <span class="dname"></span> ? <span
+                        @lang('message.delete_msg') <span class="dname"></span> ? <span
                             class="hidden did"></span>
                     </div>
                     <div class="modal-footer">
                     <p class="error text-center alert alert-danger hidden"></p>
 
-                        <button type="button" class="btn actionBtn" data-dismiss="modal" id="editbtn">
+                        <button type="button" class="btn actionBtn" data-dismiss="modal" id="btnUpdate">
                             <span id="footer_action_button" class='glyphicon'> </span>
                         </button>
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">
-                            <span class='glyphicon glyphicon-remove'></span> 取消
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" id="btnCancel">
+                            <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
                         </button>
                     </div>
                 </div>
@@ -237,7 +237,7 @@
         });
 
 
-        function fillmodalData(details){
+    function fillmodalData(details){
 
         $('#fellowship_name').val(details[0]);
         $('#meeting_time').val(details[1]);
@@ -247,27 +247,61 @@
     }
 
     $(document).on('click', '.edit-modal', function() {
-        $('#footer_action_button').text(" 更新");
-        $('#footer_action_button').addClass('glyphicon-check');
-        $('#footer_action_button').removeClass('glyphicon-trash');
-        $('.actionBtn').addClass('btn-success');
-        $('.actionBtn').removeClass('btn-danger');
-        $('.actionBtn').addClass('edit');
-        $('.modal-title').text('修改');
-        $('.deleteContent').hide();
-        $('.form-horizontal').show();
 
         var stuff = $(this).data('info').split(',');
+
         // alert(stuff);
-        fillmodalData(stuff);
-        $('#myModal').modal('show');
+//        fillmodalData(stuff);
+
+        $.ajax({
+            type: 'post',
+            url: '{{route('MeetingInfo.Edit')}}',//'/admin/MA_News_Edit',
+            data: {
+                '_token': $('input[name=_token]').val(),
+                'id':stuff[0],
+            },
+            success: function(data){
+
+                $('#fellowship_name').val(data.name);
+                $('#meeting_time').val(data.meeting_time);
+                $('#day').val(data.day);
+                $('#floor').val(data.floor);
+                $('#id').val(stuff[0]);
+
+//                $(window).scrollTop(0);
+                $('#footer_action_button').text('@lang('default.update')');
+                $('#footer_action_button').addClass('glyphicon-check');
+                $('#footer_action_button').removeClass('glyphicon-trash');
+                $('.actionBtn').addClass('btn-success');
+                $('.actionBtn').removeClass('btn-danger');
+                $('.actionBtn').addClass('update');
+                $('.modal-title').text('@lang('default.modify')');
+                $('.deleteContent').hide();
+                $('.form-horizontal').show();
+                $('#myModal').modal('show');
+            },errors:function(e)
+            {
+                var errors = e.responseJSON;
+                //errors.Message.length 顯示傳回來有多少個元素
+                //alert(errors.Message.length);
+                //error.Message[] 這種方式為取出回傳元素個別的值
+
+                alert(errors.Message);
+                $(window).scrollTop(0);
+            }
+        });
+
+
+
+
     });
 
-    $('.modal-footer').on('click', '.edit', function() {
+    $('.modal-footer').on('click', '.update', function() {
+
         var $id = $("#id").val();
         $.ajax({
             type: 'post',
-            url: '/admin/meeting_edit',
+            url: '{{route('MeetingInfo.Update')}}',//'/admin/meeting_edit',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $id,
@@ -280,24 +314,7 @@
 
                 $('#SuccessAlter').removeClass('hide');
                 $('#SuccessAlter').show();
-                /*
 
-                 if ((data.errors)){
-                        $('.error').removeClass('hidden');
-                        $('.error').text(data.errors);
-                        $('#myModal').modal('show');
-                        $('#SuccessAlter').removeClass('hide');
-                        $('#SuccessAlter').show();
-                    }
-                else{
-                     $('#MeetingTime'+$id).text(data.meeting_time);
-                     $('#Day'+$id).text(data.day);
-                     $('#Floor'+$id).text(data.floor);
-                     $('#FailAlter').removeClass('hide');
-                     $('#FailAlter').show();
-    //                $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td class='hidden'>" + data.id + "</td><td>" + data.name + "</td><td>" + data.meeting_time + "</td><td>" + data.day + "</td><td>" + data.floor + "</td><td><button class='edit-modal btn btn-info' data-info='"+ data.name+","+data.meeting_time+","+data.day+","+data.floor+","+ data.id+"' data-id='" + data.id + "' data-name='" + data.name + "'><span class='glyphicon glyphicon-edit'></span> 修改</button> <button class='delete-modal btn btn-danger' data-info='"+data.name+","+data.meeting_time+","+data.day+","+data.floor+","+ data.id+"' data-id='" + data.id + "' data-name='" + data.name + "'><span class='glyphicon glyphicon-trash'></span> 刪除</button></td></tr>");
-                    }
-                 */
                 setTimeout(function () {
                     $(".alert-block").hide(200);
                 }, 3000);
@@ -364,6 +381,12 @@
     });
 
 
+        $("#btnCancel").click(function() {
+
+            $('.error').addClass('hidden');
+            $('.error').text('');
+
+        });
 
     $(document).on('click', '.delete-modal', function() {
         $('#footer_action_button').text(" 刪除");
@@ -385,7 +408,7 @@
     $('.modal-footer').on('click', '.delete', function() {
         $.ajax({
             type: 'post',
-            url: '/admin/DeleteItem',
+            url: '{{route('MeetingInfo.Destory')}}',//'/admin/DeleteItem',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('#id').val()

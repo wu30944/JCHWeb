@@ -112,4 +112,9 @@
         {
              return $this->dtStaff->orderBy('cod_id','desc')->paginate($num);
         }
+
+        public function find($id)
+        {
+            return $this->dtMeetingInfo::find($id);
+        }
     }

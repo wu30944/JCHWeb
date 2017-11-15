@@ -28,26 +28,28 @@
             <div class="form-group row add">
             <br>
                 <div class="col-md-8">
-					<button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btnSearch" onclick="Search()">
-						<span class='glyphicon glyphicon-search'> </span> @lang('default.search')
-					</button>
-					@if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
-                    <button class="btn btn-primary" type="submit" id="add">
-                        <span class="glyphicon glyphicon-plus"></span> @lang('default.add')
-                    </button>
+					@if(Gate::forUser(auth('admin')->user())->check('admin.Staff.Search'))
+						<button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btnSearch" onclick="Search()">
+							<span class='glyphicon glyphicon-search'> </span> @lang('default.search')
+						</button>
 					@endif
-					@if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
-                	<button class="btn btn-info" id="edit">
-						<span class="glyphicon glyphicon-pencil"></span> @lang('default.edit')
-					</button>
-	              	<button type="button" class="btn btn-warning" data-dismiss="modal" disabled="disabled" id="cancel">
-		                <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
-		            </button>
+					@if(Gate::forUser(auth('admin')->user())->check('admin.Staff.Create'))
+						<button class="btn btn-primary" type="submit" id="add">
+							<span class="glyphicon glyphicon-plus"></span> @lang('default.add')
+						</button>
+					@endif
+					@if(Gate::forUser(auth('admin')->user())->check('admin.Staff.Edit'))
+						<button class="btn btn-info" id="edit">
+							<span class="glyphicon glyphicon-pencil"></span> @lang('default.edit')
+						</button>
+						<button type="button" class="btn btn-warning" data-dismiss="modal" disabled="disabled" id="cancel">
+							<span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
+						</button>
 					@endif
                 </div>
             </div>
 			{{-- 搜尋測試區塊 --}}
-			{!! Form::open(['route'=>'MA_SearchStaff','id'=>'form_search']) !!}
+			{!! Form::open(['route'=>'Staff.Search','id'=>'form_search']) !!}
 			<div class="col-lg-12">
 				<div class="thumbnail">
 
@@ -126,7 +128,7 @@
 							<h4>@lang('default.add')</h4>
 						</div>
 						<div class="modal-body">
-							{!! Form::open(['route'=>'MA_Insert_Staff','id'=>'form_add','files'=>true,'class'=>'hide form-horizontal']) !!}
+							{!! Form::open(['route'=>'Staff.Create','id'=>'form_add','files'=>true,'class'=>'hide form-horizontal']) !!}
 							<div align="left">
 								<label for="upload-profile-picture">
 									<input name="image" id="image" type="file" class="manual-file-chooser js-manual-file-chooser js-avatar-field upl" style="width:200px">
@@ -536,46 +538,6 @@
 		    })
 
 
-		    $("#btnUpdatePhoto").on('click', function(){
-		        if(objImg.type.match('image.*'))
-		        {
-		            // var reader = new FileReader();
-		            // $('.show-update-img').attr('src', ImgURL);
-		            // reader.readAsDataURL(objImg);
-		            
-		             //利用ajax傳送到伺服器
-		             // $('#preview').attr('src','/photo/sample.jpg');
-
-		            var formData = new FormData();
-		            formData.append('image', objImg);
-		            formData.append('id',$('#fellowship_id').val());
-		            formData.append('_token',$('input[name=_token]').val());
-		            $.ajax({
-		                    url: '/admin/MA_Fellowship_Photo',
-		                    data: formData,
-		                    cache: false,
-		                    contentType: false,
-		                    processData: false,
-		                    type: 'post',
-		                    success: function(data){
-		                          if(data['ServerNo']=='200'){
-		                            // 如果成功
-		                           $('#ShowImg').attr('src', data['ResultData']);
-		                            
-		                            // $('input[name=ShowImg]').val(data);
-		                            $(obj).off('change');
-		                            
-		                          }else{
-		                            alert('test');
-		                            // 如果失败
-		                              // alert(data['ResultData']);
-		                          }
-		                    }
-		            });
-
-		        }
-
-		    });
 
 
 		    $(document).on('click', '.save-modal', function() {
@@ -610,7 +572,7 @@
 			            formData.append('_token',$('input[name=_token]').val());
 
 			            $.ajax({
-			                    url: '/admin/MA_Update_Staff',
+			                    url: '{{route('Staff.Update')}}',///admin/MA_Update_Staff',
 			                    data: formData,
 			                    cache: false,
 			                    contentType: false,
@@ -640,7 +602,7 @@
 
 			        	$.ajax({
 				            type: 'post',
-				            url: '/admin/MA_Update_Staff',
+				            url: '{{route('Staff.Update')}}',//'/admin/MA_Update_Staff',
 				            data: {
 				                '_token': $('input[name=_token]').val(),
 				                'id':id,
@@ -684,7 +646,7 @@
 			 	// alert($('#action_video_id').val());	
 		        $.ajax({
 		            type: 'post',
-		            url: '/admin/MA_Delete_Staff',
+		            url: '{{route('Staff.Destory')}}',//'/admin/MA_Delete_Staff',
 		            data: {
 		                '_token': $('input[name=_token]').val(),
 		                'id':  $('#staff_id').val()

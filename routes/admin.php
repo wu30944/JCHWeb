@@ -56,11 +56,11 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     /*
         2017/09/19.  影片維護相關Route
     */
-    Route::get('/MA_MoreYoutube',['as'=>'MA_MoreYoutube','uses'=>'VideosController@MA_MoreYoutube']);
-    Route::post('/MA_Delete_Sunday_Video',['as'=>'MA_Delete_Sunday_Video','uses'=>'VideosController@DeleteItem']);
-    Route::post('/MA_Edit_Sunday_Video',['as'=>'MA_Edit_Sunday_Video','uses'=>'VideosController@EditItem']);
-    Route::post('/MA_Insert_Sunday_Video',['as'=>'MA_Insert_Sunday_Video','uses'=>'VideosController@InsertItem']);
-    Route::any('/MA_SearchMoreYoutube',['as'=>'MA_SearchMoreYoutube','uses'=>'VideosController@Search']);
+    Route::get('/MA_MoreYoutube',['as'=>'Videos.Show','uses'=>'VideosController@MA_MoreYoutube']);
+    Route::post('/MA_Delete_Sunday_Video',['as'=>'Videos.Destory','uses'=>'VideosController@DeleteItem']);
+    Route::post('/MA_Edit_Sunday_Video',['as'=>'Videos.Update','uses'=>'VideosController@EditItem']);
+    Route::post('/MA_Insert_Sunday_Video',['as'=>'Videos.Create','uses'=>'VideosController@InsertItem']);
+    Route::any('/MA_SearchMoreYoutube',['as'=>'Videos.Search','uses'=>'VideosController@Search']);
 
     /*
         2017/09/19  關於建成資料維護 Route 
@@ -84,61 +84,63 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     /*
         2017/09/20. 團契資料維護 Route
     */
-    Route::get('/MA_Fellowship',['as'=>'MA_Fellowship','uses'=>'FellowshipController@MA_Fellowship']);
-    Route::post('/MA_Fellowship_D',['as'=>'MA_Fellowship_D','uses'=>'FellowshipController@MA_Fellowship_D']);
-    Route::post('/MA_Fellowship_D_Edit',['as'=>'MA_Fellowship_D_Edit','uses'=>'FellowshipController@editItem']);
+    Route::get('/MA_Fellowship',['as'=>'Fellowship.Show','uses'=>'FellowshipController@MA_Fellowship']);
+    Route::post('/MA_Fellowship_D',['as'=>'Fellowship.Edit','uses'=>'FellowshipController@EditItem']);
+    Route::post('/MA_Fellowship_D_Edit',['as'=>'Fellowship.Update','uses'=>'FellowshipController@UpdateItem']);
     Route::post('/MA_Fellowship_Photo',['as'=>'MA_Fellowship_Photo','uses'=>'FellowshipController@PhotoUpload']);
-    Route::post ( '/MADeleteFellowship', ['as' => 'MADeleteFellowship','uses'=>'FellowshipController@DeleteItem' ]);
-    Route::post ( '/MACreateFellowship', ['as' => 'Fellowship.create','uses'=>'FellowshipController@AddItem' ]);
+    Route::post ( '/MADeleteFellowship', ['as' => 'Fellowship.Destory','uses'=>'FellowshipController@DeleteItem' ]);
+    Route::post ( '/MACreateFellowship', ['as' => 'Fellowship.Create','uses'=>'FellowshipController@AddItem' ]);
 
     /*
         2017/09/20  聚會時間資料維護 Route
     */
-    Route::get('/MA_MeetingInfo',['as'=>'MA_MeetingInfo','uses'=>'MeetInfoController@MA_MeetingInfo']);
-    Route::post('/meeting_edit',['as'=>'meeting_edit','uses'=>'MeetInfoController@editItem']);
-    Route::post ( '/DeleteItem', 'MeetInfoController@DeleteItem' ); 
+    Route::get('/MA_MeetingInfo',['as'=>'MeetingInfo.Show','uses'=>'MeetInfoController@MA_MeetingInfo']);
+    Route::post('/meeting_edit',['as'=>'MeetingInfo.Edit','uses'=>'MeetInfoController@EditItem']);
+    Route::post('/MeetingInfoUpdate',['as'=>'MeetingInfo.Update','uses'=>'MeetInfoController@UpdateItem']);
+    Route::post ( '/DeleteItem', ['as'=>'MeetingInfo.Destory','uses'=>'MeetInfoController@DeleteItem' ]);
     Route::post ( '/AddItem', 'MeetInfoController@AddItem' );
 
     /*
         2017/09/20  消息資料維護 Route
     */      
-    Route::get('/MA_News',['as'=>'MA_News','uses'=>'NewsController@MA_News']);
-    Route::post('/MA_News_Edit',['as'=>'MA_News_Edit','uses'=>'NewsController@editItem']);
-    Route::post('/MA_News_Insert',['as'=>'MA_News_Insert','uses'=>'NewsController@InsertItem']);
+    Route::get('/MA_News',['as'=>'News.Show','uses'=>'NewsController@MA_News']);
+    Route::post('/MA_News_Edit',['as'=>'News.Edit','uses'=>'NewsController@editItem']);
+    Route::post('/MANewsUpdate',['as'=>'News.Update','uses'=>'NewsController@UpdateItem']);
+    Route::post('/MA_News_Insert',['as'=>'News.Create','uses'=>'NewsController@InsertItem']);
     Route::post('/MA_News_Photo',['as'=>'MA_News_Photo','uses'=>'NewsController@PhotoUpload']);
-    Route::post('/MA_News_Delete',['as'=>'MA_News_Delete','uses'=>'NewsController@DeleteItem']);
+    Route::post('/MA_News_Delete',['as'=>'News.Destory','uses'=>'NewsController@DeleteItem']);
 
     /*
         2017/09/20  職務相關資料維護 Route
     */
-    Route::get('/MA_Staff',['as'=>'MA_Staff','uses'=>'StaffController@MA_Staff']);
-    Route::post('/MA_Insert_Staff',['as'=>'MA_Insert_Staff','uses'=>'StaffController@InsertItem']);
-    Route::post('/MA_Update_Staff',['as'=>'MA_Update_Staff','uses'=>'StaffController@UpdateItem']);
-    Route::post('/MA_Delete_Staff',['as'=>'MA_Delete_Staff','uses'=>'StaffController@DeleteItem']);   
-    Route::get ( '/MA_OurPastor', ['as' => 'MA_OurPastor','uses'=>'StaffController@MA_our_pastor' ]);
-    Route::post ( '/MA_OurPastor_D', ['as' => 'MA_OurPastor_D','uses'=>'StaffController@MA_OurPastor_D' ]);
-    Route::post ( '/MA_Update_Staff_D', ['as' => 'MA_Update_Staff_D','uses'=>'StaffController@UpdateItemD' ]);
-    Route::any ( '/MA_SearchStaff', ['as' => 'MA_SearchStaff','uses'=>'StaffController@Search' ]);
+    Route::get('/MA_Staff',['as'=>'Staff.Show','uses'=>'StaffController@MA_Staff']);
+    Route::post('/MA_Insert_Staff',['as'=>'Staff.Create','uses'=>'StaffController@InsertItem']);
+    Route::post('/MA_Update_Staff',['as'=>'Staff.Update','uses'=>'StaffController@UpdateItem']);
+    Route::post('/MA_Delete_Staff',['as'=>'Staff.Destory','uses'=>'StaffController@DeleteItem']);
+    Route::get ( '/MA_OurPastor', ['as' => 'StaffD.Show','uses'=>'StaffController@MA_our_pastor' ]);
+    Route::post ( '/MA_OurPastor_D', ['as' => 'StaffD.Edit','uses'=>'StaffController@MA_OurPastor_D' ]);
+    Route::post ( '/MA_Update_Staff_D', ['as' => 'StaffD.Update','uses'=>'StaffController@UpdateItemD' ]);
+    Route::any ( '/MA_SearchStaff', ['as' => 'Staff.Search','uses'=>'StaffController@Search' ]);
 
 
     /*
      * 2017/09/29   金句資料維護 Route
      * */
-    Route::get('/MA_Verses',['as'=>'MA_Verses','uses'=>'VersesController@MAVerses']);
-    Route::post('/MAVersesEdit',['as'=>'MAVersesEdit','uses'=>'VersesController@editItem']);
+    Route::get('/MA_Verses',['as'=>'Verses.Show','uses'=>'VersesController@MAVerses']);
+    Route::post('/MAVersesEdit',['as'=>'Verses.Update','uses'=>'VersesController@editItem']);
     Route::post('/MAVersesAdd',['as'=>'Verses.Create','uses'=>'VersesController@InsertItem']);
-    Route::post('/MAVersesShow',['as'=>'MAVersesShow','uses'=>'VersesController@ChangeShow']);
-    Route::post('/MAVersesDelete',['as'=>'MAVersesDelete','uses'=>'VersesController@DeleteItem']);
+    Route::post('/MAVersesShow',['as'=>'Verses.IsShow','uses'=>'VersesController@ChangeShow']);
+    Route::post('/MAVersesDelete',['as'=>'Verses.Destory','uses'=>'VersesController@DeleteItem']);
 
     /*
      * 2017/10/04   輪播圖片資料維護 Route
      * */
-    Route::get('MA_Carousel',['as'=>'MA_Carousel','uses'=>'CarouselController@MACarousel']);
+    Route::get('MA_Carousel',['as'=>'Carousel.Show','uses'=>'CarouselController@MACarousel']);
     Route::post('MACreateCarousel',['as'=>'Carousel.Create','uses'=>'CarouselController@InsertItem']);
-    Route::get('MACarouselShow',['as'=>'MACarouselShow','uses'=>'CarouselController@CarouselShow']);
+//    Route::get('MACarouselShow',['as'=>'MACarouselShow','uses'=>'CarouselController@CarouselShow']);
     Route::post('MAUpdateCarousel',['as'=>'Carousel.Update','uses'=>'CarouselController@UpdateItem']);
-    Route::post('MADeleteCarousel',['as'=>'MADeleteCarousel','uses'=>'CarouselController@DeleteItem']);
-    Route::post('MACarouselIsShow',['as'=>'MACarouselIsShow','uses'=>'CarouselController@IsShowItem']);
+    Route::post('MADeleteCarousel',['as'=>'Carousel.Destory','uses'=>'CarouselController@DeleteItem']);
+    Route::post('MACarouselIsShow',['as'=>'Carousel.IsShow','uses'=>'CarouselController@IsShowItem']);
     Route::post('MAEditCarousel',['as'=>'Carousel.Edit','uses'=>'CarouselController@EditItem']);
 
 

@@ -40,7 +40,7 @@ class FellowshipController extends Controller
         with('dtMeetingInfo',$dtMeetingInfo)->with('dtControl',$dtControl);
     }
 
-    public function MA_Fellowship_D(Request $req)
+    public function EditItem(Request $req)
     {
          //根據使用者選擇的資訊，將資料明細帶出
         $fellowship_info=$this->fellowshipRepository->getFellowshipD($req->ID);
@@ -56,9 +56,9 @@ class FellowshipController extends Controller
     /*
         編輯團契資訊的function 
     */
-    public function editItem(Request $request) {
+    public function UpdateItem(Request $request) {
         try{
-            DB::connection()->getPdo()->beginTransaction();
+
 
             $rules = array (
                 'introduction_title'=> 'required',
@@ -73,24 +73,29 @@ class FellowshipController extends Controller
             if ($validator->fails ()){
     //             return Response::json (
     //                array ('errors' => $validator->messages()->all() ));
-                return response ()->json ( ['ServerNo' => '404','Result' => $validator->messages()->all() ]);
+                return response ()->json ( ['ServerNo' => '404','Message' => $validator->messages()->all() ],403);
             }
             else {
     //            \Debugbar::info($request);
+                DB::connection()->getPdo()->beginTransaction();
                 $data = fellowship_d::find($request->id);
+
                 $data->introduction_title = $request->introduction_title;
                 $data->name = $request->introduction_title;
                 $data->introduction_content = $request->introduction_content;
                 $data->page_one_title = $request->page_one_title;
+
                 $data->page_two_title = $request->page_two_title;
                 $data->page_three_title = $request->page_three_title;
                 $data->page_four_title = $request->page_four_title;
                 $data->page_one_content = $request->page_one_content;
+
                 $data->page_two_content = $request->page_two_content;
                 $data->page_three_content = $request->page_three_content;
                 $data->page_four_content = $request->page_four_content;
-                $data->save ();
 
+                $data->save ();
+//                return $request->introduction_title;
                 $objFellowship = fellowship::find($data->fellowship_id);
                 $objFellowship->name=$request->introduction_title;
                 $objFellowship->save ();
@@ -98,9 +103,18 @@ class FellowshipController extends Controller
                 MeetingInfo::where('fellowship_id','=',$data->fellowship_id)
                                  ->update(['name'=>$request->introduction_title]);
 
+
+                if(!empty($request->file('image')))
+                {
+                    \Debugbar::info('有進入上傳照片function');
+                    $this->PhotoUpload($request);
+                }
+
                 DB::connection()->getPdo()->commit();
+
+
                 // Session::flash('message', 'Successfully updated nerd!');
-                return response ()->json (['ServerNo'=>'200','Result'=> $data ]);
+                return response ()->json (['ServerNo'=>'200','Result'=> empty($request->file('image')) ],200);
 
             }
         }catch (\PDOException $e)

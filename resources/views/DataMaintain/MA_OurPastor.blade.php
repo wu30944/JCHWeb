@@ -41,7 +41,9 @@
                     <thead>
                         <tr>
                             <th class="text-center">@lang('default.name')</th>
-                            <th class="text-center">@lang('default.action')</th>
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.StaffD.Edit'))
+                                <th class="text-center">@lang('default.action')</th>
+                            @endif
                         </tr>
                     </thead>
 
@@ -49,7 +51,7 @@
                     <tr class="item_{{$item->id}}">
                         <td align="center">{{$item->name}}</td>
                         <td align="center">
-                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.StaffD.Edit'))
                             <button class="edit-modal btn btn-info"
                                 data-info="{{$item->name}},{{$item->id}}" id="test">
                                 <span class="glyphicon glyphicon-edit"></span> @lang('default.edit')
@@ -70,7 +72,7 @@
     </div>
 
     <div class="row">
-        {!! Form::open(['url'=>'MA_Update_Staff_D','id'=>'form_edit','class'=>'hide']) !!} 
+        {!! Form::open(['route'=>'StaffD.Update','id'=>'form_edit','class'=>'hide']) !!}
             <div class="thumbnail">
                 <div class="caption" align="left">
                     <textarea cols="100" id="editor1" name="editor1" rows="10"></textarea>
@@ -122,7 +124,7 @@
 
              $.ajax({
                     type: 'post',
-                    url: '/admin/MA_OurPastor_D',
+                    url: '{{route('StaffD.Edit')}}',//''/admin/MA_OurPastor_D',
                     data: {
                         '_token': $('input[name=_token]').val(),
                         'name':stuff[0],

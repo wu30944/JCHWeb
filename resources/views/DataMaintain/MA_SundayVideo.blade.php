@@ -33,22 +33,24 @@
 
             <div class="form-group row add">
             <br>
-                <div class="col-md-8">   
-                 	<button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btn_add" onclick="Search()">
-                    			<span class='glyphicon glyphicon-search'> </span> @lang('default.search')
-        			</button>
-					@if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
-                    <button class="btn btn-primary" type="submit" id="add">
-                        <span class="glyphicon glyphicon-plus"></span> @lang('default.add')
-                    </button>
+                <div class="col-md-8">
+					@if(Gate::forUser(auth('admin')->user())->check('admin.Videos.Search'))
+						<button type="submit" class="add-modal btn btn-success submit"  data-dismiss="modal" id="btn_add" onclick="Search()">
+							<span class='glyphicon glyphicon-search'> </span> @lang('default.search')
+						</button>
 					@endif
-					@if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
-                	<button class="btn btn-info" id="edit">
-						<span class="glyphicon glyphicon-pencil"></span> @lang('default.edit')
-					</button>
-	              	<button type="button" class="btn btn-warning" data-dismiss="modal" disabled="disabled" id="cancel">
-		                <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
-		            </button>
+					@if(Gate::forUser(auth('admin')->user())->check('admin.Videos.Create'))
+						<button class="btn btn-primary" type="submit" id="add">
+							<span class="glyphicon glyphicon-plus"></span> @lang('default.add')
+						</button>
+					@endif
+					@if(Gate::forUser(auth('admin')->user())->check('admin.Videos.Edit'))
+						<button class="btn btn-info" id="edit">
+							<span class="glyphicon glyphicon-pencil"></span> @lang('default.edit')
+						</button>
+						<button type="button" class="btn btn-warning" data-dismiss="modal" disabled="disabled" id="cancel">
+							<span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
+						</button>
 					@endif
                 </div>
             </div>
@@ -113,7 +115,7 @@
 			</div>
 
             {{-- 搜尋測試區塊 --}}
-            {!! Form::open(['route'=>'MA_SearchMoreYoutube','id'=>'form_search']) !!} 
+            {!! Form::open(['route'=>'Videos.Search','id'=>'form_search']) !!}
 		            <div class="col-lg-12">
 		                <div class="thumbnail">
 			      
@@ -235,12 +237,12 @@
 		    						  </p>
 			                            <div align="right">                                
 				                            <button type="button" class="save-modal btn btn-success hide" data-info="{{$item->id}}" data-dismiss="modal" id="save_{{$item->id}}" >
-			                        			<span class='glyphicon glyphicon-check'> </span>儲存
+			                        			<span class='glyphicon glyphicon-check'> </span>@lang('default.save')
 			                    			</button>	
 											@if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
 			                                <button class="delete-modal btn btn-danger hide"
 			                                    data-info="{{$item->id}}">
-			                                    <span class="glyphicon glyphicon-trash"></span> 刪除
+			                                    <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
 			                                </button>
 											@endif
 
@@ -411,42 +413,7 @@
 		    	$('#edit').attr('disabled',"disabled");
 		    });
 
-		    $('#search').on('clikc',function(){
 
-		        $.ajax({
-		            type: 'post',
-		            url: '/admin/MA_SearchMoreYoutube',
-		            data: {
-		                '_token': $('input[name=_token]').val(),
-		                'type':$('#SearchVideoType').val(),
-		                'theme':$('#SearchTheme').val(),
-		                'speaker': $('SearchSpeaker').val()  ,
-		                'sdate': $('SearchSdate').val(),
-		                'edate':$('SearchEdate').val()     
-		                    },
-		            success: function(data){ 
-		            	// alert(data['errors']);
-		                if(data['ServerNo']=='200')
-		                {
-
-		                	// $('#videolink_'+stuff).val(data['data'].link);
-			                // $('#theme_'+stuff).val(data['data'].theme);
-			                // $('#speaker_'+stuff).val(data['data'].name);
-			                // $('#datepicker_'+stuff).val(data['data'].video_date);
-			                // $('iframe_'+stuff).attr("src",data['data'].link);
-		                }else if(data['ServerNo']=='404')
-		                {
-		                	alert(data['errors']);
-		                	// $('#videolink_'+stuff).val(video_link);
-			                // $('#theme_'+stuff).val(theme);
-			                // $('#speaker_'+stuff).val(speaker);
-			                //  $('#datepicker_'+stuff).val(video_date);
-			                // $('iframe_'+stuff).attr("src",data.link);
-		                }
-		                
-		            }
-		        });
-		    });
 
 			/*
 				取消
@@ -556,7 +523,7 @@
 
 		        $.ajax({
 		            type: 'post',
-		            url: '/admin/MA_Edit_Sunday_Video',
+		            url: '{{route('Videos.Update')}}',//'/admin/MA_Edit_Sunday_Video',
 		            data: {
 			                '_token': $('input[name=_token]').val(),
 			                'id':id,
@@ -598,64 +565,13 @@
 			 	// alert($('#action_video_id').val());	
 		        $.ajax({
 		            type: 'post',
-		            url: '/admin/MA_Delete_Sunday_Video',
+		            url: '{{route('Videos.Destory')}}',//'/admin/MA_Delete_Sunday_Video',
 		            data: {
 		                '_token': $('input[name=_token]').val(),
 		                'id':  $('#action_video_id').val()
 		            },
 		            success: function(data) {
 		                $('#container_' + $('#action_video_id').val()).remove();
-		            }
-		        });
-		    });
-
-			 /*
-        		當按下修改按鈕時
-		    */
-		    $(document).on('click', '.edit-modal', function() {
-		       var stuff = $(this).data('info').split(',');
-		        $('.first').addClass('hide');
-		        $('.second').removeClass('hide');
-		        $('#update_action_button').text(" 更新");
-		        $('#update_action_button').addClass('glyphicon-check');
-		        $('#update_action_button').removeClass('glyphicon-trash');
-		        $('.actionBtn').addClass('btn-success');
-		        $('.actionBtn').removeClass('btn-danger');
-		        $('.actionBtn').addClass('edit');
-		        // alert(stuff[1]);
-		        $.ajax({
-		            type: 'post',
-		            url: '/admin/MA_News_Edit',
-		            data: {
-		                '_token': $('input[name=_token]').val(),
-		                'id':stuff[0],
-		                'title':stuff[1] ,
-		                'action_date':stuff[2] ,
-		                'content': stuff[3]       
-		                    },
-		            success: function(data){
-		                // alert(data[1].title);
-		                $('#news_title').val(data.title);
-		                $('#datepicker').val(data.action_date);
-		                $('#news_content').val(data.content);
-		                $('#timepicker').val(data.action_time);
-		                $('#action_postion').val(data.action_postion);
-		                $('#news_id').val(data.id);
-
-		                if(data.image==""){
-		                    $('#edit_photo_text').text(" 新增照片");
-		                    $('#ShowImg').attr('src','/photo/public/sample900_300.jpg');
-		                    $('#spUpdatePhoto').text(" 上傳");
-
-		                }else{
-		                    
-		                    $('#ShowImg').attr('src',data.image);
-		                    $('#edit_photo_text').text(" 更換照片");
-		                    $('#spUpdatePhoto').text(" 更新");
-		                    // alert(data[0].image_path);
-		                }
-		              
-		                //alert(data[0].id);
 		            }
 		        });
 		    });

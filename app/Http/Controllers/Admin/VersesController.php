@@ -40,11 +40,11 @@ class VersesController extends Controller
 
         if($Result['ServerNo']=='200')
         {
-            return response ()->json ( ['ServerNo'=>'200','ResultData'=> $Result['Result'],'data'=>$Result['data']]);
+            return response ()->json ( ['ServerNo'=>'200','ResultData'=> $Result['Result'],'Data'=>$Result['data']],200);
 //            return back()->with('success', $Result['Result']);
         }else
         {
-            return response ()->json ( ['ServerNo'=>'404','ResultData'=> $Result['Result']]);
+            return response ()->json ( ['ServerNo'=>'404','ResultData'=> $Result['Result']],403);
 //            return back()->with('fails', $Result['Result'][0]);
         }
     }

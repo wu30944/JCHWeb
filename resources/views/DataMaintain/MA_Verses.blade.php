@@ -47,15 +47,17 @@
                         <th class="text-center">聖經內容</th>
                         <th class="text-center">章節</th>
                         <th class="text-center">建立日期</th>
+                        @if(Gate::forUser(auth('admin')->user())->check('admin.Carousel.Edit'))
                         <th class="text-center">Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 @foreach($dtVerses as $item)
                 <tr class="item{{$item->id}}">
                     <td>{{Form::radio('choice',$item->id,$item->is_show,['id'=>'show_'.$item->id])}}</td>
-                    <td align="left">{{$item->content}}</td>
-                    <td align="left">{{$item->chapter}}</td>
-                    <td>{{$item->created_at}}</td>
+                    <td align="left"><p id = "content{{$item->id}}">{{$item->content}}</p></td>
+                    <td align="left"><p id = "chapter{{$item->id}}">{{$item->chapter}}</p></td>
+                    <td><p id = "created_at{{$item->id}}">{{$item->created_at}}</p></td>
                     <td>
                         @if(Gate::forUser(auth('admin')->user())->check('admin.Carousel.Edit'))
                         <button class="edit-modal btn btn-info"
@@ -211,6 +213,7 @@
 
     $('.modal-footer').on('click', '.edit', function() {
 
+        alert( $('input[name=_token]').val());
         var id=$("#id").val();
         var content=$("#Content").val();
         var chapter=$('#Chapter').val();
@@ -228,7 +231,7 @@
 
         $.ajax({
             type: 'post',
-            url: '/admin/MAVersesEdit',
+            url: '{{route('Verses.Update')}}',//'/admin/MAVersesEdit',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id':id,
@@ -244,7 +247,8 @@
                     $('#myModal').modal('show');
                 }
                 else {
-                    location.reload();
+                      $('#content'+id).text(data['Data'].content);
+                      $('#chapter'+id).text(data['Data'].chapter);
 //                    alert(data['data'].is_show);
 //                    if(data['data'].is_show=='1')
 //                    {
@@ -272,6 +276,10 @@
 //                    }
 
                 }
+            },error:function(e)
+            {
+                var errors=e.responseJSON;
+                alert(errors.msg);
             }
         });
     });
@@ -291,19 +299,19 @@
 
         $.ajax({
             type: 'post',
-            url: '/admin/MAVersesShow',
+            url: '{{route('Verses.IsShow')}}',//'/admin/MAVersesShow',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'is_show': UpdateID,
                 'no_show': CurrentID
             },
             success: function(data) {
-                if (data['ServerNo']=='200'){
 
-                }
-                else {
-
-                }
+            },error:function(e)
+            {
+                var errors=e.responseJSON;
+                alert(errors.msg);
+                location.reload();
             }
         });
     });
@@ -354,7 +362,9 @@
                     $('#AddModel').modal('show');
                 }
                 else {
-                    $('.error').addClass('hidden');
+                    alert(data['ResultData']);
+                    location.reload();
+                    //$('.error').addClass('hidden');
 //                      location.reload();
 //                    $('#table').append(
 //                        "<tr class='item" + data['data'].id + "'>" +
@@ -398,7 +408,7 @@
     $('.modal-footer').on('click', '.delete', function() {
         $.ajax({
             type: 'post',
-            url: '/admin/MAVersesDelete',
+            url: '{{route('Verses.Destory')}}',//'/admin/MAVersesDelete',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('#id').val()

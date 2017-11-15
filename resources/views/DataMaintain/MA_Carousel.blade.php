@@ -75,7 +75,8 @@
                             <th class="text-center">是否顯示</th>
                             <th class="text-center">輪播圖片名稱</th>
                             <th class="text-center">顯示日期</th>
-                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.Update') or
+                            Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
                                 <th class="text-center">Actions</th>
                             @endif
                         </tr>
@@ -90,7 +91,7 @@
                                     <td><p id = "photo_name{{$item->id}}">{{$item->photo_name}}</p></td>
                                     <td><p id = "show_date{{$item->id}}">{{$item->show_date}}</p></td>
                                     <td>
-                                        @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
+                                        @if(Gate::forUser(auth('admin')->user())->check('admin.Carousel.Update'))
                                             <button class="edit-modal btn btn-info"
                                                     data-info="{{$item->id}}">
                                                 <span class="glyphicon glyphicon-edit"></span> @lang('default.edit')
@@ -138,7 +139,7 @@
                             </div>
                             <div class="form-group row">
                                     <label class="control-label col-md-2" for="show_date" align="right">顯示日期:</label>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         {!!form::text('show_date','',['class'=>'form-control datepicker','id'=>'show_date'])!!}
                                     </div>
                             </div>
@@ -180,7 +181,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">@lang('default.delete')</h4>
                     </div>
-                    {!! Form::open(['route'=>'MADeleteCarousel','id'=>'FormDelete','class'=>'form-horizontal']) !!}
+                    {!! Form::open(['route'=>'Carousel.Destory','id'=>'FormDelete','class'=>'form-horizontal']) !!}
 
                     <div class="modal-body">
                         <div class="deleteContent" >
@@ -327,7 +328,7 @@
         $(document).on('click', '.edit-modal', function() {
 
             var stuff = $(this).data('info');
-
+            {{--alert('{{route('Carousel.Update')}}');--}}
             $('.first').addClass('hide');
             $('.second').removeClass('hide');
             $('#update_action_button').text("更新");
@@ -339,7 +340,7 @@
 
             $.ajax({
                 type: 'post',
-                url: '/admin/MAEditCarousel',
+                url: '{{route('Carousel.Edit')}}',//'/admin/MAEditCarousel',
                 data: {
                     '_token': $('input[name=_token]').val(),
                     'id':stuff,
@@ -411,7 +412,7 @@
         $('.modal-footer').on('click', '.delete', function() {
             $.ajax({
                 type: 'post',
-                url: '/admin/MADeleteFellowship',
+                url: '{{route('Carousel.Destory')}}',//'/admin/MADeleteFellowship',
                 data: {
                     '_token': $('input[name=_token]').val(),
                     'id': $('#id').val()
@@ -434,7 +435,7 @@
                 formData.append('show_date',$('#show_date').val());
                 formData.append('_token',$('input[name=_token]').val());
                 $.ajax({
-                    url: '/admin/MAUpdateCarousel',
+                    url: '{{route('Carousel.Update')}}',//'/admin/MAUpdateCarousel',
                     data: formData,
                     cache: false,
                     contentType: false,
@@ -461,12 +462,13 @@
                             $('#preview').attr('src','http://via.placeholder.com/2156x350');
 
                         }else{
-                            alert(data['ServerNo']);
-                            alert('上傳失敗');
+
                         }
-                    },error:function()
+                    },error:function(e)
                     {
-                        alert('拍謝程式有問題，請洽工程師');
+                        var errors = e.responseJSON;
+
+                        alert(errors.msg);
                     }
                 });
 
@@ -474,7 +476,7 @@
 
                 $.ajax({
                     type: 'post',
-                    url: '/admin/MAPhotoUpload',
+                    url: '{{route('Carousel.Update')}}',
                     data: {
                         '_token': $('input[name=_token]').val(),
                         'photo_name': $('#photo_name').val(),
@@ -537,7 +539,6 @@
         $('input[type="radio"]').on('click',function(){
             var is_show = $(this).val();
             var id=$(this).val();
-
             if(typeof($(this).attr('checked'))!='undefined')
             {
                 $(this).attr('checked',false);
@@ -548,9 +549,10 @@
             }
 
 
+
             $.ajax({
                 type: 'post',
-                url: '/admin/MACarouselIsShow',
+                url: '{{route('Carousel.IsShow')}}',//'/admin/MACarouselIsShow',
                 data: {
                     '_token': $('input[name=_token]').val(),
                     'is_show': is_show,
@@ -574,7 +576,9 @@
 
 //                    $(window).scrollTop(0);
 //                    MessageShow(errors.Key,errors.Message);
+
                     alert(errors.msg);
+
                 }
             });
             $(".alert-block").slideToggle(500);

@@ -1,12 +1,11 @@
 
     function MessageShow($obj,$msg)
     {
-
         var strElementCount = getElementCount($obj);
         var objID='';
         for(var i=0;i<strElementCount;i++)
         {
-            objID = '#'+$obj[i];
+            objID = '#edit_'+$obj[i];
             if(typeof $msg == 'undefined' || $msg[i] == 'validation.required')
             {
 

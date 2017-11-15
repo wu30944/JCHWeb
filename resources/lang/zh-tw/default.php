@@ -40,7 +40,7 @@ return array(
 	,'cancel'=>'取消'
 	,'more'=>'更多'
 	,'pastor'=>'牧師'
-	,'action_postion'=>'活動地點'
+	,'action_position'=>'活動地點'
 	,'chinese_worship'=>'華語禮拜'
 	,'check_all'=>'查看全部'
 	,'meeting_time'=>'聚會時間'
@@ -62,6 +62,10 @@ return array(
     ,'verses'=>'聖經內容'
     ,'elder'=>'長老'
     ,'deacon'=>'執事'
+    ,'position'=>'地點'
+    ,'upload_photo'=>'上傳照片'
+    ,'check'=>'確認'
+    ,'modify'=>'修改'
 	);
 
  ?>

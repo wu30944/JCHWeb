@@ -12,7 +12,7 @@
 
     <div class="first">
 
-            @if(Gate::forUser(auth('admin')->user())->check('admin.data.create'))
+            @if(Gate::forUser(auth('admin')->user())->check('admin.Fellowship.Create'))
             <div class="form-group row add">
             <br>
                 <div class="col-md-4">
@@ -60,9 +60,10 @@
                         <tr>
                             {{-- <th class="text-center">#</th> --}}
                             <th class="hidden"></th>
-                            <th class="text-center">團契名稱</th>
-                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
-                            <th class="text-center">Actions</th>
+                            <th class="text-center">@lang('default.fellowship_name')</th>
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.Fellowship.Edit') or
+                            Gate::forUser(auth('admin')->user())->check('admin.Fellowship.Destory'))
+                            <th class="text-center">@lang('default.action')</th>
                             @endif
                         </tr>
                     </thead>
@@ -72,13 +73,13 @@
                         <td class="hidden">{{$item->id}}</td>
                         <td>{{$item->NAME}}</td>
                         <td>
-                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.edit'))
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.Fellowship.Edit'))
                             <button class="edit-modal btn btn-info"
                                 data-info="{{$item->NAME}},{{$item->id}},{{$item->PARA_1}}">
                                 <span class="glyphicon glyphicon-edit"></span> @lang('default.edit')
                             </button>
                             @endif
-                            @if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
+                            @if(Gate::forUser(auth('admin')->user())->check('admin.Fellowship.Destory'))
                             <button class="delete-modal btn btn-danger"
                                 data-info="{{$item->NAME}},{{$item->id}},{{$item->PARA_1}}">
                                 <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
@@ -167,11 +168,11 @@
             <div class="add_modal-footer">
                 <p class="error text-center alert alert-danger hidden"></p>
 
-                    <button type="button" class="btn actionBtn" data-dismiss="modal" id="addbtn">
+                    <button type="button" class="btn actionBtn" data-dismiss="modal" id="btnUpdate">
                         <span id="update_action_button" class='glyphicon'> </span>
                     </button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal" id="ctlCANCEL">
-                        <span class='glyphicon glyphicon-remove'></span> 取消
+                        <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
                     </button>
             </div>
         </div>
@@ -202,7 +203,7 @@
                             <span class='glyphicon glyphicon-trash'></span>  @lang('default.delete')
                         </button>
                         <button type="button" class="btn btn-warning" data-dismiss="modal">
-                            <span class='glyphicon glyphicon-remove'></span>  取消
+                            <span class='glyphicon glyphicon-remove'></span>  @lang('default.cancel')
                         </button>
                     </div>
 
@@ -243,7 +244,7 @@
                             {{--<span id="spUpdatePhoto" class='glyphicon'>上傳</span>--}}
                         {{--</button>--}}
                         <button type="button" class="btn btn-warning" data-dismiss="modal">
-                            <span class='glyphicon glyphicon-remove'></span>  取消
+                            <span class='glyphicon glyphicon-remove'></span>  @lang('default.cancel')
                         </button>
                     </div>
 
@@ -262,10 +263,10 @@
                 </div>
                 <div class="modal-body">
                     {{--<form class="form-horizontal" role="form" action="">--}}
-                    {!! Form::open(['route'=>'MACreateFellowship','id'=>'form_add','class'=>'form-horizontal']) !!}
+                    {!! Form::open(['route'=>'Fellowship.Create','id'=>'form_add','class'=>'form-horizontal']) !!}
 
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="fellowship_name">團契名稱:</label>
+                            <label class="control-label col-sm-2" for="fellowship_name">@lang('default.fellowship_name'):</label>
                             <div class="col-sm-10">
                                 {!!form::text('fellowship_name','',['class'=>'form-control','id'=>'fellowship_name','type'=>'text'])!!}
                             </div>
@@ -278,7 +279,7 @@
                             </button>
 
                             <button type="button" class="btn btn-warning btn-cancel" data-dismiss="modal">
-                                <span class='glyphicon glyphicon-remove'></span>  取消
+                                <span class='glyphicon glyphicon-remove'></span>  @lang('default.cancel')
                             </button>
                         </div>
                     {{--</form>--}}
@@ -365,48 +366,49 @@
 
 
     $("#editbtn").on('click', function(){
-        if(objImg.type.match('image.*'))
-        {
-            // var reader = new FileReader();
-            // $('.show-update-img').attr('src', ImgURL);
-            // reader.readAsDataURL(objImg);
-
-             //利用ajax傳送到伺服器
-             // $('#preview').attr('src','/photo/sample.jpg');
-
-            var formData = new FormData();
-            formData.append('image', objImg);
-            formData.append('id',$('#fellowship_id').val());
-            formData.append('_token',$('input[name=_token]').val());
-            $.ajax({
-                    url: '/admin/MA_Fellowship_Photo',
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    type: 'post',
-                    success: function(data){
-                          if(data['ServerNo']=='200'){
-                            // 如果成功
-                          alert( data['ResultData'].toString());
-                          $('#ShowImg').attr('src', data['ResultData'].toString());
-
-                            // $('input[name=ShowImg]').val(data);
-                              /*
-                               20170913 註解掉下面這段程式，會有錯誤
-                               $(obj).off('change');
-                              * */
-
-
-                          }else{
-                            alert('上傳失敗');
-                            // 如果失败
-                              // alert(data['ResultData']);
-                          }
-                    }
-            });
-
-        }
+        $('#ShowImg').attr('src', ImgURL);
+//        if(objImg.type.match('image.*'))
+//        {
+//            // var reader = new FileReader();
+//            // $('.show-update-img').attr('src', ImgURL);
+//            // reader.readAsDataURL(objImg);
+//
+//             //利用ajax傳送到伺服器
+//             // $('#preview').attr('src','/photo/sample.jpg');
+//
+//            var formData = new FormData();
+//            formData.append('image', objImg);
+//            formData.append('id',$('#fellowship_id').val());
+//            formData.append('_token',$('input[name=_token]').val());
+//            $.ajax({
+//                    url: '/admin/MA_Fellowship_Photo',
+//                    data: formData,
+//                    cache: false,
+//                    contentType: false,
+//                    processData: false,
+//                    type: 'post',
+//                    success: function(data){
+//                          if(data['ServerNo']=='200'){
+//                            // 如果成功
+//                          alert( data['ResultData'].toString());
+//                          $('#ShowImg').attr('src', data['ResultData'].toString());
+//
+//                            // $('input[name=ShowImg]').val(data);
+//                              /*
+//                               20170913 註解掉下面這段程式，會有錯誤
+//                               $(obj).off('change');
+//                              * */
+//
+//
+//                          }else{
+//                            alert('上傳失敗');
+//                            // 如果失败
+//                              // alert(data['ResultData']);
+//                          }
+//                    }
+//            });
+//
+//        }
 
     });
 
@@ -424,7 +426,7 @@
 
         $.ajax({
             type: 'post',
-            url: '/admin/MA_Fellowship_D',
+            url: '{{route('Fellowship.Edit')}}',//'/admin/MA_Fellowship_D',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'ID':stuff[1],
@@ -519,7 +521,7 @@
     $('.modal-footer').on('click', '.delete', function() {
         $.ajax({
             type: 'post',
-            url: '/admin/MADeleteFellowship',
+            url: '{{route('Fellowship.Destory')}}',//'/admin/MADeleteFellowship',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('#id').val()
@@ -530,48 +532,95 @@
         });
     });
 
-    $('#addbtn').on('click', function() {
+    $('#btnUpdate').on('click', function() {
 //        ClearText(objPage_one_Content);
 //        alert($('#fellowship_id').val());
-        $.ajax({
-            type: 'post',
-            url: '/admin/MA_Fellowship_D_Edit',
-            data: {
-                '_token': $('input[name=_token]').val(),
-                'introduction_title': $('#Introduction_Title').val(),
-                'introduction_content': GetContents(objIntroductionContent),
-                'page_one_title': $('#Page_one_Title').val(),
-                'page_two_title': $('#Page_two_Title').val(),
-                'page_three_title': $('#Page_three_Title').val(),
-                'page_four_title': $('#Page_four_Title').val(),
-                'page_one_content': GetContents(objPageOneContent),
-                'page_two_content': GetContents(objPageTwoContent),
-                'page_three_content': GetContents(objPageThreeContent),
-                'page_four_content': GetContents(objPageFourContent),
-                'id':$('#fellowship_id').val()
-                           }
-            , success: function(data){
-                if(data['ServerNo']=='200') {
+        if(typeof(objImg) != "undefined" && objImg.type.match('image.*'))
+        {
+
+            var formData = new FormData();
+            formData.append('image', objImg);
+            formData.append('id',$('#fellowship_id').val());
+            formData.append('_token',$('input[name=_token]').val());
+            formData.append('introduction_title',$('#Introduction_Title').val());
+            formData.append('introduction_content',GetContents(objIntroductionContent));
+            formData.append('page_one_title',$('#Page_one_Title').val());
+            formData.append('page_two_title',$('#Page_two_Title').val());
+            formData.append('page_three_title',$('#Page_three_Title').val());
+            formData.append('page_four_title',$('#Page_four_Title').val());
+            formData.append('page_one_content',GetContents(objPageOneContent));
+            formData.append('page_two_content',GetContents(objPageTwoContent));
+            formData.append('page_three_content',GetContents(objPageThreeContent));
+            formData.append('page_four_content',GetContents(objPageFourContent));
+
+
+            $.ajax({
+                url: '{{route('Fellowship.Update')}}',//'/admin/MA_Fellowship_Photo',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'post',
+                success: function(data){
+
                     $('.second').addClass('hide');
                     $('.first').removeClass('hide');
                     $("#ShowImg").removeAttr("src");
                     $('#div_alert').addClass('alert-success');
                     $('#SuccessAlter').removeClass('hide');
                     $('#SuccessAlter').show();
-                }else if(data['ServerNo']=='404'){
-                    alert(data['Result']);
-//                    $('#FailAlter').removeClass('hide');
+
+                    setTimeout(function () {
+                        $(".alert-block").hide(200);
+                    }, 3000);
+                    alert(data);
+                },error:function(e)
+                {
+                    var errors = e.responseJSON;
+                    alert(errors.Message);
                 }
-                setTimeout(function () {
-                    $(".alert-block").hide(200);
-                }, 3000);
+            });
 
-            },error:function(data)
-            {
-                alert('拍謝，程式有問題');
-            }
+        }else{
+            alert('無照片');
+            $.ajax({
+                type: 'post',
+                url: '{{route('Fellowship.Update')}}',//'/admin/MA_Fellowship_D_Edit',
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    'introduction_title': $('#Introduction_Title').val(),
+                    'introduction_content': GetContents(objIntroductionContent),
+                    'page_one_title': $('#Page_one_Title').val(),
+                    'page_two_title': $('#Page_two_Title').val(),
+                    'page_three_title': $('#Page_three_Title').val(),
+                    'page_four_title': $('#Page_four_Title').val(),
+                    'page_one_content': GetContents(objPageOneContent),
+                    'page_two_content': GetContents(objPageTwoContent),
+                    'page_three_content': GetContents(objPageThreeContent),
+                    'page_four_content': GetContents(objPageFourContent),
+                    'id':$('#fellowship_id').val()
+                               }
+                , success: function(data){
 
-        });
+                    $('.second').addClass('hide');
+                    $('.first').removeClass('hide');
+                    $("#ShowImg").removeAttr("src");
+                    $('#div_alert').addClass('alert-success');
+                    $('#SuccessAlter').removeClass('hide');
+                    $('#SuccessAlter').show();
+
+                    setTimeout(function () {
+                        $(".alert-block").hide(200);
+                    }, 3000);
+
+                },error:function(e)
+                {
+                    var errors = e.responseJSON;
+                    alert(errors.Message);
+                }
+
+            });
+        }
 
     });
 
