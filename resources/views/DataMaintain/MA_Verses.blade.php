@@ -196,7 +196,7 @@
     $(document).on('click', '.edit-modal', function() {
 
         $('.error').addClass('hidden');
-        $('#footer_action_button').text(" 更新");
+        $('#footer_action_button').text("更新");
         $('#footer_action_button').addClass('glyphicon-check');
         $('#footer_action_button').removeClass('glyphicon-trash');
         $('.actionBtn').addClass('btn-success');
@@ -213,7 +213,7 @@
 
     $('.modal-footer').on('click', '.edit', function() {
 
-        alert( $('input[name=_token]').val());
+        //alert( $('input[name=_token]').val());
         var id=$("#id").val();
         var content=$("#Content").val();
         var chapter=$('#Chapter').val();
@@ -279,7 +279,7 @@
             },error:function(e)
             {
                 var errors=e.responseJSON;
-                alert(errors.msg);
+                alert(errors.Message);
             }
         });
     });

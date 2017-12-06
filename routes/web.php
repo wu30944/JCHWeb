@@ -220,3 +220,5 @@ Route::get('/SundayPreview',['as'=>'SundayPreview','uses'=>'SundayPreviewControl
     2017/09/19. 會長
 */
 Route::get('/Presidency',['as'=>'Presidency','uses'=>'StaffController@ShowPresidency']);
+
+

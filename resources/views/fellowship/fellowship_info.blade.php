@@ -74,7 +74,6 @@
                              @endif
                              @if($info->page_two_title!='')
                                 <div class="tab-pane fade" id="service-two">
-                                    <h4>{{$info->page_two_title}}</h4>
                                      {!!  $info->page_two_content!!}
                                     {{-- <p>{{$info->page_two_content}}</p> --}}
                                 </div>

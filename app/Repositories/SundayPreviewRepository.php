@@ -1,4 +1,4 @@
-<?php 
+<?php
     namespace App\Repositories;
 
     use Illuminate\Http\Request;
@@ -6,10 +6,15 @@
     use Validator;
     use Response;
     use DB;
+    use Illuminate\Pagination\LengthAwarePaginator;
+    use Illuminate\Pagination\Paginator;
+
+    use Exception;
 
 
     class SundayPreviewRepository
     {
+
 	  	private $dtSundayPreview;
 
         public function __construct(sunday_preview $data)
@@ -26,87 +31,84 @@
             20170919.  用來取得主日預告的相關資訊，只要是預告日期大於等於今天日期都要顯示出來
         */
         public function getSundayPreviewInfo()
-        {   
+        {
             \Debugbar::info(date("Y-m-d" , mktime(0,0,0,date("m"),date("d")-7,date("Y"))));
             return $this->dtSundayPreview->where('date','>=',date("Y-m-d" , mktime(0,0,0,date("m"),date("d")-7,date("Y"))))->orderBy('date','asc')->get();
+        }
+
+        /*
+            20170919.  用來取得主日預告的相關資訊，只要是預告日期大於等於今天日期都要顯示出來
+        */
+        public function getWorshipPreviewInfo()
+        {
+            \Debugbar::info(date("Y-m-d" , mktime(0,0,0,date("m"),date("d")-7,date("Y"))));
+            return $this->dtSundayPreview->where('date','>=',date("Y-m-d" , mktime(0,0,0,date("m"),date("d")-7,date("Y"))))
+                                         ->orderBy('date','asc')->get();
         }
 
         public function save(Request $request)
         {
 
             $rules = array (
-                'name'=> 'required',
-                'duty'=>'not_in:choice',
-                'sdate'=>'required',
-                'edate'=>'required'
+                'language_type'=> 'required',
+                'subject'=>'required',
+                'speaker'=>'required',
+                'sunday_date'=>'required'
             );
-            $messages = ['name.required' => '姓名欄位不能空白'
-                         ,'duty.not_in'=>'請選擇職務'];
+            $messages = ['language_type.required' => '請至少選擇一種語言'
+                         ,'subject.required'=> str_replace('%',trans('default.subject'),trans('message.RequiredField'))
+                         ,'speaker.required'=>str_replace('%',trans('default.speaker'),trans('message.RequiredField'))
+                         ,'sunday_date.required'=>str_replace('%',trans('default.sunday_date'),trans('message.RequiredField'))
+            ];
             // \Debugbar::info($request->name);
-            $validator = Validator::make ( $request->all(), $rules,$messages );
-            \Debugbar::info($request->duty);
-            if ($validator->fails ()){       
-                 // return Response::json ( 
-                 //    array ('errors' => $validator->messages()->all() ));
-                  return  collect(['ServerNo'=>'404','Result' =>  $validator->messages()->all()]);
+            $validator = Validator::make ( $request->all(), $rules, $messages );
+            \Debugbar::info($validator->messages()->all());
+            if ($validator->fails ()){
+                    \Debugbar::info($validator->messages()->all());
+                  return  collect(['ServerNo'=>'404','Message' =>  $validator->messages()->all()]);
                   // return response()->json(['0' => '404','Result' =>  $validator->messages()->all()]);
             }
             else {
-                      // \Debugbar::info('2');          
+
+                /*
+                 * 此處是新增資料時
+                 * */
                 if($request->id==NULL)
                 {
-                    $data = new staff();
+                    $LangCount = count($request->language_type);
 
-                    $data->name = $request->name;
-                    $data->cod_id = $request->duty;
-                    $data->sdate = $request->sdate;
-                    $data->edate = $request->edate;
-                    $data->save ();
-                    $this->create_staff_d($data->id,$request->name,$request->duty);
-
-                }else{
-                    $data = $this->dtStaff->find($request->id);
-
-                    $data->name = $request->name;
-                    $data->cod_id = $request->duty;
-                    $data->sdate = $request->sdate;
-                    $data->edate = $request->edate;
-                    $data->save ();
-
-                    /*
-                        20170831. 為了要同步staff與 staffs_d兩個table的人員資料
-                        所以在這裡也必須要儲存staffs_d中的cod_id欄位資料，不然當修改
-                        職務時，就會發生錯誤
-                    */
-                    $staffd_id = $this->dtStaff_D->where('staff_id','=',$request->id)->pluck('id');
-                    // \Debugbar::info(count($staffd_id));
-                    if(count($staffd_id)>0)
-                    {   
-                        $data_d=$this->dtStaff_D->find($staffd_id);
-                        $data_d->cod_id = $request->duty;
-                         $data_d->save ();
+                    for($i=0;$i<$LangCount;$i++)
+                    {
+                        $data = new sunday_preview();
+                        $data->language_type = $request->language_type[$i];
+                        $data->subject = $request->subject;
+                        $data->speaker = $request->speaker;
+                        $data->date = $request->sunday_date;
+                        $data->save ();
                     }
-                    
+                /*
+                 * 此處是修改資料
+                 * 可更新其他資訊，但不更新語言
+                 * */
+                }else{
+                    $data = $this->dtSundayPreview->find($request->id);
+
+                    $data->subject = $request->subject;
+                    $data->speaker = $request->speaker;
+                    $data->date = $request->sunday_date;
+//                    $data->language_type = $request->language_type;
+                    $data->save ();
 
                 }
-
                 // Session::flash('message', 'Successfully updated nerd!');
-                // return response ()->json ( $data );
-                return  collect(['ServerNo'=>'200','Result' =>'儲存成功！','id'=>$data->id]);
-                // return response ()->json ( ['0'=>'200','Result'=>'儲存成功！' ]);
+                return  collect(['ServerNo'=>'200','Message' =>'儲存成功！','id'=>$data->id,'data'=>$data]);
             }
         }
 
         public function delete($id)
         {
-            // \Debugbar::info($id);
-            if( $this->dtStaff->find($id)->delete() 
-                && $this->dtStaff_D->where('staff_id','=',$id)->delete())
-            {
-                 return  collect(['ServerNo'=>'success','Result' =>'刪除成功！']);
-            }else{
-                 return  collect(['ServerNo'=>'fails','Result' =>'刪除失敗！']);
-            }
+           $this->dtSundayPreview->find($id)->delete();
+           return collect(['ServerNo'=>'200','Message'=> trans('message.DeleteSuccess')]);
 
         }
 
@@ -119,5 +121,62 @@
         public function getOrderByPageing($num)
         {
              return $this->dtStaff->orderBy('cod_id','desc')->paginate($num);
+        }
+
+//        /*
+//         * 2017/11/21   新增 信息預告資料查詢
+//         * */
+//        public function query($subject="",$speaker="",$sdate="",$edate="",$language_type="")
+//        {
+//            // \Debugbar::info($request->SearchSpeaker);
+//            $empty='';
+//            $query = DB::select( DB::raw('select * from  sunday_preview a
+//                                                where (a.subject = ? or ? = ?)
+//                                                and (a.speaker= ? or ?= ?)
+//                                                and (a.date between ? and ?)
+//                                                and (a.language_type IN (?) or ?=?)' )
+//                ,[$subject,
+//                    $subject,
+//                    $empty,
+//                    $speaker,
+//                    $speaker,
+//                    $empty,
+//                    $sdate,
+//                    $edate,
+//                    $language_type,
+//                    $language_type,
+//                    $empty]);
+//
+//            $page = Paginator::resolveCurrentPage("page");
+//            $perPage = 9; //實際每頁筆數
+//            $offset = ($page * $perPage) - $perPage;
+//
+//            $data = new LengthAwarePaginator(array_slice($query, $offset, $perPage, true), count($query), $perPage, $page, ['path' =>  Paginator::resolveCurrentPath()]);
+//
+//            return $data;
+//        }
+
+        /*
+         * 2017/11/21   新增 信息預告資料查詢
+         * */
+        public function query($subject="",$speaker="",$sdate="",$edate="",$language_type="")
+        {
+            // \Debugbar::info($request->SearchSpeaker);
+            $test="'";
+            $query = DB::select( DB::raw('call spQueryWorshipPreview(?,?,?,?,?)' )
+                  ,[$subject,
+                    $speaker,
+                    $sdate,
+                    $edate,
+                    $language_type]);
+
+            $page = Paginator::resolveCurrentPage("page");
+            $perPage = 9; //實際每頁筆數
+            $offset = ($page * $perPage) - $perPage;
+
+            $data = new LengthAwarePaginator(array_slice($query, $offset, $perPage, true), count($query), $perPage, $page, ['path' =>  Paginator::resolveCurrentPath()]);
+
+            \Debugbar::info($data);
+            return $data;
         }
     }

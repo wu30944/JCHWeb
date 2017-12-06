@@ -49,10 +49,10 @@
 	@endif
 
 	<!-- Controls -->
-	<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+	<a class="left carousel-control" href="#myCarousel" data-slide="prev" style="height:330px">
 		<span class="icon-prev"></span>
-	</a> 
-	<a class="right carousel-control" href="#myCarousel"
+	</a>
+	<a class="right carousel-control" href="#myCarousel" style="height:330px"
 		data-slide="next"> <span class="icon-next"></span>
 	</a>
 	</div>

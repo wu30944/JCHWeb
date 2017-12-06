@@ -289,13 +289,15 @@
 	                                <span id="action_button" class='glyphicon'> </span>
 	                            </button>
 	                            <button type="button" class="btn btn-warning" data-dismiss="modal">
-	                                <span class='glyphicon glyphicon-remove'></span> 取消
+	                                <span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
 	                            </button>
 	                        </div>
 	                    </div>
 	                </div>
 	            </div>
 	        </div>
+			</div>
+	</section>
 	        @stop
 	        @section('js')
 	        {{-- 下面的link是，為了讓必輸欄位如果沒有輸入資料控制項變為紅色，提示文字為紅色 --}}
@@ -611,5 +613,4 @@
          }
 		</script>
 
-	</section>
 @stop

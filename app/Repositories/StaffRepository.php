@@ -73,10 +73,6 @@
                     );
                     $messages = ['name.required' => '姓名欄位不能空白'
                                  ,'duty.not_in'=>'請選擇職務'];
-                    // \Debugbar::info($request->name);
-                    // \Debugbar::info($request->duty);
-                    // \Debugbar::info($request->sdate);
-                    // \Debugbar::info($request->edate);
                     $validator = Validator::make ( $request->all(), $rules,$messages );
                     \Debugbar::info($request->duty);
                     if ($validator->fails ()){

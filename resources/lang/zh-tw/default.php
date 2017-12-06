@@ -66,6 +66,14 @@ return array(
     ,'upload_photo'=>'上傳照片'
     ,'check'=>'確認'
     ,'modify'=>'修改'
+    ,'photo_link'=>'照片連結'
+    ,'church_address'=>'教會地址'
+    ,'fax'=>'傳真'
+    ,'church_zh_name'=>'教會中文名稱'
+    ,'church_en_name'=>'教會英文名稱'
+    ,'create_date'=>'建立日期'
+    ,'language'=>'語言'
+    ,'sunday_date'=>'禮拜日期'
 	);
 
  ?>

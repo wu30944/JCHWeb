@@ -196,12 +196,12 @@
 
 				                <div class="thumbnail">
 
-			 			        <div class="alert alert-block hide" id="div_alert_{{$person->id}}">
-						            <button type="button" class="close" data-dismiss="alert">×</button>
-						            <strong>
-						            	<input  style="background-color:   transparent;   border:   0px" readonly="true" id="alert_msg_{{$person->id}}">
-						            </strong>
-						        </div>
+									<div class="alert alert-block hide" id="div_alert_{{$person->id}}" align="left">
+										<button type="button" class="close" data-dismiss="alert">×</button>
+										<strong>
+											<input  style="background-color:   transparent;   border:   0px" readonly="true" id="alert_msg_{{$person->id}}" >
+										</strong>
+									</div>
 
 				                   <div align="left">     
 				                        <label for="upload-profile-picture">     
@@ -315,11 +315,14 @@
       </section>
     @stop
     @section('js')
-	<link rel="stylesheet" href="{{ asset('css/screen.css')}}" >
+	{{--<link rel="stylesheet" href="{{ asset('css/screen.css')}}" >--}}
 	<script src="../js/jquery.datetimepicker.full.js"></script>
-	<script src="../js/jquery.validate.js"></script>
+	{{--<script src="../js/jquery.validate.js"></script>--}}
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+	<link rel="stylesheet" href="https://jqueryvalidation.org/files/demo/site-demos.css">
     <script>
-      		
+
 				$().ready(function() {
 
 					$("#form_add").validate({
@@ -433,7 +436,7 @@
 		        $('#edit').removeAttr("disabled");
 
 		        $('.btn-danger').addClass('hide');
-		        $('.btn-success').not('#btnSearch').addClass('hide');
+		        $('.btn-success').not('#btnSearch').not('#btnSave').addClass('hide');
 
 		        $('#div_add').addClass('hide');
 
@@ -535,7 +538,7 @@
 
 		    	}
 		        preview(this,$img_id);
-		    })
+		    });
 
 
 
@@ -581,13 +584,20 @@
 			                    success: function(data){
 			                          if(data['ServerNo']=='200'){
 			                            // 如果成功
+                                          $('#div_alert_'+id).show();
 										$('#div_alert_'+id).removeClass('alert-danger');
 										$('#alert_msg_'+id).val(data['ResultData']);
 										$('#div_alert_'+id).addClass('alert-success');
 										$('#div_alert_'+id).removeClass('hide');
+
+                                          setTimeout(function () {
+                                              $(".alert-block").hide(200);
+                                          }, 4000);
+
 			                          }else{
-			                            alert(data['ResultData']);
+//			                            alert(data['ResultData']);
 			                            // 如果失败
+                                          $('#div_alert_'+id).show();
 										$('#div_alert_'+id).removeClass('alert-success');
 										$('#alert_msg_'+id).val(data['ResultData']);
 										$('#div_alert_'+id).addClass('alert-danger');
@@ -618,14 +628,20 @@
 				                if(data['ServerNo']=='200')
 				                {	
 				                	 // alert(data['ResultData']);
+                                    $('#div_alert_'+id).show();
 				                	 $('#div_alert_'+id).removeClass('alert-danger');
 				                	 $('#alert_msg_'+id).val(data['ResultData']);
 				                	 $('#div_alert_'+id).addClass('alert-success');
-				                	 $('#div_alert_'+id).removeClass('hide');                	            
+				                	 $('#div_alert_'+id).removeClass('hide');
+
+                                    setTimeout(function () {
+                                        $(".alert-block").hide(200);
+                                    }, 4000);
 
 				                }else if(data['ServerNo']=='404')
 				                {
 				                	 // alert(data['ResultData']);
+                                    $('#div_alert_'+id).show();
 				                	 $('#div_alert_'+id).removeClass('alert-success');
 				                	 $('#alert_msg_'+id).val(data['ResultData']);
 				                	 $('#div_alert_'+id).addClass('alert-danger');
@@ -636,9 +652,7 @@
 				            }
 				        });
 		        }
-	              setTimeout(function () {
-	                  $(".alert-block").hide(200);
-	                }, 3000);      
+
 		    });
 
 			 $('.modal-footer').on('click', '.delete', function() {

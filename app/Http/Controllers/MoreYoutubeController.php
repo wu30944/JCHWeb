@@ -87,10 +87,14 @@ class MoreYoutubeController extends Controller
 
         $dtmore_youtube=$this->videos->getVideoOrderByPageing(9,$video_type);
          //Debug專用
-         \Debugbar::info( $dtmore_youtube );
+
+        $VideoType = DB::table('codtbld')->where('cod_type', '=', 'video')
+                                         ->where('cod_id','=',$video_type)->first();
+
 
         $dtFellowship=$this->fellowship->getAll();
-        return view('more.more_youtube')->with('dtfellowship',$dtFellowship)->with('dtmore_youtube',$dtmore_youtube );
+        return view('more.more_youtube')->with('dtfellowship',$dtFellowship)->with('dtmore_youtube',$dtmore_youtube )
+                                             ->with('VideoType',$VideoType->cod_val);
     }
 
     public function Search(Request $request)

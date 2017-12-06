@@ -29,7 +29,7 @@ class VideosController extends Controller
     public function MA_MoreYoutube()
     {   
         $dtVideoType = $this->codtbld->getWhere('video');
-        $item=collect(['']);
+        $item=collect([]);
         // $item->push('新增年份');
         foreach ($dtVideoType as $key) {
             # code...

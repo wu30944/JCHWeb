@@ -24,9 +24,9 @@
         </div>
     </div>
 
-        <div class="row">
-            <h3><label for="">本週信息</label></h3>
-        </div>
+        {{--<div class="row">--}}
+            {{--<h3><label for="">本週信息</label></h3>--}}
+        {{--</div>--}}
 
             <div class="row">
 {{--                         <div class="col-lg-12">
@@ -56,7 +56,11 @@
                     <div id="myTabContent" class="tab-content col-md-12">                              
                          @if(isset($dtLanguage) && count($dtLanguage)>0)
                             @foreach($dtLanguage as $Item)
-                                <div class="tab-pane fade active in" id="service_{{$Item->id}}">
+                                @if($Item->cod_id=='1')
+                                    <div class="tab-pane fade active in" id="service_{{$Item->id}}">
+                                @else
+                                     <div class="tab-pane fade  in" id="service_{{$Item->id}}">
+                                @endif
                                       <table id="" class="text-center table-striped table-hover table" cellspacing="0">
                                         {{--如果想要關閉Search:在jquery.dataTables.min.js當中的第144行，sSearch:後方就是該畫面文字
                                             如果想要關閉Search後面的Textbox則是在jquery.dataTables.min.js中的第40行 g參數後方--}}

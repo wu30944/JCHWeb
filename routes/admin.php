@@ -65,16 +65,18 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     /*
         2017/09/19  關於建成資料維護 Route 
     */
-    Route::get('/MA_About',['as'=>'MA_About','uses'=>'AboutController@MA_About']);    
-    Route::post('/MA_Update_About',['as'=>'MA_Update_About','uses'=>'AboutController@UpdateItem']);
+    Route::get('/MA_About',['as'=>'JCHAbout.Show','uses'=>'AboutController@MA_About']);
+    Route::post('/MA_Edit_About',['as'=>'JCHAbout.Edit','uses'=>'AboutController@EditItem']);
+    Route::post('/MA_Update_About',['as'=>'JCHAbout.Update','uses'=>'AboutController@UpdateItem']);
 
     /*
         2017/09/19. 活照照片維護 Route
     */
-    Route::get('/MA_ActionPhoto',['as'=>'MA_ActionPhoto','uses'=>'ActionPhotoController@MA_ActionPhoto']);
-    Route::post('/MA_Insert_ActionPhoto',['as'=>'MA_Insert_ActionPhoto','uses'=>'ActionPhotoController@InsertItem']);
-    Route::post('/MA_Update_ActionPhoto',['as'=>'MA_Update_ActionPhoto','uses'=>'ActionPhotoController@UpdateItem']);
-    Route::post('/MA_Delete_ActionPhoto',['as'=>'MA_Delete_ActionPhoto','uses'=>'ActionPhotoController@DeleteItem']);
+    Route::get('/MA_ActionPhoto',['as'=>'ActionPhoto.Show','uses'=>'ActionPhotoController@MA_ActionPhoto']);
+    Route::post('/MA_Insert_ActionPhoto',['as'=>'ActionPhoto.Create','uses'=>'ActionPhotoController@InsertItem']);
+    Route::post('/MA_Update_ActionPhoto',['as'=>'ActionPhoto.Update','uses'=>'ActionPhotoController@UpdateItem']);
+    Route::post('/MAEditActionPhoto',['as'=>'ActionPhoto.Edit']);
+    Route::post('/MA_Delete_ActionPhoto',['as'=>'ActionPhoto.Destory','uses'=>'ActionPhotoController@DeleteItem']);
     
     /*
         2017/09/19 消息分類維護 Route
@@ -143,7 +145,14 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post('MACarouselIsShow',['as'=>'Carousel.IsShow','uses'=>'CarouselController@IsShowItem']);
     Route::post('MAEditCarousel',['as'=>'Carousel.Edit','uses'=>'CarouselController@EditItem']);
 
-
+    /*
+     * 2017/11/20   信息資料維護 Route
+     * */
+    Route::get('MA_WorshipPreview',['as'=>'WorshipPreview.Show','uses'=>'WorshipPreviewController@MAWorshipPreview']);
+    Route::get('SearchWorshipPreview',['as'=>'WorshipPreview.Search','uses'=>'WorshipPreviewController@SearchItem']);
+    Route::post('WorshipPreviewCreate',['as'=>'WorshipPreview.Create','uses'=>'WorshipPreviewController@CreateItem']);
+    Route::post('WorshipPreviewUpdate',['as'=>'WorshipPreview.Update','uses'=>'WorshipPreviewController@UpdateItem']);
+    Route::post('WorshipPreviewDelete',['as'=>'WorshipPreview.Destory','uses'=>'WorshipPreviewController@DeleteItem']);
 
 });
 

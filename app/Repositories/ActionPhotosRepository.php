@@ -27,12 +27,14 @@
             'photo_date'=>'required'
             );
 
+            $messages = ['photo_link.required' => trans('message.photo_link')
+                ,'photo_date.required'=>trans('message.photo_date')];
+            $validator = Validator::make ( $request->all(), $rules,$messages );
 
-            $validator = Validator::make ( $request->all(), $rules );
             if ($validator->fails ()){       
                  // return Response::json ( 
                  //    array ('errors' => $validator->messages()->all() ));
-                  return response()->json(['ServerNo' => '404','errors' =>  $validator->messages()->all()]);
+                  return response()->json(['ServerNo' => '404','errors' =>  $validator->messages()->all(),'Message'=>'儲存失敗'],403);
             }
             else {
                  
@@ -57,7 +59,7 @@
 
                 // Session::flash('message', 'Successfully updated nerd!');
                 // return response ()->json ( $data );
-                return response ()->json ( ['ServerNo'=>'200','data'=>$data ]);
+                return response ()->json ( ['ServerNo'=>'200','data'=>$data,'Message'=>'儲存成功' ],200);
             }
         }
 

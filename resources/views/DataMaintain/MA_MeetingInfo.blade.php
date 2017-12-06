@@ -312,6 +312,10 @@
             },
             success: function(data) {
 
+                $('#Floor'+$id).text(data['Data'].floor);
+                $('#Day'+$id).text(data['Data'].day);
+                $('#MeetingTime'+$id).text(data['Data'].meeting_time);
+
                 $('#SuccessAlter').removeClass('hide');
                 $('#SuccessAlter').show();
 

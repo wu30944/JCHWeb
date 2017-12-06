@@ -25,6 +25,9 @@ return array(
     ,'MAStaffIntroduction'=>'職務介紹資料維護'
     ,'MAVerses'=>'金句資料維護'
     ,'MACarousel'=>'輪播圖片資料維護'
+    ,'MAActionPhoto'=>'活動照片資料維護'
+    ,'JCHAbout'=>'關於建成資料維護'
+    ,'MAWorshipPreview'=>'信息預告資料維護'
 	);
 
  ?>

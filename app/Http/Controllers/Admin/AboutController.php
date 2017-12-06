@@ -55,6 +55,24 @@ class AboutController extends Controller
       return View('DataMaintain.MA_About',compact('jchinfo','dtfellowship'));
     }
 
+    /*
+     * 2017/11/18   關於建成按下修改控制項會執行
+     * */
+    public function EditItem(Request $request)
+    {
+        $Result= $this->dtjchinfo->save($request);
+        if($Result['ServerNo']=='200')
+        {
+            return response ()->json (['ServerNo'=>'200','ResultData' => $Result['Result'] ,'data'=>$Result['data']]);
+        }
+        else
+        {
+            // \Debugbar::info($Result['Result'][0]);
+            return response ()->json (['ServerNo'=>'404','ResultData'=> $Result['Result']]);
+        }
+
+    }
+
   // public function show()
   // {
  //    //因為教會資訊只會有一筆資料，所以就直接查詢id為1的那筆資料列

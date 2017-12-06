@@ -582,7 +582,6 @@
             });
 
         }else{
-            alert('無照片');
             $.ajax({
                 type: 'post',
                 url: '{{route('Fellowship.Update')}}',//'/admin/MA_Fellowship_D_Edit',

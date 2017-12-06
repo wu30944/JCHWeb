@@ -26,8 +26,8 @@ class AuthenticateAdmin
 
         $previousUrl = URL::previous();
         $routeName = starts_with(Route::currentRouteName(), 'admin.') ? Route::currentRouteName() : 'admin.' . Route::currentRouteName();
-        \Debugbar::info($routeName);
-        \Debugbar::info(\Gate::forUser(auth('admin')->user())->check($routeName));
+//        \Debugbar::info($routeName);
+//        \Debugbar::info(\Gate::forUser(auth('admin')->user())->check($routeName));
         if (!\Gate::forUser(auth('admin')->user())->check($routeName)) {
 
             if ($request->ajax() && ($request->getMethod() != 'GET')) {

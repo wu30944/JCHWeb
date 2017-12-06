@@ -22,7 +22,7 @@
 
         public function getWhere($cod_type)
         {
-            return $this->dtCodtbld::where('cod_type','=',$cod_type)->get();
+            return $this->dtCodtbld::where('cod_type','=',$cod_type)->orderBy('cod_id')->get();
         }
 
         public function save(Request $request)

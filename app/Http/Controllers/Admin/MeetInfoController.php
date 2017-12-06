@@ -72,7 +72,7 @@ class MeetInfoController extends Controller
 
             // redirect
             //\Session::flash('flash_message', 'Successfully updated nerd!');
-            return response ()->json ( $strMeetingInfo ,200);
+            return response ()->json ( ['Data'=>$strMeetingInfo] ,200);
         }
     }
 
