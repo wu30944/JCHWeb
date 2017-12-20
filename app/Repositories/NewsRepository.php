@@ -130,7 +130,7 @@
          public function show_news($column,$operator,$number)
         {   
             // \Debugbar::info( $this->dtNews->where($column,$operator,$number));
-            return  $this->dtNews->where($column,$operator,$number)->orderBy('action_date','desc')->paginate(10);
+            return  $this->dtNews->where($column,$operator,$number)->orderBy('action_date','desc')->paginate(5);
             // $this->dtNews->where($column,$operator,$number)->orderBy('action_date','desc')->paginate(10);
         }
 

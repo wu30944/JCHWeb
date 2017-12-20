@@ -6,8 +6,7 @@
 @include('widgets.carousel')
 
 @section('content')
- <div class="container">
-
+    <div class="container">
         <!-- Marketing Icons Section -->
         <div class="row">
             <div class="col-lg-12">
@@ -16,7 +15,7 @@
                        @foreach ($dtVerse as $verse)
                            {{-- expr --}}
                            {{$verse->content}}{{$verse->chapter}}
-                       @endforeach                      
+                       @endforeach
                     @endif
                 </h3>
             </div>

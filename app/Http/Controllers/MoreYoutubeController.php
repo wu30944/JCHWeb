@@ -116,4 +116,29 @@ class MoreYoutubeController extends Controller
         //response()->json(['ServerNo'=>'200','ResultData'=>$this->videos->query($request)]);
     }
 
+
+    public function more_youtube()
+    {
+        $dtFellowship=$this->fellowship->getAll();
+
+        $dtmore_youtube=$this->videos->getVideoOrderByPageing(9,1);
+
+//        $count = 0;
+//
+//        foreach ($dtmore_youtube as $key) {
+//            # code...
+//            $Html_youtube[$count]= '<iframe class="embed-responsive-item" src="'.$key->link.'" frameborder="0" allowfullscreen></iframe>';
+//            $count++;
+//        }
+
+        $VideoType = DB::table('codtbld')->where('cod_type', '=', 'video')
+            ->where('cod_id','=',1)->first();
+
+        return view('more.more_youtube')
+                ->with('dtfellowship',$dtFellowship)
+                ->with('dtmore_youtube',$dtmore_youtube)
+                ->with('VideoType',$VideoType->cod_val);
+
+    }
+
 }

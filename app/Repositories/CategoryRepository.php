@@ -5,6 +5,7 @@
     use Models\Category;
     use Validator;
     use Response;
+    use DB;
 
     class CategoryRepository 
     {
@@ -33,11 +34,11 @@
             if ($validator->fails ()){       
                  // return Response::json ( 
                  //    array ('errors' => $validator->messages()->all() ));
-                  // return response()->json(['ServerNo' => '404','errors' =>  $validator->messages()->all()]);
+                 // return response()->json(['ServerNo' => '404','errors' =>  $validator->messages()->all()]);
                 return collect(['0'=>false,'1'=>'Title為必輸欄為']);
             }
             else {
-                         // \Debugbar::info($input['parent_id']); 
+                // \Debugbar::info($input['parent_id']);
                 // \Debugbar::info($input['parent_id']);
                 if ($request->parent_id==='0' )
                 {
@@ -102,9 +103,62 @@
         public function CheckSameData($parent_id,$title)
         {
             if ($this->dtCategory->where('parent_id','=',$parent_id)->where('title','=',$title)->count()>0)
-                 return false;
+                return false;
             else
                 return true;
+        }
+
+        public function getParentNode()
+        {
+
+            return $this->dtCategory->where('parent_id', '=', 0)->get();
+        }
+
+        public function AutoCreateCategory()
+        {
+            $strThisMonth=(int)date("m");//date('m',strtotime("+1 month"));
+            $strThisYear=date("Y");
+
+            $strParentNode = $this->dtCategory->where('title','=',$strThisYear)
+                                              ->where('parent_id','=',0)
+                                              ->first();
+            $strChildNode = $this->dtCategory->where('title','=',$strThisMonth)->get();
+
+            //\Debugbar::info($strParentNode->id);
+
+            /*
+             * 如果發現當年度還未新增至Category分類時
+             * 就將該年度存入資料庫
+             * 年度都是會分類的根節點
+             * 接著才是該年度月份資料
+             * */
+            if(count($strParentNode)==0)
+            {
+                $dataParentNode = new Category();
+
+                $dataParentNode->title = $strThisYear;
+                $dataParentNode->value = 0;
+                $dataParentNode->parent_id = 0;
+                $dataParentNode->save ();
+
+                //\Debugbar::info($dataParentNode->id);
+                $dataChildNode = new Category();
+
+                $dataChildNode->title = $strThisMonth;
+                $dataChildNode->value = $strThisMonth;
+                $dataChildNode->parent_id = $dataParentNode->id;
+                $dataChildNode->save ();
+
+            }else if(count($strChildNode)==0){
+
+                $dataChildNode = new Category();
+
+                $dataChildNode->title = $strThisMonth;
+                $dataChildNode->value = $strThisMonth;
+                $dataChildNode->parent_id = $strParentNode->id;
+                $dataChildNode->save ();
+                \Debugbar::info($dataChildNode);
+            }
         }
 
     }

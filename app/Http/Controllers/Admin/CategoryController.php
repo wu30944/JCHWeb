@@ -36,7 +36,7 @@ class CategoryController extends Controller
     public function MA_Category()
     {
 
-        $categories = $this->categories;
+        $categories = $this->dtCategory->getParentNode();//$this->categories;
         $allCategories = Category::where('parent_id','=',0)->get();
         $item=collect(['0'=>'新增分類']);
         // $item->push('新增年份');

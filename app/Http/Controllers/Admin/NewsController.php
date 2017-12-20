@@ -12,8 +12,8 @@ use DB;
 
 
 use App\Repositories\fellowshipRepository;
-
 use  App\Repositories\NewsRepository;
+use App\Repositories\CategoryRepository;
 
 class NewsController extends Controller
 {
@@ -22,101 +22,13 @@ class NewsController extends Controller
     private $dtNews;
     private $categories;
 
-    public function __construct(fellowshipRepository $fellowshipRepository,NewsRepository $NewsRepository)
+    public function __construct(fellowshipRepository $fellowshipRepository
+                                ,NewsRepository $NewsRepository
+                                ,CategoryRepository $CategoryRepository)
     {
         $this->fellowshipRepository=$fellowshipRepository;
         $this->dtNews=$NewsRepository;
-        $this->categories = Category::where('parent_id', '=', 0)->get();
-    }
-    //顯示消息詳細資訊
-    public function show_news_d($title)
-    {
-       
-       $dtNews=$this->dtNews->getAll()->where('title',$title);
-
-        $dtfellowship = $this->fellowshipRepository->getAll();//$dtfellowship =fellowship::all();
-
-        return view('news.news_d',compact('dtfellowship'),compact('dtNews'));
-    }
-
-    public function show_news()
-    {
-
-        $categories = $this->categories;
-        $allCategories = Category::pluck('title','id')->all();
-
-        $dtNews = $this->dtNews->show_news('title','<>',NULL);
-        //$test = new NewsRepository();
-
-        $dtfellowship = $this->fellowshipRepository->getAll(); //fellowship::all();
-        $isPaging=true;
-          
-          //Debug專用
-         //\Debugbar::info( $dtfellowship );
-
-        return view('news.news',compact('dtfellowship'),compact('dtNews','isPaging','categories','allCategories'));
-    }
-
-    public function search()
-    {
-        $value=Input::get("value");
-         //\Debugbar::info( $value );
-        # code...
-        $dtNews =$this->dtNews->Search($value);
-         $dtfellowship = $this->fellowshipRepository->getAll(); //fellowship::all();
-        //\Debugbar::info( $dtNews );
-
-        $isPaging=false;
-
-        $categories = $this->categories;
-        //return $dtNews;
-        return view('news.news',compact('dtfellowship'),compact('dtNews','isPaging','categories'));
-    }
-
-    public function search_test(Request $request)
-    {
-        $News=$this->dtNews->Search($request->key_word);
-        
-        $total_html="";
-
-        \Debugbar::info(count($News));
-        if(count($News)==0)
-        {
-            $total_html='查無符合資料';
-        }
-        else
-        {
-            foreach($News as $data)
-            {   
-                $link_html="";
-                $link_html='<h2>'.$data->title.'</h2><p><span class="glyphicon glyphicon-time"></i>&nbsp'.$data->action_date.'</p>';
-                if($data->image!=="")
-                {
-                    $link_html=$link_html.'<img class="img-responsive img-hover" src="'.$data->image.'" alt="" style="max-width: 400; max-height: 200px;">';
-                }
-
-                $link_html=$link_html.'<br><p>'.mb_substr($data->content,0,50,"utf-8").'</p><button class="btn btn-primary btn-detail" id="btn_read_more" data-info="'.$data->id.',"id""> Read More <i class="fa fa-angle-right"></i></button><hr>';
-
-                $total_html=$total_html.$link_html;
-            }
-        }
-        // \Debugbar::info($total_html);
-        return response ()->json ( $total_html );
-    }
-
-
-    public function month_search($month)
-    {
-        $categories  = $this->categories;
-
-        $dtNews=DB::select('select * from news where month(action_date) = ?', [$month]);
-        \Debugbar::info( $dtNews );
-
-        $dtfellowship = $this->fellowshipRepository->getAll();//$dtfellowship =fellowship::all();
-
-         $isPaging=false;
-        //return $dtNews;
-        return view('news.news',compact('dtfellowship'),compact('dtNews','isPaging','categories'));
+        $this->categories = $CategoryRepository;//Category::where('parent_id', '=', 0)->get();
     }
 
     public function MA_News()
@@ -134,7 +46,7 @@ class NewsController extends Controller
         $isPaging=true;
           
           //Debug專用
-         \Debugbar::info( $dtNews );
+         \Debugbar::info( date("m"));
 
         return view('DataMaintain.MA_News',compact('dtfellowship','dtControl'),compact('dtNews','isPaging'));
     }
@@ -236,7 +148,7 @@ class NewsController extends Controller
         try{
             DB::connection()->getPdo()->beginTransaction();
             $Result = $this->dtNews->save($request);
-
+            $this->categories->AutoCreateCategory();
             if($Result['ServerNo']=='200')
             {
                 if(!empty($request->file('image')))
@@ -354,15 +266,5 @@ class NewsController extends Controller
         return response ()->json ( $dtNews_d );
     }
 
-    public function MA_Category()
-    {
 
-        $categories = $this->categories;
-        $allCategories = Category::pluck('title','id')->all();
-          
-          //Debug專用
-         //\Debugbar::info( $dtfellowship );
-
-        return view('DataMaintain.MA_Category',compact('categories','allCategories'));
-    }
 }

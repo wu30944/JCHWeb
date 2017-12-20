@@ -32,7 +32,7 @@ Route::get('/debug',['as'=>'debug',function(){
     return view('debug.debug');
 }]);
 
-Route::get('/more_youtube',['as'=>'more_youtube','uses'=>'IndexController@more_youtube']);
+Route::get('/more_youtube',['as'=>'more_youtube','uses'=>'MoreYoutubeController@more_youtube']);
 Route::get('/more_video/{video_type}',['as'=>'more_video','uses'=>'MoreYoutubeController@show']);
 
 Route::get('/teens1',['as'=>'teens',
@@ -105,6 +105,7 @@ Route::get('/MeetingInfo_',['as'=>'MeetingInfo_','uses'=>'MeetInfoController@tes
 
 //測試區塊
 Route::post('/search_test',['as'=>'search_test','uses'=>'NewsController@search_test']);
+Route::get('/NewsSearch',['as'=>'News.Search','uses'=>'NewsController@search_test']);
 
 
 // 維護的路由

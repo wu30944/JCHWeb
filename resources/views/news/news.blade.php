@@ -66,7 +66,8 @@
                                     <hr>
                             @endforeach
                         @elseif(count($dtNews)===0)
-                            查無符合資料
+                            {{--查無符合資料--}}
+                            @lang('message.NoData')
                         @endif
 
                         <!--下列方法為顯示分頁頁碼，配合controller當中elquent模型的DB::paginate(一面幾筆資料)
@@ -112,7 +113,7 @@
                    {{-- @include('WebUIControl.UISearch') --}}
 
                    <div class="well">
-                        <h4>{{ isset($title_name) ? $title_name : '搜尋'}}</h4>
+                        <strong><h4>{{ isset($title_name) ? $title_name : trans('default.search')}}</h4></strong>
                             {{ csrf_field() }}
                             <div class="input-group">
                                  <input name="key_word" id="key_word" type="text" class="form-control" >
@@ -142,8 +143,8 @@
 <script>
     $('#btnSend').on('click', function() {
           $.ajax({
-            type: 'post',
-            url: '/search_test',
+            type: 'get',
+            url: '{{route('News.Search')}}',
             data: {
                     '_token': $('input[name=_token]').val(),
                     'key_word': $('#key_word').val()

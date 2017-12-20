@@ -74,6 +74,7 @@ return array(
     ,'create_date'=>'建立日期'
     ,'language'=>'語言'
     ,'sunday_date'=>'禮拜日期'
+    ,'month'=>'月'
 	);
 
  ?>

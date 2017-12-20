@@ -23,7 +23,7 @@
                             </ul>
                         </div>
                     </div>
-                    <hr color="#FF0000">
+                    {{--<hr color="#FF0000">--}}
               </div>
 {{--                         <div class="col-md-6">
                             <h3>Add New Category</h3>

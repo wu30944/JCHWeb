@@ -3,7 +3,7 @@
     <li>
         {{-- <a href="">{{ $child->title }} </a> --}}
         {{-- {{route('month_news',$child->value)}} --}}
-        <a href="" id="{{$child->value}}">{{ $child->title }}</a>
+        <a href="" id="{{$child->value}}">{{ $child->title }}@lang('default.month')</a>
         {{-- <a href="{{route('fellowship',$fellowship->id)}}">{{ $child->title }}</a> --}}
         @if(count($child->childs))
             @include('category.manageChild',['childs' => $child->childs])

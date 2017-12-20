@@ -1,7 +1,7 @@
 <script>
     //輪播
     $('.carousel').carousel({
-        interval: 5000 //changes the speed
+        interval: 4000 //changes the speed
     })
 	    
       $(document).ready(function() {

@@ -156,7 +156,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
 
 });
 
-Route::get('/', function () {
-    return redirect('/admin/index');
-});
+    Route::get('/', function () {
+        return redirect('/admin/index');
+    });
 
