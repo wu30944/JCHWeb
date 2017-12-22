@@ -640,9 +640,9 @@
                 type: 'post',
                 success: function(data){
                     if(data['ServerNo']=='200'){
-
+                        //alert(data['content']);
                         $('#Title'+$id).text(data['ResultData'].title);
-                        $('#Content'+$id).text(data['ResultData'].content);
+                        $('#Content'+$id).text(data['content']);
                         $('.second').addClass('hide');
                         $('.first').removeClass('hide');
 
@@ -687,9 +687,9 @@
                 }
                 , success: function(data){
                     if(data['ServerNo']=='200'){
-
+//                        alert(data['content']);
                         $('#Title'+$id).text(data['ResultData'].title);
-                        $('#Content'+$id).text(data['content'].content);
+                        $('#Content'+$id).text(data['content']);
                         $('.second').addClass('hide');
                         $('.first').removeClass('hide');
 
