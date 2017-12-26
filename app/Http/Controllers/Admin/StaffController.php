@@ -86,6 +86,7 @@ class StaffController extends Controller
 
          $dtStaff=$this->staff->getOrderByPageing(9);
 
+
     	return view('DataMaintain.MA_Staff',compact('ItemAll','dtStaff','ItemDepartAll','ItemFellowshipAll'));
 
     }
@@ -126,7 +127,7 @@ class StaffController extends Controller
         {   
             if(!empty($request->file('image')))
             {
-                $UploadResult = $this->staff->PhotoUpload($request,$Result['id']);
+                $UploadResult = $this->staff->PhotoUpload($request);
                 
                 if ($UploadResult['ServerNo']=='404')
                 {   
@@ -146,11 +147,24 @@ class StaffController extends Controller
 
   public function DeleteItem(Request $request)
   {
-        \Debugbar::info($request->id);
+        //\Debugbar::info($request->id);
          $Result = $this->staff->delete($request->id);
+         $this->DeletePhoto($request->id.'.jpg');
 
         return back()->with($Result['ServerNo'], $Result['Result']);
   }
+
+    public function DeletePhoto($FileName)
+    {
+        $FilePath=config('app.staffs_photo_path').'/'.$FileName;
+
+        $destinationPath=public_path().Storage::url($FilePath);
+        if(file_exists($destinationPath)){
+            unlink($destinationPath);//將檔案刪除
+        }else{
+            echo 'Not Found Photo';
+        }
+    }
 
   /*
     2017/08/21  新增“我們的牧師”這個view

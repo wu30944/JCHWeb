@@ -1,5 +1,4 @@
 @if(isset($fellowship_info) and count($fellowship_info)===1)
-    @foreach($fellowship_info as $info)
 
         @extends('TmpView.tmp')
 
@@ -12,7 +11,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="page-header"><strong>{{$info->name}}</strong>
+                        <h1 class="page-header"><strong>{{$fellowship_info->name}}</strong>
                                 {{-- <small>Subheading</small> --}}
                         </h1>
                         <div class="lgray-bg ">
@@ -20,7 +19,7 @@
                                 <ol class="breadcrumb">
                                 <li><a href="{{url('/')}}"><span class="glyphicon glyphicon glyphicon-home"> @lang('default.home')</a>
                                 </li>
-                                <li class="active">{{$info->name}}</li>
+                                <li class="active">{{$fellowship_info->name}}</li>
                             </ol>
                             </div>    
                         </div>
@@ -31,11 +30,11 @@
                          <!-- Intro Content -->
                     <div class="row">
                         <div class="col-md-6" align="center">
-                            <img class="img-responsive" src="{{$info->image_path}}" alt=""  style="max-width: 500; max-height: 290px;">
+                            <img class="img-responsive" src="{{$Image}}" alt=""  style="max-width: 500; max-height: 290px;">
                         </div>
                         <div class="col-md-6">
-                            <h2>{{$info->introduction_title}}</h2>
-                            {!!$info->introduction_content!!}
+                            <h2>{{$fellowship_info->introduction_title}}</h2>
+                            {!!$fellowship_info->introduction_content!!}
                         </div>
                     </div>
                     <!-- /.row -->   
@@ -48,44 +47,44 @@
                     <div class="col-lg-12">
 
                         <ul id="myTab" class="nav nav-tabs nav-justified">
-                            @if(isset($info->page_one_title))
-                            <li class="active"><a href="#service-one" data-toggle="tab"><i class="fa fa-star"></i> {{$info->page_one_title}}</a>
+                            @if(isset($fellowship_info->page_one_title))
+                            <li class="active"><a href="#service-one" data-toggle="tab"><i class="fa fa-star"></i> {{$fellowship_info->page_one_title}}</a>
                             </li>
                             @endif
-                             @if($info->page_two_title!='')
-                            <li class=""><a href="#service-two" data-toggle="tab"><i class="fa fa-star"></i> {{$info->page_two_title}}</a>
+                             @if($fellowship_info->page_two_title!='')
+                            <li class=""><a href="#service-two" data-toggle="tab"><i class="fa fa-star"></i> {{$fellowship_info->page_two_title}}</a>
                             </li>
                             @endif
-                             @if($info->page_three_title!='')
-                            <li class=""><a href="#service-three" data-toggle="tab"><i class="fa fa-star"></i> {{$info->page_three_title}}</a>
+                             @if($fellowship_info->page_three_title!='')
+                            <li class=""><a href="#service-three" data-toggle="tab"><i class="fa fa-star"></i> {{$fellowship_info->page_three_title}}</a>
                             </li>
                             @endif
-                             @if($info->page_four_title!='')
-                            <li class=""><a href="#service-four" data-toggle="tab"><i class="fa fa-star"></i> {{$info->page_four_title}}</a>
+                             @if($fellowship_info->page_four_title!='')
+                            <li class=""><a href="#service-four" data-toggle="tab"><i class="fa fa-star"></i> {{$fellowship_info->page_four_title}}</a>
                             </li>
                             @endif
                         </ul>{{--   
                             <div class="col-md-1"></div> --}}
                             <div id="myTabContent" class="tab-content col-md-10">
-                             @if($info->page_one_title!='')
+                             @if($fellowship_info->page_one_title!='')
                                 <div class="tab-pane fade active in" id="service-one">
-                                    {!!$info->page_one_content!!}
+                                    {!!$fellowship_info->page_one_content!!}
                                 </div>
                              @endif
-                             @if($info->page_two_title!='')
+                             @if($fellowship_info->page_two_title!='')
                                 <div class="tab-pane fade" id="service-two">
-                                     {!!  $info->page_two_content!!}
-                                    {{-- <p>{{$info->page_two_content}}</p> --}}
+                                     {!!  $fellowship_info->page_two_content!!}
+                                    {{-- <p>{{$fellowship_info->page_two_content}}</p> --}}
                                 </div>
                              @endif
-                             @if($info->page_three_title!='')
+                             @if($fellowship_info->page_three_title!='')
                                 <div class="tab-pane fade" id="service-three">
-                                    {!!$info->page_three_content!!}
+                                    {!!$fellowship_info->page_three_content!!}
                                 </div>
                              @endif
-                             @if($info->page_four_title!='')
+                             @if($fellowship_info->page_four_title!='')
                                 <div class="tab-pane fade" id="service-four">
-                                    {!! $info->page_four_content !!}
+                                    {!! $fellowship_info->page_four_content !!}
                                 </div>
                                 @endif
                             </div>
@@ -94,5 +93,4 @@
             </div>
         </section>
          @stop
-     @endforeach
  @endif

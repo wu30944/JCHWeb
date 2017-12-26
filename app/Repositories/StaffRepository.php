@@ -8,6 +8,7 @@
     use Validator;
     use Response;
     use DB;
+    use Storage;
 
     use Illuminate\Pagination\LengthAwarePaginator;
     use Illuminate\Pagination\Paginator;
@@ -254,60 +255,61 @@
         上傳圖片的function
         2017/05/13 
         */
-        public function PhotoUpload(Request $request,$id)
-        {   
+        public function PhotoUpload(Request $request)
+        {
             $file = $request->file('image');
-             // $file = $request->file('image');
+            // $file = $request->file('image');
 
-            $catalog = '/staff';
+            $id=$request->id;
+
+            //$catalog = '/staff';
 
             //必須是image的驗證
             $input = array('image' => $file);
             $rules = array(
                 'image' => 'image'
             );
-            
+
             $validator = \Validator::make($input, $rules);
             if ( $validator->fails() ) {
-                // return \Response::json([
-                //     'success' => false,
-                //     'errors' => $validator->getMessageBag()->toArray()
-                // ]);
+                \debug('1');
                 return collect(['ServerNo'=>'404','Result' =>$validator->getMessageBag()->toArray()]);
-            }else{       
-                
-                $destinationPath = public_path().env('PHOTO_PATH').$catalog;
 
+            }else{
 
-                if (!is_dir($destinationPath))
-                {
-                    mkdir($destinationPath);
-                }
-                
                 //都將檔案存成jpg檔案 命名方式依照團契的ＩＤ命名,這樣就不會有重複的問題
                 $filename = $id.'.jpg';//$file->getClientOriginalName();
 
-                // $dataID=$this->dtStaff->where('id','=',$id)->where('cod_id','=',$request->duty)->pluck('id');
+                $FilePath=config('app.staff_photo_path').'/'.$filename;
                 $data = staff::find($id);
-                \Debugbar::info($filename);
-                $data->image_path = env('PHOTO_PATH').$catalog.'/'.$filename;
+
+                $data->image_path = env('APP_URL').Storage::url($FilePath);
                 $data->save();
 
 
-                //  移動檔案
+                /*
+                 * 2017/12/22   使用Laravel內建儲存檔案的方法
+                 *              此處會將檔案存到指定路徑下(storage下)，
+                 *              第一個參數是完整資料夾
+                 *              第二個參數是圖片檔案
+                 * */
+                Storage::put(
+                    $FilePath,
+                    file_get_contents($request->file('image')->getPathname()
+                    //file_get_contents($request->file('image')->getLinkTarget()
+                    )
+                );
+
+                /*//  移動檔案
                 if(!$file->move($destinationPath,$filename)){
                     // return response()->json(['ServerNo' => '404','Result' => '圖片儲存失敗！']);
                     return collect(['ServerNo'=>'404','Result' => '圖片儲存失敗！']);
-                }
+                }*/
 
-                 return collect(['ServerNo'=>'200','Result'=>'照片上傳成功！']);
-                // return response()->json(['ServerNo' => '200','Result' => '照片上傳成功！']);
+                return collect(['ServerNo'=>'200','Result'=>'照片上傳成功！']);
             }
-            // return \Response::json([
-            //     'success' => true,
-            //     'name' => $filename,
-            // ]);
-            
+
+
         }
 
         public function getOrderByPageing($num)

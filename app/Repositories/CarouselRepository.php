@@ -6,6 +6,7 @@
     use Validator;
     use Response;
     use DB;
+    use Storage;
 
     use Illuminate\Pagination\LengthAwarePaginator;
     use Illuminate\Pagination\Paginator;
@@ -160,6 +161,7 @@
 
             $file = $request->file('image');
 
+            $id=$request->id;
 
             //必須是image的驗證
             $input = array('image' => $file);
@@ -176,29 +178,43 @@
                 ]);
             }else{
 
-                $destinationPath = public_path().config('app.carousel_photo_path');
+               /*$destinationPath = public_path().config('app.carousel_photo_path');
 
 
                 if (!is_dir($destinationPath))
                 {
                     mkdir($destinationPath);
-                }
+                }*/
 
                 //都將檔案存成jpg檔案 命名方式依照團契的ＩＤ命名,這樣就不會有重複的問題
-                $filename = $request->get('id').'.jpg';
+                $filename = $id.'.jpg';//$file->getClientOriginalName();
 
-                $data = carousel::find($request->get('id'));
-                $data->photo_path = config('app.carousel_photo_path').'/'.$filename;
+                $FilePath=config('app.carousel_photo_path').'/'.$filename;
+                $data = carousel::find($id);
+                //\debug($filename);
+                $data->photo_path = env('APP_URL').Storage::url($FilePath);
                 $data->save();
 
 
-                //  移動檔案
-                if(!$file->move($destinationPath,$filename)){
-                    return collect(['ServerNo' => '404','Message' => '圖片儲存失敗','Data'=>""]);
-                }
+                /*
+                 * 2017/12/22   使用Laravel內建儲存檔案的方法
+                 *              此處會將檔案存到指定路徑下(storage下)，
+                 *              第一個參數是完整資料夾
+                 *              第二個參數是圖片檔案
+                 * */
+                Storage::put(
+                    $FilePath,
+                    file_get_contents($request->file('image')->getPathname()
+                    //file_get_contents($request->file('image')->getLinkTarget()
+                    )
+                );
 
+                //  移動檔案
+                /*if(!$file->move($destinationPath,$filename)){
+                    return collect(['ServerNo' => '404','Message' => '圖片儲存失敗','Data'=>""]);
+                }*/
                 return  collect(['ServerNo'=>'200','Message'=>'圖片儲存成功','Data'=>$data->photo_path]);
-//                return collect(['ServerNo' => '200','Message' => '圖片儲存成功','Data'=> $data]);
+
             }
 
         }

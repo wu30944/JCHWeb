@@ -185,7 +185,7 @@
 
                     <div class="modal-body">
                         <div class="deleteContent" >
-                            {!!form::text('DeleteCarouselID','',['class'=>'form-control','id'=>'DeleteCarouselID'])!!}
+                            {!!form::text('DeleteCarouselID','',['class'=>'form-control hide','id'=>'DeleteCarouselID'])!!}
                             @lang('default.sure_delete') <span class="name"></span> ? <span
                                     class="hidden did"></span>
                         </div>

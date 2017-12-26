@@ -6,6 +6,7 @@
     use Validator;
     use DB;
     use Response;
+    use Storage;
 
 /**
 * Our pokemon repository, containing commonly used queries
@@ -149,12 +150,15 @@
         /*
               上傳圖片的function
               2017/05/13
+              2017/12/22 修改儲存照片的方法，原來方法是使用move方式，
+                         但後來發現，在windows環境，移動過去後會沒有權限，
+                         導致相片無法顯示，改成使用Storage這Class
           */
         public function CreatePhotoUpload(Request $request,$id)
         {
             $file = $request->file('image');
+            //\Debugbar::info($request->file('image'));
 
-            \Debugbar::info($id);
 
             //必須是image的驗證
             $input = array('image' => $file);
@@ -167,28 +171,44 @@
                 return collect(['ServerNo'=>'404','Result' =>$validator->getMessageBag()->toArray()]);
             }else{
 
-                $destinationPath = public_path().config('app.news_photo_path');
+                /*$destinationPath = public_path().config('app.news_photo_path');
 
 
                 if (!is_dir($destinationPath))
                 {
                     mkdir($destinationPath);
-                }
+                }*/
 
                 //都將檔案存成jpg檔案 命名方式依照團契的ＩＤ命名,這樣就不會有重複的問題
                 $filename = $id.'.jpg';//$file->getClientOriginalName();
 
-                $data = news::find($id);
-                \Debugbar::info($filename);
-                $data->image = config('app.news_photo_path').'/'.$filename;
-                $data->save();
+//                $FilePath=Storage::putFileAs(config('app.test_news_photo_path'),$file,$filename);
+//                \Debugbar::info(Storage::url($FilePath));
 
+                $FilePath=config('app.news_photo_path').'/'.$filename;
+                $data = news::find($id);
+
+                $data->image = env('APP_URL').Storage::url($FilePath);
+                $data->save();
+                //\Debugbar::info($FilePath);
+                /*
+                 * 2017/12/22   使用Laravel內建儲存檔案的方法
+                 *              此處會將檔案存到指定路徑下(storage下)，
+                 *              第一個參數是完整資料夾
+                 *              第二個參數是圖片檔案
+                 * */
+                Storage::put(
+                    $FilePath,
+                    file_get_contents($request->file('image')->getPathname()
+                    //file_get_contents($request->file('image')->getLinkTarget()
+                    )
+                );
 
                 //  移動檔案
-                if(!$file->move($destinationPath,$filename)){
+                /*if(!$file->move($destinationPath,$filename)){
                     // return response()->json(['ServerNo' => '404','Result' => '圖片儲存失敗！']);
                     return collect(['ServerNo'=>'404','Result' => '圖片儲存失敗！']);
-                }
+                }*/
 
                 return collect(['ServerNo'=>'200','Result'=>'照片上傳成功！']);
                 // return response()->json(['ServerNo' => '200','Result' => '照片上傳成功！']);

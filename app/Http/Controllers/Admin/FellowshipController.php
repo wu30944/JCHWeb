@@ -12,6 +12,7 @@ use Input;
 use DB;
 use Validator;
 use Redirect;
+use Storage;
 
 use App\Repositories\FellowshipRepository;
 
@@ -40,15 +41,17 @@ class FellowshipController extends Controller
         with('dtMeetingInfo',$dtMeetingInfo)->with('dtControl',$dtControl);
     }
 
-    public function EditItem(Request $req)
+    public function EditItem(Request $request)
     {
-         //根據使用者選擇的資訊，將資料明細帶出
-        $fellowship_info=$this->fellowshipRepository->getFellowshipD($req->ID);
-            /*DB::select('SELECT * FROM fellowship_d b
-                                    where b.id=?', [$req->PARA_1]);*/
+        //根據使用者選擇的資訊，將資料明細帶出
+        //$fellowship_info=$this->fellowshipRepository->getFellowshipD($req->ID);
+        $data=$this->fellowshipRepository->getFellowshipD($request->id);
+        //\Debugbar::info($data);
+        return response ()->json (['Data'=> $data] );
 
-            //\Session::flash('flash_message', 'Successfully updated nerd!');
-        return response ()->json ( $fellowship_info );
+        //\Session::flash('flash_message', 'Successfully updated nerd!');
+//        \Debugbar::info($fellowship_info['image_path']);
+//        return response ()->json ( ['Data'=>$fellowship_info,'Image'=>env('APP_URL').Storage::url($fellowship_info->image_path)] );
 
     }
 
@@ -107,7 +110,8 @@ class FellowshipController extends Controller
                 if(!empty($request->file('image')))
                 {
                     \Debugbar::info('有進入上傳照片function');
-                    $this->PhotoUpload($request);
+                    /*$this->PhotoUpload($request);*/
+                    $this->fellowshipRepository->PhotoUpload($request);
                 }
 
                 DB::connection()->getPdo()->commit();

@@ -4,9 +4,11 @@ return [
     /*
      * 存放上傳圖片的路徑
      * */
-    'fellowship_photo_path'=>'/photo/fellowship',
-    'news_photo_path'=>'/photo/news',
-    'carousel_photo_path'=>'/photo/carousel',
+    'fellowship_photo_path'=>'public/photo/fellowship',
+    //'news_photo_path'=>'/photo/news',
+    'carousel_photo_path'=>'public/photo/carousel',
+    'news_photo_path'=>'public/photo/news',
+    'staff_photo_path'=>'public/photo/staff',
     /*
     |--------------------------------------------------------------------------
     | Application Name

@@ -9,6 +9,7 @@ use Models\Category;
 use Models\dtControl;
 use Input;
 use DB;
+use Storage;
 
 
 use App\Repositories\fellowshipRepository;
@@ -46,20 +47,29 @@ class NewsController extends Controller
         $isPaging=true;
           
           //Debug專用
-         \Debugbar::info( date("m"));
+        $FilePath=config('app.news_photo_path').'/';
+
+
+         \Debugbar::info(public_path().Storage::url($FilePath));
 
         return view('DataMaintain.MA_News',compact('dtfellowship','dtControl'),compact('dtNews','isPaging'));
     }
 
+
+    /*
+     * 2017/12/22    因為照片儲存路徑與原來方式不同
+     *               所以，修改傳給view的照片參數，
+     *
+     * */
     public function editItem(Request $request)
     {
-         \Debugbar::info( $request->id );
+         //\Debugbar::info( $request->id );
 
         $data=$this->dtNews->find($request->id);
 
          //Debug專用
-         \Debugbar::info( $data );
-
+        //\Debugbar::info($data->image);
+        \debug($request->id);
         return response ()->json ( $data );
     }
 
@@ -225,17 +235,19 @@ class NewsController extends Controller
 
     public function DeleteItem(Request $request)
     {
+
+        $this->DeletePhoto($request->id.'.jpg');
         return $this->dtNews->delete($request->get('id'));
     }
 
     public function DeletePhoto($FileName)
     {
-        $destinationPath = public_path().config('app.fellowship_photo_path').'/'.$FileName;
+
+        $FilePath=config('app.news_photo_path').'/'.$FileName;
+
+        $destinationPath=public_path().Storage::url($FilePath);
         if(file_exists($destinationPath)){
             unlink($destinationPath);//將檔案刪除
-        }else if(file_exists($destinationPath)){
-
-            unlink($destinationPath);
         }else{
             echo 'Not Found Photo';
         }

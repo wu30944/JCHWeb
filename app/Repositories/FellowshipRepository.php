@@ -8,6 +8,7 @@
     use Validator;
     use Response;
     use DB;
+    use Storage;
 
 
     class FellowshipRepository
@@ -166,14 +167,13 @@
 
         public function DeletePhoto($FileName)
         {
-            $destinationPath = public_path().config('app.fellowship_photo_path').'/'.$FileName;
+            $FilePath=config('app.fellowship_photo_path').'/'.$FileName;
+
+            $destinationPath=public_path().Storage::url($FilePath);
             if(file_exists($destinationPath)){
                 unlink($destinationPath);//將檔案刪除
-            }else if(file_exists($destinationPath)){
-
-               unlink($destinationPath);
             }else{
-                    echo 'Not Found Photo';
+                echo 'Not Found Photo';
             }
         }
 
@@ -181,12 +181,14 @@
         上傳圖片的function
         2017/05/13 
         */
-        public function PhotoUpload(Request $request,$id)
+        public function PhotoUpload(Request $request)
         {   
             $file = $request->file('image');
              // $file = $request->file('image');
 
-            $catalog = '/staff';
+            $id=$request->id;
+
+            //$catalog = '/staff';
 
             //必須是image的驗證
             $input = array('image' => $file);
@@ -196,44 +198,49 @@
             
             $validator = \Validator::make($input, $rules);
             if ( $validator->fails() ) {
-                // return \Response::json([
-                //     'success' => false,
-                //     'errors' => $validator->getMessageBag()->toArray()
-                // ]);
+                \debug('1');
                 return collect(['ServerNo'=>'404','Result' =>$validator->getMessageBag()->toArray()]);
-            }else{       
-                
-                $destinationPath = public_path().env('PHOTO_PATH').$catalog;
 
+            }else{
+                /*
+                $destinationPath = public_path().env('PHOTO_PATH').$catalog;
 
                 if (!is_dir($destinationPath))
                 {
                     mkdir($destinationPath);
-                }
-                
+                }*/
+
                 //都將檔案存成jpg檔案 命名方式依照團契的ＩＤ命名,這樣就不會有重複的問題
                 $filename = $id.'.jpg';//$file->getClientOriginalName();
 
-                // $dataID=$this->dtFellowship->where('id','=',$id)->where('cod_id','=',$request->duty)->pluck('id');
-                $data = staff::find($id);
-                \Debugbar::info($filename);
-                $data->image_path = env('PHOTO_PATH').$catalog.'/'.$filename;
+                $FilePath=config('app.fellowship_photo_path').'/'.$filename;
+                $data = fellowship_d::find($id);
+                \debug($filename);
+                $data->image_path = env('APP_URL').Storage::url($FilePath);
                 $data->save();
 
 
-                //  移動檔案
+                /*
+                 * 2017/12/22   使用Laravel內建儲存檔案的方法
+                 *              此處會將檔案存到指定路徑下(storage下)，
+                 *              第一個參數是完整資料夾
+                 *              第二個參數是圖片檔案
+                 * */
+                Storage::put(
+                    $FilePath,
+                    file_get_contents($request->file('image')->getPathname()
+                    //file_get_contents($request->file('image')->getLinkTarget()
+                    )
+                );
+
+                /*//  移動檔案
                 if(!$file->move($destinationPath,$filename)){
                     // return response()->json(['ServerNo' => '404','Result' => '圖片儲存失敗！']);
                     return collect(['ServerNo'=>'404','Result' => '圖片儲存失敗！']);
-                }
+                }*/
 
                  return collect(['ServerNo'=>'200','Result'=>'照片上傳成功！']);
-                // return response()->json(['ServerNo' => '200','Result' => '照片上傳成功！']);
             }
-            // return \Response::json([
-            //     'success' => true,
-            //     'name' => $filename,
-            // ]);
             
         }
 
@@ -247,12 +254,17 @@
          * */
         public function getFellowshipD($fellowship_id)
         {
-            return $this->dtFellowship_d->where('fellowship_id','=',$fellowship_id)->get();
+            return $this->dtFellowship_d->where('fellowship_id','=',$fellowship_id)->first();
         }
 
         public function getSunday()
         {
             return $this->dtFellowship->where('NAME','LIKE','%' . '成人主日學' . '%')->select('id')->get();
+        }
+
+        public function find($id)
+        {
+            return $this->dtFellowship_d->where('fellowship_id','=',$id)->get();
         }
 
     }

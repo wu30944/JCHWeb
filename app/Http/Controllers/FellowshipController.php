@@ -11,6 +11,7 @@ use Input;
 use DB;
 use Validator;
 use Redirect;
+use Storage;
 
 use App\Repositories\FellowshipRepository;
 
@@ -206,15 +207,19 @@ class FellowshipController extends Controller
            /* DB::select('SELECT * FROM fellowship_d a
                             where a.fellowship_id=?', [$id]);*/
 
-        foreach($fellowship_info as $value)
-        {
-            $page_title=$value->name;
-        }
-
+        \Debugbar::info($fellowship_info->name);
+        $page_title=$fellowship_info->name;
+//        foreach($fellowship_info as $value)
+//        {
+//            $page_title=$value->name;
+//        }
+        $Image = env('APP_URL').Storage::url($fellowship_info->image_path);
 
         return view('fellowship.fellowship_info')->with('dtfellowship',$dtfellowship)
                                                         ->with('fellowship_info',$fellowship_info)
-                                                        ->with('page_title',$page_title);
+                                                        ->with('page_title',$page_title)
+                                                        ->with('Image',$Image);
+
     }
 
 

@@ -518,9 +518,8 @@
                     $('#edit_photo_text').addClass('glyphicon-check');
                     $('#ShowImg').attr('src','http://placehold.it/900x300');
 
-
                 }else{
-                    //alert('update');
+                    //alert(data.image);
                     $('#ShowImg').attr('src',data.image);
                     $('#edit_photo_text').text("更換照片");
 
@@ -746,6 +745,8 @@
             success: function(data) {
 
                 $('.item' + $('#news_id').val()).remove();
+                $(window).scrollTop(0);
+                $('#DeleteModel').modal('hide');
 
             }, errors:function(e){
                  var errors = e.responseJSON;

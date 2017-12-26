@@ -8,6 +8,7 @@ use App\Http\Requests;
 use Input;
 use DB;
 use Models\carousel;
+use Storage;
 
 use App\Repositories\CarouselRepository;
 
@@ -79,38 +80,26 @@ class CarouselController extends Controller
 
   public function DeleteItem(Request $request)
   {
-        //\Debugbar::info($request->DeleteCarouselID);
-         $Result = $this->objCarousel->delete($request->DeleteCarouselID);
-
-        return back()->with($Result['ServerNo'], $Result['Message']);
+      //\Debugbar::info($request->DeleteCarouselID);
+      $Result = $this->objCarousel->delete($request->DeleteCarouselID);
+      $this->DeletePhoto($request->DeleteCarouselID.'.jpg');
+      return back()->with($Result['ServerNo'], $Result['Message']);
   }
 
-  /*
-    2017/08/21  新增“我們的牧師”這個view
+    public function DeletePhoto($FileName)
+    {
 
-  */
-  public function show_our_pastor()
-  {
+        $FilePath=config('app.carousel_photo_path').'/'.$FileName;
 
-        $dtfellowship = $this->fellowshipRepository->getAll();
+        $destinationPath=public_path().Storage::url($FilePath);
 
-        $dtPastor= $this->staff->getStaffD('1');
-        \Debugbar::info($dtPastor);
-      return view('staff.our_pastor',compact('dtfellowship','dtPastor'));
-  }
+        if(file_exists($destinationPath)){
+            unlink($destinationPath);//將檔案刪除
+        }else{
+            echo $destinationPath;
+        }
 
-
-  public function MA_OurPastor_D(Request $request)
-  {
-    $staff_id=$request->id;
-    $staff_name=$request->name;
-   
-    $Data= $this->staff->getPastorD($staff_id,$staff_name);
-    // \Debugbar::info($Data[0]->content);
-    // $Result=$Data[0]->content;
-
-    return   response()->json(['ServerNo' => '200','data' => $Data[0]]);
-  }
+    }
 
   public function UpdateItemD(Request $request)
   {

@@ -429,32 +429,32 @@
             url: '{{route('Fellowship.Edit')}}',//'/admin/MA_Fellowship_D',
             data: {
                 '_token': $('input[name=_token]').val(),
-                'ID':stuff[1],
+                'id':stuff[1],
                     },
             success: function(data){
-                $('#edit_photo').text(" 新增照片");
-                $('#Introduction_Title').val(data[0].introduction_title);
-                // $('#Introduction_Content').val(data[0].introduction_content);
-                SetContents(objIntroductionContent,data[0].introduction_content);
-                $('#Page_one_Title').val(data[0].page_one_title);
-                $('#Page_two_Title').val(data[0].page_two_title);
-                $('#Page_three_Title').val(data[0].page_three_title);
-                $('#Page_four_Title').val(data[0].page_four_title);
+                //alert(data['Data'].introduction_title);
+                $('#Introduction_Title').val(data['Data'].introduction_title);
+                // $('#Introduction_Content').val(data['Data'].introduction_content);
+                SetContents(objIntroductionContent,data['Data'].introduction_content);
+                $('#Page_one_Title').val(data['Data'].page_one_title);
+                $('#Page_two_Title').val(data['Data'].page_two_title);
+                $('#Page_three_Title').val(data['Data'].page_three_title);
+                $('#Page_four_Title').val(data['Data'].page_four_title);
 
-                SetContents(objPageOneContent,data[0].page_one_content);
-                SetContents(objPageTwoContent,data[0].page_two_content);
-                SetContents(objPageThreeContent,data[0].page_three_content);
-                SetContents(objPageFourContent,data[0].page_four_content);
+                SetContents(objPageOneContent,data['Data'].page_one_content);
+                SetContents(objPageTwoContent,data['Data'].page_two_content);
+                SetContents(objPageThreeContent,data['Data'].page_three_content);
+                SetContents(objPageFourContent,data['Data'].page_four_content);
 
-                $('#fellowship_id').val(data[0].id);
+                $('#fellowship_id').val(data['Data'].id);
 
-                if(data[0].image_path=="" ||data[0].image_path==undefined){
-                    $('#edit_photo').text(" 新增照片");
+                if(data['Data'].image_path=="" ||data['Data'].image_path=='undefined'){
+                    $('#edit_photo').text("新增照片");
                     $('#ShowImg').attr('src','/photo/public/sample.jpg');
                 }else{
-                    $('#ShowImg').attr('src',data[0].image_path);
-                    $('#edit_photo').text(" 更換照片");
-                    // alert(data[0].image_path);
+                    $('#ShowImg').attr('src',data['Data'].image_path);
+                    $('#edit_photo').text("更換照片");
+                    // alert(data['Data'].image_path);
                 }
               
 
@@ -573,7 +573,7 @@
                     setTimeout(function () {
                         $(".alert-block").hide(200);
                     }, 3000);
-                    alert(data);
+                    //alert(data);
                 },error:function(e)
                 {
                     var errors = e.responseJSON;
