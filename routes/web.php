@@ -222,4 +222,9 @@ Route::get('/SundayPreview',['as'=>'SundayPreview','uses'=>'SundayPreviewControl
 */
 Route::get('/Presidency',['as'=>'Presidency','uses'=>'StaffController@ShowPresidency']);
 
+/*
+ *  2018/01/16 活動相簿功能 路由
+ * */
+Route ::get('/ActionAlbum',['as'=>'album.Index','uses'=>'AlbumController@Index']);
+Route ::get('/ActionAlbum/{Id}/{strAlbumName?}',['as'=>'album.IndexD','uses'=>'AlbumController@IndexD']);
 

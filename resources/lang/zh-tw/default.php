@@ -75,6 +75,15 @@ return array(
     ,'language'=>'語言'
     ,'sunday_date'=>'禮拜日期'
     ,'month'=>'月'
+    ,'isshow'=>'是否顯示'
+    ,'album_name'=>'相簿名稱'
+    ,'all_upload'=>'整批上傳'
+    ,'select_photo'=>'選擇相片'
+    ,'album_photo'=>'相簿照片'
+    ,'file_name'=>'檔案名稱'
+    ,'batch_delete'=>'批次刪除'
+    ,'jch_church'=>'建成教會'
+
 	);
 
  ?>

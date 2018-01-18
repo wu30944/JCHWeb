@@ -261,8 +261,7 @@
 			要記得，必須要有paginate()，在blade才能夠使用下列方法-->
 	        <div class="row">
 				<div class="col-lg-12 text-center">
-					{{$dtvideos->appends((isset($request))?['SearchVideoType'=>$request->SearchVideoType,'SearchTheme'=>$request->SearchTheme,
-                    'SearchSpeaker'=>$request->SearchSpeaker,'SearchSDate'=>$request->SearchSDate,'SearchEDate'=>$request->SearchEDate]:'')->render()}}
+					{{$dtvideos->render()}}
 				</div>
 			</div>
 			{{-- @include('WebUIControl.Pager') --}}

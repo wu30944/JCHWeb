@@ -10,7 +10,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			<img class="navbar-img"  alt="Brand" src="../photo/public/church_logo.png">
-			<a class="navbar-brand" href="{{route('index')}}">建成教會</a>
+			<a class="navbar-brand" href="{{route('index')}}">@lang('default.jch_church')</a>
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse "
@@ -18,33 +18,33 @@
 			<ul class="nav navbar-nav navbar-right">
 			
 				<li class="dropdown" ><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><strong>關於建成</strong> <b class="caret"></b></a>
+					data-toggle="dropdown"><strong>@lang('function_title.about_jch')</strong> <b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="{{url('about')}}">教會資訊</a></li>
-						<li><a href="{{url('our_pastor')}}">建成牧師</a></li>
-						<li><a href="{{route('elder_deacon')}}">建成長執</a></li>
+						<li><a href="{{url('about')}}">@lang('function_title.church_info')</a></li>
+						<li><a href="{{url('our_pastor')}}">@lang('function_title.jch_pastor')</a></li>
+						<li><a href="{{route('elder_deacon')}}">@lang('function_title.jch_elder_deacon')</a></li>
 						{{-- <li><a href="{{url('Presidency')}}">建成同工</a></li> --}}
 						{{-- <li><a href="{{url('contact')}}">聯絡我們</a></li> --}}
 					</ul>
 				</li>
-
-
-								<li>
-				<a href=" {{ route('news') }}" role="btn" ><strong>教會消息</strong></a> </li>
-
-
+				<li>
+					<a href=" {{ route('news') }}" role="btn" ><strong>@lang('function_title.news')</strong></a>
+				</li>
+				<li>
+					<a href=" {{ route('album.Index') }}" role="btn" ><strong>@lang('function_title.ActionAlbum')</strong></a>
+				</li>
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><strong>主日預告</strong><b class="caret"></b></a>
+					data-toggle="dropdown"><strong>@lang('function_title.sunday_notic')</strong><b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="{{url('SundayPreview')}}">信息預告</a></li>
+						<li><a href="{{url('SundayPreview')}}">@lang('function_title.SundayPreview')</a></li>
 						<li>
-							<a href=" {{ url('MeetingInfo') }}">聚會資訊</a>
+							<a href=" {{ url('MeetingInfo') }}">@lang('function_title.meeting_info')</a>
 						</li>
 						{{-- <li><a href="{{route('inc.adultsunday')}}">活動資訊</a></li> --}}
 					</ul>
 				</li>
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><strong>團契生活</strong><b class="caret"></b></a>
+					data-toggle="dropdown"><strong>@lang('function_title.fellowship_life')</strong><b class="caret"></b></a>
 					<ul class="dropdown-menu">
 					@if (isset($dtfellowship))
 						{{-- expr --}}
@@ -58,7 +58,7 @@
 				</li>
 
 				<li class="dropdown" ><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><strong>影音專區</strong> <b class="caret"></b></a>
+					data-toggle="dropdown"><strong>@lang('function_title.video_area')</strong> <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="{{route('more_video','1')}}">華語禮拜影片</a></li>
 						<li><a href="{{route('more_video','2')}}">台語禮拜影片</a></li>

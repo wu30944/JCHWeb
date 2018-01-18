@@ -44,6 +44,9 @@
 {{-- <script src="../loading/spin.js"></script> --}}
 <script src="../loading/LoadingScreen.js"></script>
 
+    {{--20180114 相片插件--}}
+<script src="{{asset('js/JqueryCyclePlug/jquery.cycle.js')}}"></script>
+
 <!-- JAVASCRIPTS -->
 <!-- Script to Activate the Carousel -->
 @include('inc.initialjs')

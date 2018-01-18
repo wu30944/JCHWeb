@@ -10,24 +10,24 @@
 	            </div>
 
 				<div class="container" >
-				<div class="form-group row add">
-				<br>
-					<div class="col-md-4">
-					@if(Gate::forUser(auth('admin')->user())->check('admin.ActionPhoto.Create'))
-						<button class="btn btn-primary" type="submit" id="add">
-							<span class="glyphicon glyphicon-plus"></span> @lang('default.add')
-						</button>
-					@endif
-					@if(Gate::forUser(auth('admin')->user())->check('admin.ActionPhoto.Edit'))
-						<button class="btn btn-info" id="edit">
-							<span class="glyphicon glyphicon-pencil"></span> @lang('default.edit')
-						</button>
-						<button type="button" class="btn btn-warning" data-dismiss="modal" disabled="disabled" id="cancel">
-							<span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
-						</button>
+					<div class="form-group row add">
+					<br>
+						<div class="col-md-4">
+						@if(Gate::forUser(auth('admin')->user())->check('admin.ActionPhoto.Create'))
+							<button class="btn btn-primary" type="submit" id="add">
+								<span class="glyphicon glyphicon-plus"></span> @lang('default.add')
+							</button>
+						@endif
+						@if(Gate::forUser(auth('admin')->user())->check('admin.ActionPhoto.Edit'))
+							<button class="btn btn-info" id="edit">
+								<span class="glyphicon glyphicon-pencil"></span> @lang('default.edit')
+							</button>
+							<button type="button" class="btn btn-warning" data-dismiss="modal" disabled="disabled" id="cancel">
+								<span class='glyphicon glyphicon-remove'></span> @lang('default.cancel')
+							</button>
+						</div>
+						@endif
 					</div>
-					@endif
-				</div>
 
 				{!! Form::open(['route'=>'ActionPhoto.Create','id'=>'form_link_add']) !!}
 				 <div class="row">

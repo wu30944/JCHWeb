@@ -16,6 +16,7 @@
             <h1 class="page-header">@lang('function_title.MAStaffIntroduction')
                 {{-- <small>Subheading</small> --}}
             </h1>
+
             <div class="lgray-bg ">
                 <div class="container:after">
                     <ol class="breadcrumb">

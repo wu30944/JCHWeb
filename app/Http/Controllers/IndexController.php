@@ -17,6 +17,8 @@ use App\Repositories\NewsRepository;
 use App\Repositories\FellowshipRepository;
 use App\Repositories\MeetingRepository;
 use App\Repositories\CarouselRepository;
+use App\Repositories\AlbumDRepository;
+use App\Repositories\AlbumRepository;
 
 class IndexController extends Controller
 {
@@ -26,11 +28,15 @@ class IndexController extends Controller
     public $dtNews;
     public $dtMeetingInfo;
     public $objCarousel;
+    public $objAlbum;
+    public $objAlbumD;
 
     public function __construct(ActionPhotosRepository $ActionPhotosRepository,MoreYoutubeRepository $MoreYoutubeRepository,NewsRepository $NewsRepository,
         FellowshipRepository $FellowshipRepository,
         MeetingRepository $MeetingRepository,
-        CarouselRepository $CarouselRepository)
+        CarouselRepository $CarouselRepository,
+        AlbumRepository $AlbumRepository,
+        AlbumDRepository $AlbumDRepository)
     {   
         $this->dtPhoto_action=$ActionPhotosRepository;
         $this->dtMoreYoutube=$MoreYoutubeRepository;
@@ -38,6 +44,8 @@ class IndexController extends Controller
         $this->dtFellowship=$FellowshipRepository;
         $this->dtMeetingInfo=$MeetingRepository;
         $this->objCarousel = $CarouselRepository;
+        $this->objAlbum = $AlbumRepository;
+        $this->objAlbumD = $AlbumDRepository;
     }
 
     //
@@ -69,10 +77,26 @@ class IndexController extends Controller
 
         $dtCarousel = $this->objCarousel->getIsShowCarousel();
 
-        \Debugbar::info($dtCarousel);
-        return view('home.index')->with('dtfellowship',$dtfellowship)->with('dtVerse',$dtVerse)->with('photo_link',$photo_link)->with('NewVideo',$NewVideo)
-                    ->with('WidgetNews',$WidgetNews)->with('WidgetMeetingInfo',$WidgetMeetingInfo)
-                    ->with('dtCarousel',$dtCarousel);
+
+        /*20180115 撈出每本相簿中N張相片*/
+        $dtAlbum = $this->objAlbum->getAlbum(6);
+        $objAlbumSet = $this->objAlbumD->GetAlbumPhotoPutInArray($dtAlbum,5);
+
+//        foreach($objAlbumSet as $dtAlbum){
+//            foreach($dtAlbum as $item){
+//                \Debugbar::info($item->photo_path);
+//            }
+//        }
+
+        return view('home.index')
+            ->with('dtfellowship',$dtfellowship)
+            ->with('dtVerse',$dtVerse)
+            ->with('photo_link',$photo_link)
+            ->with('NewVideo',$NewVideo)
+            ->with('WidgetNews',$WidgetNews)
+            ->with('WidgetMeetingInfo',$WidgetMeetingInfo)
+            ->with('dtCarousel',$dtCarousel)
+            ->with('objAlbumSet',$objAlbumSet);
     }
 
     public function more_youtube()

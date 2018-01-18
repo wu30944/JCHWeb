@@ -8,7 +8,7 @@ return array(
 	,'sunday_notic'=>'主日預告'
 	,'action_info'=>'活動資訊'
 	,'jch_elder_deacon'=>'建成長執'
-	,'jch_pastor'=>'建成的牧師'
+	,'jch_pastor'=>'建成牧師'
 	,'video_area'=>'影音專區'
 	,'worship_video'=>'禮拜影片'
 	,'hymn_team_video'=>'聖歌隊影片'
@@ -28,6 +28,8 @@ return array(
     ,'MAActionPhoto'=>'活動照片資料維護'
     ,'JCHAbout'=>'關於建成資料維護'
     ,'MAWorshipPreview'=>'信息預告資料維護'
+    ,'Album'=>'相簿資料維護'
+    ,'ActionAlbum'=>'活動相簿'
 	);
 
  ?>

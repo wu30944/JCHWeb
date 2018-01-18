@@ -25,12 +25,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     -->
     <link rel="stylesheet" href="/dist/css/skins/skin-blue.min.css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
     {{--dataTabels--}}
     {{--<link href="/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet">--}}
@@ -40,9 +34,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link href="/dist/css/load/load.css" rel="stylesheet">
 
 
-    <link rel="stylesheet" href="{{ asset('css/jquery.datetimepicker.css')}}" >
-{{-- 2017/07/20.  新增CSS. 顯示日期包在框框內 --}}
-{{-- <link rel="stylesheet" href="{{ asset('css/DateStyle.css')}}" > --}}
+    <link rel="stylesheet" href="/css/jquery.datetimepicker.css" >
+    {{-- 2017/07/20.  新增CSS. 顯示日期包在框框內 --}}
+    {{-- <link rel="stylesheet" href="{{ asset('css/DateStyle.css')}}" > --}}
+
 
     @yield('css')
 </head>
@@ -199,7 +194,7 @@ desired effect
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.0 -->
-<script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="{{asset('js/bootcss/jquery.min.js')}}"></script>
 
 <!-- Bootstrap 3.3.6 -->
 <script src="/bootstrap/js/bootstrap.min.js"></script>
@@ -212,15 +207,24 @@ desired effect
 <script src="/plugins/tokenfield/dist/bootstrap-tokenfield.min.js"></script>
 <script src="/dist/js/common.js"></script>
 
-<script src="../js/jquery.datetimepicker.full.js"></script>
+<script src="{{asset('js/jquery.datetimepicker.full.js')}}"></script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
     
 {{--2017/09/20 下方js是載入畫面轉轉轉的部分--}}
-<script src="../loading/LoadingScreen.js"></script>
-<script src="../message/message.js"></script>
+
+<script src="{{asset('loading/LoadingScreen.js')}}"></script>
+<script src="{{asset('message/message.js')}}"></script>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="{{asset('js/html5shiv/html5shiv.min.js')}}"></script>
+<script src="{{asset('js/html5shiv/respond.min.js')}}"></script>
+<![endif]-->
+
 @yield('js')
         <!-- Main Footer -->
 @include('admin.layouts.mainFooter')

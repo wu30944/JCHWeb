@@ -7,6 +7,7 @@
     use DB;
     use Response;
     use Storage;
+    //use Illuminate\Container\Container as App;
 
 /**
 * Our pokemon repository, containing commonly used queries

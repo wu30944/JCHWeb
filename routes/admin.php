@@ -154,6 +154,17 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post('WorshipPreviewUpdate',['as'=>'WorshipPreview.Update','uses'=>'WorshipPreviewController@UpdateItem']);
     Route::post('WorshipPreviewDelete',['as'=>'WorshipPreview.Destory','uses'=>'WorshipPreviewController@DeleteItem']);
 
+    /*
+     * 2018/01/08  相簿資料維護 Route
+     * */
+    Route::get('MA_Album',['as'=>'Album.Show','uses'=>'AlbumController@index']);
+    Route::get('MA_Album/{album_name}',['as'=>'Album.Edit','uses'=>'AlbumController@EditItem']);
+    Route::post('MA_Album/Upload',['as'=>'Album.Upload','uses'=>'AlbumController@Upload']);
+    Route::post('MA_Album/Create',['as'=>'Album.Create','uses'=>'AlbumController@CreateItem']);
+    Route::post('MA_Album/DestoryAlbum',['as'=>'Album.DestoryAlbum','uses'=>'AlbumController@DestoryAlbum']);
+    Route::post('MA_Album/DestoryPhoto',['as'=>'Album.DestoryPhoto','uses'=>'AlbumController@DestoryPhoto']);
+//    Route::post('WorshipPreviewDelete',['as'=>'WorshipPreview.Destory','uses'=>'WorshipPreviewController@DeleteItem']);
+
 });
 
     Route::get('/', function () {

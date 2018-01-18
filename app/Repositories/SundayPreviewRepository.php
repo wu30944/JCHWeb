@@ -108,6 +108,7 @@
         public function delete($id)
         {
            $this->dtSundayPreview->find($id)->delete();
+
            return collect(['ServerNo'=>'200','Message'=> trans('message.DeleteSuccess')]);
 
         }

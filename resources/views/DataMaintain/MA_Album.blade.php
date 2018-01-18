@@ -5,209 +5,171 @@
 @section('content')
 
 <section class='container'>
-<style>
-.table-borderless tbody tr td, .table-borderless tbody tr th,
-    .table-borderless thead tr th {
-    border: none;
-}
-</style>
+    <style>
+    .table-borderless tbody tr td, .table-borderless tbody tr th,
+        .table-borderless thead tr th {
+        border: none;
+    }
+    </style>
 
-<body>
-    <div class="content full ">
-        <div class="col-lg-12">
-            <h1 class="page-header text-center">@lang('function_title.MAAlbum')</h1>
-        </div>
-
-    <div class="first">
-
-            @if(Auth::check())
-            <div class="form-group row add">
-            <br>
-                <div class="col-md-4">
-                    <button class="btn btn-primary" type="submit" id="add">
-                        <span class="glyphicon glyphicon-plus"></span> @lang('default.add')
-                    </button>
-                </div>
+    <body>
+        <div class="content full ">
+            <div class="col-lg-12">
+                <h1 class="page-header text-center">@lang('function_title.MAAlbum')</h1>
             </div>
-            @endif
-            <div class="row">
-                    @if ($message = Session::get('success'))
-                        <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            <strong>{{ $message }}</strong>
-                        </div>
-                    @elseif($message = Session::get('fails'))
-                        <div class="alert alert-danger alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            <strong>{{ $message }}</strong>
-                        </div>
 
-                    @endif
+        <div class="first">
+
+                @if(Auth::check())
+                <div class="form-group row add">
+                <br>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary" type="submit" id="add">
+                            <span class="glyphicon glyphicon-plus"></span> @lang('default.add')
+                        </button>
+                    </div>
                 </div>
-            {{ csrf_field() }}
-            <div class="table-responsive text-center">
-                {{-- <table class="table table-borderless table-striped" id="gridview"> --}}
-                <table class="table table-borderless table-striped" id="gridview">
-                    {{-- <table id="gridview" class="text-center table-striped" cellspacing="0" width="70%"> --}}
-                    <thead>
-                        <tr>
-                            {{-- <th class="text-center">#</th> --}}
-                            <th class="hidden"></th>
-                            <th class="text-center">相簿名稱</th>
+                @endif
+                <div class="row">
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-success alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @elseif($message = Session::get('fails'))
+                            <div class="alert alert-danger alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{ $message }}</strong>
+                            </div>
+
+                        @endif
+                    </div>
+                {{ csrf_field() }}
+                <div class="table-responsive text-center">
+                    {{-- <table class="table table-borderless table-striped" id="gridview"> --}}
+                    <table class="table table-borderless table-striped" id="gridview">
+                        {{-- <table id="gridview" class="text-center table-striped" cellspacing="0" width="70%"> --}}
+                        <thead>
+                            <tr>
+                                {{-- <th class="text-center">#</th> --}}
+                                <th class="hidden"></th>
+                                <th class="text-center">相簿名稱</th>
+                                @if(Auth::check())
+                                <th class="text-center">Actions</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        @foreach($dtAlbum as $item)
+                        <tr class="item{{$item->id}}">
+                            {{-- <td>{{$item->id}}</td> --}}
+                            <td class="hidden">{{$item->id}}</td>
+                            <td>{{$item->album_name}}</td>
                             @if(Auth::check())
-                            <th class="text-center">Actions</th>
+                            <td><button class="edit-modal btn btn-info"
+                                    data-info="{{$item->NAME}},{{$item->id}},{{$item->PARA_1}}">
+                                    <span class="glyphicon glyphicon-edit"></span> 修改
+                                </button>
+                                <button class="delete-modal btn btn-danger"
+                                    data-info="{{$item->NAME}},{{$item->id}},{{$item->PARA_1}}">
+                                    <span class="glyphicon glyphicon-trash"></span> 刪除
+                                </button>
+                            </td>
                             @endif
                         </tr>
-                    </thead>
-                    @foreach($dtAlbum as $item)
-                    <tr class="item{{$item->id}}">
-                        {{-- <td>{{$item->id}}</td> --}}
-                        <td class="hidden">{{$item->id}}</td>
-                        <td>{{$item->album_name}}</td>
-                        @if(Auth::check())
-                        <td><button class="edit-modal btn btn-info"
-                                data-info="{{$item->NAME}},{{$item->id}},{{$item->PARA_1}}">
-                                <span class="glyphicon glyphicon-edit"></span> 修改
-                            </button>
-                            <button class="delete-modal btn btn-danger"
-                                data-info="{{$item->NAME}},{{$item->id}},{{$item->PARA_1}}">
-                                <span class="glyphicon glyphicon-trash"></span> 刪除
-                            </button>
-                        </td>
-                        @endif
-                    </tr>
-                    @endforeach
-                </table>
-            </div>
-        </div>
-
-        <div class="second hide" id="DivSecond">
-                     <!-- Intro Content -->
-               
-            <div class="add_modal-footer">
-                <p class="error text-center alert alert-danger hidden"></p>
-
-                    <button type="button" class="btn actionBtn" data-dismiss="modal" id="addbtn">
-                        <span id="update_action_button" class='glyphicon'> </span>
-                    </button>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" id="ctlCANCEL">
-                        <span class='glyphicon glyphicon-remove'></span> 取消
-                    </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="DeleteModel" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">@lang('default.delete')</h4>
+                        @endforeach
+                    </table>
                 </div>
-                {!! Form::open(['route'=>'MADeleteFellowship','id'=>'FormDelete','class'=>'form-horizontal']) !!}
-
-                <div class="modal-body">
-                    <div class="deleteContent" >
-                        {{--<input type="text" class="form-control hide" id="FellowshipId" disabled="disabled">--}}
-                        {!!form::text('FellowshipId','',['class'=>'form-control hide','id'=>'FellowshipId'])!!}
-                        @lang('default.sure_delete') <span class="dname"></span> ? <span
-                                class="hidden did"></span>
-                    </div>
-                    <div class="modal-footer">
-                        <p class="error text-center alert alert-danger hidden"></p>
-
-                        {{--{!!Form::submit('刪除',['class'=>'btn glyphicon-trash btn-danger','id'=>'btnDelete']) !!}--}}
-                        <button type="submit" class='btn  btn-danger'>
-                            <span class='glyphicon glyphicon-trash'></span>  @lang('default.delete')
-                        </button>
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">
-                            <span class='glyphicon glyphicon-remove'></span>  取消
-                        </button>
-                    </div>
-
-                </div>
-                {!! Form::close() !!}
             </div>
-        </div>
-    </div>
 
-    <div id="Edit_Photo_Modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"></h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" role="form" id="UploadPhotoForm" enctype="multipart/form-data" action="MA_Fellowship_Photo"  method="post">  
-                    {{ csrf_field() }}
-                        <div class="size"></div>
-                        <img class="img-responsive preview"  alt="" id="preview" src="/photo/public/sample.jpg">
-                        <a href="#" class="btn button-change-profile-picture">
+            <div class="second hide" id="DivSecond">
+                         <!-- Intro Content -->
 
-                        <label for="upload-profile-picture">
-                            {{--<input type="file" name="file[]" multiple="multiple" required="required" draggable="true" class="upl"/>--}}
-                             <input name="image" id="image" type="file" class="manual-file-chooser js-manual-file-chooser js-avatar-field upl" >
-                        </label>
-                        </a>
-                        <span id="upload-avatar"></span>
-                    </form>
-                    <div class="modal-footer">
+                <div class="add_modal-footer">
                     <p class="error text-center alert alert-danger hidden"></p>
-                        <button type="button" class="btn actionBtn" data-dismiss="modal" id="editbtn">
-                            <span id="footer_action_button" class='glyphicon'> </span>
-                        </button>
-                        {{--<button type="button" class="btn actionBtn" data-dismiss="modal" id="btnUpdatePhoto">--}}
-                            {{--<span id="spUpdatePhoto" class='glyphicon'>上傳</span>--}}
-                        {{--</button>--}}
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">
-                            <span class='glyphicon glyphicon-remove'></span>  取消
-                        </button>
-                    </div>
 
+                        <button type="button" class="btn actionBtn" data-dismiss="modal" id="addbtn">
+                            <span id="update_action_button" class='glyphicon'> </span>
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" id="ctlCANCEL">
+                            <span class='glyphicon glyphicon-remove'></span> 取消
+                        </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="AddModel" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"></h4>
-                </div>
-                <div class="modal-body">
-                    {{--<form class="form-horizontal" role="form" action="">--}}
-                    {!! Form::open(['route'=>'MACreateAlbum','id'=>'form_add','class'=>'form-horizontal']) !!}
+        <div id="DeleteModel" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">@lang('default.delete')</h4>
+                    </div>
+                    {!! Form::open(['route'=>'MADeleteFellowship','id'=>'FormDelete','class'=>'form-horizontal']) !!}
 
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="AlbumName">相簿名稱:</label>
-                            <div class="col-sm-10">
-                                {!!form::text('AlbumName','',['class'=>'form-control','id'=>'AlbumName'])!!}
-                            </div>
+                    <div class="modal-body">
+                        <div class="deleteContent" >
+                            {{--<input type="text" class="form-control hide" id="FellowshipId" disabled="disabled">--}}
+                            {!!form::text('FellowshipId','',['class'=>'form-control hide','id'=>'FellowshipId'])!!}
+                            @lang('default.sure_delete') <span class="dname"></span> ? <span
+                                    class="hidden did"></span>
                         </div>
-
-                        <div class="add_modal-footer" align="right">
+                        <div class="modal-footer">
                             <p class="error text-center alert alert-danger hidden"></p>
-                            <button type="submit" class='btn' id="btnSave">
-                                <span class='glyphicon glyphicon-check'></span>  @lang('default.save')
-                            </button>
 
-                            <button type="button" class="btn btn-warning btn-cancel" data-dismiss="modal">
+                            {{--{!!Form::submit('刪除',['class'=>'btn glyphicon-trash btn-danger','id'=>'btnDelete']) !!}--}}
+                            <button type="submit" class='btn  btn-danger'>
+                                <span class='glyphicon glyphicon-trash'></span>  @lang('default.delete')
+                            </button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">
                                 <span class='glyphicon glyphicon-remove'></span>  取消
                             </button>
                         </div>
-                    {{--</form>--}}
+
+                    </div>
                     {!! Form::close() !!}
                 </div>
             </div>
         </div>
-    </div>
 
+
+        <div id="AddModel" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        {{--<form class="form-horizontal" role="form" action="">--}}
+                        {!! Form::open(['route'=>'MACreateAlbum','id'=>'form_add','class'=>'form-horizontal']) !!}
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="AlbumName">相簿名稱:</label>
+                                <div class="col-sm-10">
+                                    {!!form::text('AlbumName','',['class'=>'form-control','id'=>'AlbumName'])!!}
+                                </div>
+                            </div>
+
+                            <div class="add_modal-footer" align="right">
+                                <p class="error text-center alert alert-danger hidden"></p>
+                                <button type="submit" class='btn' id="btnSave">
+                                    <span class='glyphicon glyphicon-check'></span>  @lang('default.save')
+                                </button>
+
+                                <button type="button" class="btn btn-warning btn-cancel" data-dismiss="modal">
+                                    <span class='glyphicon glyphicon-remove'></span>  取消
+                                </button>
+                            </div>
+                        {{--</form>--}}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</section>
     <script src="../js/jquery.validate.js"></script>
 
     <script src="../ckeditor/ckeditor.js"></script>
@@ -480,6 +442,4 @@
 
 
     </script>
-</body>
-</section>
 @stop
