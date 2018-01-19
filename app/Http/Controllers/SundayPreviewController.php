@@ -37,7 +37,6 @@ class SundayPreviewController extends Controller
        $dtSundayPreview= $this->SundayPreview->getSundayPreviewInfo();
        $dtControl= $this->TableControl->getTableSetting('SundayPreview');
        $dtLanguage = $this->Codtbld->getWhere('language');
-       \Debugbar::info($dtLanguage);
         return view('SundayPreview.SundayPreview')->with('dtControl',$dtControl)->with('dtfellowship',$dtfellowship)->with('dtSundayPreview',$dtSundayPreview)->with('dtLanguage',$dtLanguage);
     }
 

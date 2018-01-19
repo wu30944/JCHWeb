@@ -10,19 +10,20 @@
 	            </div>
 
 		    <div class="container" >
-            @if ($message = Session::get('success'))
-	            <div class="alert alert-success alert-block">
-	                <button type="button" class="close" data-dismiss="alert">×</button>
-	                <strong>{{ $message }}</strong>
-	            </div>
-            @elseif($message = Session::get('fails'))
-	            <div class="alert alert-danger alert-block">
-	                <button type="button" class="close" data-dismiss="alert">×</button>
-	                <strong>{{ $message }}</strong>
-	            </div>
+				<div class="row col-md-12">
+					@if ($message = Session::get('success'))
+						<div class="alert alert-success alert-block">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<strong>{{ $message }}</strong>
+						</div>
+					@elseif($message = Session::get('fails'))
+						<div class="alert alert-danger alert-block">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<strong>{{ $message }}</strong>
+						</div>
 
-            @endif
-
+					@endif
+				</div>
 
             <div class="form-group row add">
             <br>
@@ -150,7 +151,7 @@
 		  			  			</td>
 		  			  			<td>
 		  			  				{{-- <input type="text" class="form-control search-date-modal" id="SearchSDate" > --}}
-		  			  				{!!form::text('SearchSDate',(isset($request))?$request->SearchSDate:'',['class'=>'text form-control search-date-modal','id'=>'SearchSDate'])!!}
+		  			  				{!!form::text('SearchSDate',(isset($request))?$request->SearchSDate:date('Y-m-d',strtotime(date('Y-m-d')." -1 month")),['class'=>'text form-control search-date-modal','id'=>'SearchSDate'])!!}
 		  			  			</td>
 		  			  		</tr>
 		  			  		<tr>
@@ -158,7 +159,7 @@
 		  			  				<label >@lang('default.edate'):</label>
 		  			  			</td>
 		  			  			<td>
-		  			  				{!!form::text('SearchEDate',(isset($request))?$request->SearchEDate:'',['class'=>'text form-control search-date-modal','id'=>'SearchEDate'])!!}
+		  			  				{!!form::text('SearchEDate',(isset($request))?$request->SearchEDate:date("Y-m-d"),['class'=>'text form-control search-date-modal','id'=>'SearchEDate'])!!}
 		  			  				{{-- <input type="text" class="form-control search-date-modal" id="SearchEDate" > --}}
 		  			  			</td>
 		  			  		</tr>
@@ -566,8 +567,9 @@
 		                'id':  $('#action_video_id').val()
 		            },
 		            success: function(data) {
+		                $('#form_search').submit();
 //		                $('#container_' + $('#action_video_id').val()).remove();
-                        $('#VideoContent').load(location.href+" #VideoContent>*","");
+                        //$('#VideoContent').load('{{route('Videos.Search')}}+" #VideoContent>*","");
 		            }
 		        });
 		    });

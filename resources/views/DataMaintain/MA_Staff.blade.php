@@ -78,7 +78,7 @@
 							</td>
 							<td>
 								<div style="display: inline;">
-									{!! Form::select('SearchStaff',$ItemAll,(isset($request))?$request->SearchStaff:2, ['placeholder'=>'請選擇職務','style'=>'width:130px','id'=>'SearchStaff']) !!}
+									{!! Form::select('SearchStaff',$ItemAll,(isset($request))?$request->SearchStaff:0, ['placeholder'=>'請選擇職務','style'=>'width:130px','id'=>'SearchStaff']) !!}
 								</div>
 							</td>
 						</tr>
@@ -90,7 +90,7 @@
 							</td>
 							<td>
 								<div style="display: inline;">
-									{!! Form::select('SearchDepart',$ItemDepartAll,(isset($request))?$request->SearchDepart:2, ['placeholder'=>'請選擇部','style'=>'width:130px','id'=>'SearchDepart']) !!}
+									{!! Form::select('SearchDepart',$ItemDepartAll,(isset($request))?$request->SearchDepart:0, ['placeholder'=>'請選擇部','style'=>'width:130px','id'=>'SearchDepart']) !!}
 								</div>
 							</td>
 						</tr>
@@ -100,7 +100,7 @@
 							</td>
 							<td>
 								{{-- <input type="text" class="form-control search-date-modal" id="SearchSDate" > --}}
-								{!!form::text('SearchSDate',(isset($request))?$request->SearchSDate:'',['class'=>'text form-control search-date-modal','id'=>'SearchSDate'])!!}
+								{!!form::text('SearchSDate',(isset($request))?$request->SearchSDate:date('Y-m-d',strtotime(date('Y-m-d')." -1 year")),['class'=>'text form-control search-date-modal','id'=>'SearchSDate'])!!}
 							</td>
 						</tr>
 						<tr>
@@ -108,7 +108,7 @@
 								<label >@lang('default.edate'):</label>
 							</td>
 							<td>
-								{!!form::text('SearchEDate',(isset($request))?$request->SearchEDate:'',['class'=>'text form-control search-date-modal','id'=>'SearchEDate'])!!}
+								{!!form::text('SearchEDate',(isset($request))?$request->SearchEDate:date("Y-m-d"),['class'=>'text form-control search-date-modal','id'=>'SearchEDate'])!!}
 								{{-- <input type="text" class="form-control search-date-modal" id="SearchEDate" > --}}
 							</td>
 						</tr>
@@ -472,7 +472,7 @@
 		    	$('#sdate').removeAttr("readonly");
 		    	$('#edate').attr("style",{"border-style":"block","outline":"block"});
 		    	$('#edate').removeAttr("readonly");
-				
+
 		    	$('#form_add').removeClass('hide');
 
                 $('#AddModel').modal('show');
@@ -671,8 +671,7 @@
 		                'id':  $('#staff_id').val()
 		            },
 		            success: function(data) {
-		                $('#container_' + $('#staff_id').val()).remove();
-		                 location.reload();
+                        $('#form_search').submit();
 		            }
 		        });
 		    });

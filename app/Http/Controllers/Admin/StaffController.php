@@ -13,6 +13,7 @@ use Models\dtControl;
 use App\Repositories\fellowshipRepository;
 use  App\Repositories\staffRepository;
 use  App\Repositories\codtbldRepository;
+use Storage;
 
 class StaffController extends Controller
 {
@@ -159,10 +160,8 @@ class StaffController extends Controller
         $FilePath=config('app.staffs_photo_path').'/'.$FileName;
 
         $destinationPath=public_path().Storage::url($FilePath);
-        if(file_exists($destinationPath)){
-            unlink($destinationPath);//將檔案刪除
-        }else{
-            echo 'Not Found Photo';
+        if(!Storage::delete($FilePath)){
+           echo 'Not Found Photo';
         }
     }
 
