@@ -11,20 +11,26 @@
             </div>
         </div>
 
-        @if ($message = Session::get('success'))
-        <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>{{ $message }}</strong>
-        </div>
-        @elseif($message = Session::get('fails'))
-        <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>{{ $message }}</strong>
-        </div>
-
-        @endif
 
 	    <div class="container" >
+			@if ($message = Session::get('success'))
+				<div class="alert alert-success alert-block">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<strong>{{ $message }}</strong>
+				</div>
+			@elseif($message = Session::get('fails'))
+				<div class="alert alert-danger alert-block">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<strong>{{ $message }}</strong>
+				</div>
+			@endif
+			<div class="alert alert-success alert-block hide" id="alert_block">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				<strong >
+					<input class="span3" size="16" type="text" id="message" style="border-style:none;outline:none" readonly="true" >
+				</strong>
+			</div>
+
             <div class="form-group row add">
             <br>
                 <div class="col-md-8">
@@ -466,8 +472,7 @@
 		    	$('#sdate').removeAttr("readonly");
 		    	$('#edate').attr("style",{"border-style":"block","outline":"block"});
 		    	$('#edate').removeAttr("readonly");
-
-		    	$('#edit').attr('disabled',"disabled");
+				
 		    	$('#form_add').removeClass('hide');
 
                 $('#AddModel').modal('show');

@@ -23,13 +23,6 @@
 
             @endif
 
-             <div class="alert alert-success alert-block hide" id="alert_block">
-	                <button type="button" class="close" data-dismiss="alert">×</button>
-	                <strong >
-	                	<input class="span3" size="16" type="text" id="message" style="border-style:none;outline:none" readonly="true" >
-	                </strong>
-            </div>
-
 
             <div class="form-group row add">
             <br>
@@ -181,89 +174,91 @@
 	            {{-- </form> --}}
             {!! Form::close() !!}
             {{-- 測試區塊 --}}
+			<div id="VideoContent">
+				@if (isset($dtvideos)and count($dtvideos)>0)
+					{{-- expr --}}
+					@foreach ($dtvideos->chunk(3) as $more_youtube)
+						<div class="row">
+							@foreach($more_youtube as $item)
+								 <div class="col-md-4 text-center" id="container_{{$item->id}}">
+									<div class="thumbnail">
 
-		    @if (isset($dtvideos)and count($dtvideos)>0)
-		    	{{-- expr --}}
-		    	@foreach ($dtvideos->chunk(3) as $more_youtube)
-		    		<div class="row">
-		    			@foreach($more_youtube as $item)
-					    	 <div class="col-md-4 text-center" id="container_{{$item->id}}">
-				                <div class="thumbnail">
+										<div class="alert alert-block alert-danger hide" id="FailAlter_{{$item->id}}">
+											<button type="button" class="close" data-dismiss="alert">×</button>
+											<strong>
+												<input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveFail')" id="FailMsg_{{$item->id}}">
+											</strong>
+										</div>
+										<div class="alert alert-block alert-success hide" id="SuccessAlter_{{$item->id}}">
+											<button type="button" class="close" data-dismiss="alert">×</button>
+											<strong>
+												<input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveSuccess')" id="SuccessMsg_{{$item->id}}">
+											</strong>
+										</div>
 
-				                	<div class="alert alert-block alert-danger hide" id="FailAlter_{{$item->id}}">
-							            <button type="button" class="close" data-dismiss="alert">×</button>
-							            <strong>
-							            	<input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveFail')" id="FailMsg_{{$item->id}}">
-							            </strong>
-							        </div>
-									<div class="alert alert-block alert-success hide" id="SuccessAlter_{{$item->id}}">
-										<button type="button" class="close" data-dismiss="alert">×</button>
-										<strong>
-											<input  style="background-color:   transparent;   border:   0px" readonly="true" value="@lang('message.SaveSuccess')" id="SuccessMsg_{{$item->id}}">
-										</strong>
+										 <div class="embed-responsive embed-responsive-4by3">
+											 <iframe class="embed-responsive-item" src="{{$item->link}}" frameborder="0" allowfullscreen id="iframe_{{$item->id}}"></iframe>
+										</div>
+
+										<div class="caption" align="left">
+											<p>
+													<div style="display: inline;">
+													{!!form::label('video_type','影音類型:')!!}
+													</div>
+													<div style="display: inline;">
+													{!! Form::select('video_type_'.$item->id,$ItemAll, $item->type, ['placeholder'=>'請選擇影片類型','style'=>'width:130px','disabled'=>'disabled','class'=>'span4','id'=>'video_type_'.$item->id]) !!}
+													</div>
+											 </p>
+											<p>
+												<label >@lang('default.video_link'):</label><br>
+													{{-- {{$more_youtube->link}} --}}
+												<input class="span2" size="16" type="text" style="width:100%;border-style:none;outline:none" readonly="true" id="videolink_{{$item->id}}" value="{{$item->link}}" >
+											</p>
+
+											<p>
+												<label >@lang('default.subject'):</label>
+												<input class="span3" size="16" type="text" id="theme_{{$item->id}}" value="{{$item->theme}}" style="border-style:none;outline:none" readonly="true" >
+
+											</p>
+											<p>
+												<label >@lang('default.speaker'):</label>
+												<input class="span3" size="16" type="text" id="speaker_{{$item->id}}" value="{{$item->name}}" style="border-style:none;outline:none" readonly="true" >
+											</p>
+											<p>
+											<label >@lang('default.date'):</label>
+												  <input class="date-modal" size="16" type="text" id="datepicker_{{$item->id}}" style="border-style:none;outline:none" readonly="true" value="{{$item->video_date}}">
+										  </p>
+											<div align="right">
+												<button type="button" class="save-modal btn btn-success hide" data-info="{{$item->id}}" data-dismiss="modal" id="save_{{$item->id}}" >
+													<span class='glyphicon glyphicon-check'> </span>@lang('default.save')
+												</button>
+												@if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
+												<button class="delete-modal btn btn-danger hide"
+													data-info="{{$item->id}}">
+													<span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
+												</button>
+												@endif
+
+											</div>
+										</div>
 									</div>
-
-				                     <div class="embed-responsive embed-responsive-4by3">
-		                           		 <iframe class="embed-responsive-item" src="{{$item->link}}" frameborder="0" allowfullscreen id="iframe_{{$item->id}}"></iframe>
-		                        	</div>
-
-				                    <div class="caption" align="left">
-				                    	<p>
-			                					<div style="display: inline;">
-			            						{!!form::label('video_type','影音類型:')!!}
-			            						</div>
-			                    				<div style="display: inline;">
-			                    				{!! Form::select('video_type_'.$item->id,$ItemAll, $item->type, ['placeholder'=>'請選擇影片類型','style'=>'width:130px','disabled'=>'disabled','class'=>'span4','id'=>'video_type_'.$item->id]) !!}
-			                    				</div>
-			                        	 </p>
-				                        <p>
-		                            		<label >@lang('default.video_link'):</label><br>
-		                            			{{-- {{$more_youtube->link}} --}}
-											<input class="span2" size="16" type="text" style="width:100%;border-style:none;outline:none" readonly="true" id="videolink_{{$item->id}}" value="{{$item->link}}" >
-		                				</p>
-
-		                				<p>
-											<label >@lang('default.subject'):</label>
-											<input class="span3" size="16" type="text" id="theme_{{$item->id}}" value="{{$item->theme}}" style="border-style:none;outline:none" readonly="true" >
-
-		                				</p>
-		                				<p>
-											<label >@lang('default.speaker'):</label>
-											<input class="span3" size="16" type="text" id="speaker_{{$item->id}}" value="{{$item->name}}" style="border-style:none;outline:none" readonly="true" >
-				                        </p>
-				                        <p>
-				                        <label >@lang('default.date'):</label>
-		            						  <input class="date-modal" size="16" type="text" id="datepicker_{{$item->id}}" style="border-style:none;outline:none" readonly="true" value="{{$item->video_date}}">
-		    						  </p>
-			                            <div align="right">                                
-				                            <button type="button" class="save-modal btn btn-success hide" data-info="{{$item->id}}" data-dismiss="modal" id="save_{{$item->id}}" >
-			                        			<span class='glyphicon glyphicon-check'> </span>@lang('default.save')
-			                    			</button>	
-											@if(Gate::forUser(auth('admin')->user())->check('admin.data.destory'))
-			                                <button class="delete-modal btn btn-danger hide"
-			                                    data-info="{{$item->id}}">
-			                                    <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
-			                                </button>
-											@endif
-
-		                        		</div>
-				                    </div>
-				                </div>
-				            </div>
-			            @endforeach
-		             </div>
-		    	@endforeach
-		    @endif
+								</div>
+							@endforeach
+						 </div>
+					@endforeach
+				@endif
+			</div>
 			 <input class="hide"  id="action_video_id">
 			</div>
-
 			<!--下列方法為顯示分頁頁碼，配合controller當中elquent模型的DB::paginate(一面幾筆資料)
 			要記得，必須要有paginate()，在blade才能夠使用下列方法-->
-	        <div class="row">
+			<div class="row">
 				<div class="col-lg-12 text-center">
-					{{$dtvideos->render()}}
+					{{$dtvideos->appends((isset($request))?['SearchVideoType'=>$request->SearchVideoType,'SearchTheme'=>$request->SearchTheme,
+					'SearchSpeaker'=>$request->SearchSpeaker,'SearchSDate'=>$request->SearchSDate,'SearchEDate'=>$request->SearchEDate]:'')->render()}}
 				</div>
 			</div>
+
 			{{-- @include('WebUIControl.Pager') --}}
 				{{-- 20170611.  增禮拜影片新增頁面 --}}
 			<div id="DeleteModel" class="modal fade" role="dialog">
@@ -411,7 +406,6 @@
 		    	$('#cancel').removeAttr("disabled");
 		    	$('#datepicker_add').attr("style",{"border-style":"block","outline":"block"});
 		    	$('#datepicker_add').removeAttr("readonly");
-		    	$('#edit').attr('disabled',"disabled");
 		    });
 
 
@@ -572,7 +566,8 @@
 		                'id':  $('#action_video_id').val()
 		            },
 		            success: function(data) {
-		                $('#container_' + $('#action_video_id').val()).remove();
+//		                $('#container_' + $('#action_video_id').val()).remove();
+                        $('#VideoContent').load(location.href+" #VideoContent>*","");
 		            }
 		        });
 		    });

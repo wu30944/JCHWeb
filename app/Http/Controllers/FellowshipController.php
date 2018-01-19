@@ -213,7 +213,7 @@ class FellowshipController extends Controller
 //        {
 //            $page_title=$value->name;
 //        }
-        $Image = env('APP_URL').Storage::url($fellowship_info->image_path);
+        $Image = $fellowship_info->image_path;
 
         return view('fellowship.fellowship_info')->with('dtfellowship',$dtfellowship)
                                                         ->with('fellowship_info',$fellowship_info)

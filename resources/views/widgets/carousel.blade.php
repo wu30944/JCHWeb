@@ -1,9 +1,4 @@
 <!-- Header Carousel -->
-    <script>
-    $('.carousel').carousel({
-        interval: 5000 //changes the speed
-    })
-    </script>
 <header id="myCarousel" class="carousel slide">
 <div class="content full">
 	<!-- Indicators -->

@@ -83,6 +83,7 @@ return array(
     ,'file_name'=>'檔案名稱'
     ,'batch_delete'=>'批次刪除'
     ,'jch_church'=>'建成教會'
+    ,'bible'=>'金句'
 
 	);
 

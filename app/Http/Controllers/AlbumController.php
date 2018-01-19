@@ -45,11 +45,14 @@ class AlbumController extends Controller
     }
 
     public function IndexD($Id){
+        $dtFellowship=$this->objFellowship->getAll();
+
         $dtAlbum = $this->objAlbumD->GetAlbumDContent($Id);
         $AlbumName = $this->objAlbum->GetAlbumName($Id);
         return view('album.public.index_d')
                ->with('dtAlbum',$dtAlbum)
-               ->with('AlbumName',$AlbumName);
+               ->with('AlbumName',$AlbumName)
+               ->with('dtfellowship',$dtFellowship);
 
     }
 

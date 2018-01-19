@@ -43,10 +43,10 @@
            <table class="table table-borderless table-striped" id="gridview">
                 <thead>
                     <tr>
-                        <th class="text-center">畫面顯示</th>
-                        <th class="text-center">聖經內容</th>
-                        <th class="text-center">章節</th>
-                        <th class="text-center">建立日期</th>
+                        <th class="text-center">@lang('default.isshow')</th>
+                        <th class="text-center">@lang('default.bible')</th>
+                        <th class="text-center">@lang('default.chapter')</th>
+                        <th class="text-center">@lang('default.create_date')</th>
                         @if(Gate::forUser(auth('admin')->user())->check('admin.Carousel.Edit'))
                         <th class="text-center">Actions</th>
                         @endif
@@ -335,6 +335,8 @@
         $('#Chapter').val('');
 
         $('#AddModel').modal('show');
+        $('.deleteContent').hide();
+        $('.form-horizontal').show();
     });
 
     function fillmodalData(details){
