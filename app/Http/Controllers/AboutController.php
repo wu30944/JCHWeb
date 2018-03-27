@@ -10,14 +10,14 @@ use App\Http\Controllers\DB\DBadmin;
 
 use App\Repositories\JchInfoRepository;
 
-use App\Repositories\fellowshipRepository;
+use App\Repositories\FellowshipRepository;
 
 class AboutController extends Controller
 {
    private $dtfellowship;
    private $dtjchinfo;
 
-    public function __construct(fellowshipRepository $fellowshipRepository,JchInfoRepository $JchInfoRepository)
+    public function __construct(FellowshipRepository $fellowshipRepository,JchInfoRepository $JchInfoRepository)
     {
         $this->dtfellowship=$fellowshipRepository;
         $this->dtjchinfo=$JchInfoRepository;

@@ -84,6 +84,12 @@ return array(
     ,'batch_delete'=>'批次刪除'
     ,'jch_church'=>'建成教會'
     ,'bible'=>'金句'
+    ,'add_role'=>'新增角色'
+    ,'add_permiss'=>'新增權限'
+    ,'add_user'=>'新增使用者'
+    ,'user_name'=>'使用者名稱'
+    ,'modify_date'=>'修改日期'
+    ,'option'=>'操作'
 
 	);
 

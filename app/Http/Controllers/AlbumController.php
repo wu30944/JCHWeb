@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 //2017/06/26 新增action_photo資料表，將活動照片連結存放近來
 use App\Repositories\AlbumDRepository;
 use App\Repositories\AlbumRepository;
-use App\Repositories\fellowshipRepository;
+use App\Repositories\FellowshipRepository;
 
 
 class AlbumController extends Controller
@@ -17,7 +17,7 @@ class AlbumController extends Controller
     public $objAlbum;
     public $objAlbumD;
 
-    public function __construct(fellowshipRepository $fellowshipRepository,
+    public function __construct(FellowshipRepository $fellowshipRepository,
                                 AlbumRepository $AlbumRepository,
                                 AlbumDRepository $AlbumDRepository)
     {

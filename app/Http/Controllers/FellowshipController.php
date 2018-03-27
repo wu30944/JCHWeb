@@ -21,7 +21,7 @@ class FellowshipController extends Controller
 
     private $fellowshipRepository;
 
-    public function __construct(fellowshipRepository $fellowshipRepository)
+    public function __construct(FellowshipRepository $fellowshipRepository)
     {
         $this->fellowshipRepository=$fellowshipRepository;
     }

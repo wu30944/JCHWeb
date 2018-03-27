@@ -154,26 +154,14 @@
                                 <div class="panel-body">
                                     <table id="TestTable">
                                         @if (isset($Images))
-                                            {{-- expr --}}
                                             @foreach($Images as $item)
-                                                {{-- @foreach ($item as $action_photo) --}}
                                                 <div class="col-md-4 text-center" id="container_{{$item->id}}">
                                                     <div class="thumbnail">
                                                         <input type="checkbox" name="delete" value="{{$item->id}}" class="toggle">
                                                         <hr>
-                                                        <div class="alert alert-block hide" align="left" id="div_alert_{{$item->id}}">
-                                                            <button type="button" class="close" data-dismiss="alert">×</button>
-                                                            <strong>
-                                                                <input  style="background-color:   transparent;   border:   0px" readonly="true" id="alert_msg_{{$item->id}}">
-                                                            </strong>
-                                                        </div>
-
                                                         <img class="img-responsive img-portfolio img-hover" src="{{$item->photo_path}}" alt="" style="width:650px;height:220px;" id="action_photo_link_{{$item->id}}">
-
                                                         <div class="" align="left">
-                                                            <p>
-                                                                @lang('default.file_name')：<input class=""  type="text" id="photo_name_{{$item->id}}" value="{{$item->photo_name}}" style="border-style:none;outline:none" readonly="true" >
-                                                            </p>
+                                                            @lang('default.file_name')：<input class=""  type="text" id="photo_name_{{$item->id}}" value="{{$item->photo_name}}" style="border-style:none;outline:none" readonly="true" >
                                                             <input  type="text" id="AlbumId" value="{{$item->album_id}}" style="display:none" readonly="true" >
                                                             <div align="right">
                                                                 @if(Gate::forUser(auth('admin')->user())->check('admin.Album.DestoryPhoto'))
@@ -182,47 +170,23 @@
                                                                         <span class="glyphicon glyphicon-trash"></span> @lang('default.delete')
                                                                     </button>
                                                                 @endif
-                                                                {{--@if(Gate::forUser(auth('admin')->user())->check('admin.Album.Update'))--}}
-                                                                    {{--<button type="button" class="save-modal btn btn-success" data-info="{{$item->id}}" data-dismiss="modal" id="save_{{$item->id}}" >--}}
-                                                                        {{--<span class='glyphicon glyphicon-check'> </span> @lang('default.save')--}}
-                                                                    {{--</button>--}}
-                                                                {{--@endif--}}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {{-- @endforeach --}}
                                             @endforeach
-                                            <!--下列方法為顯示分頁頁碼，配合controller當中elquent模型的DB::paginate(一面幾筆資料)
-                                            要記得，必須要有paginate()，在blade才能夠使用下列方法-->
-                                            <div class="row">
-                                                <div class="col-lg-12 text-center">
-                                                    {{$Images->render()}}
-                                                </div>
-                                            </div>
                                         @endif
                                     </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 text-center">
+                                        {{$Images->render()}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {{--<div class="panel-group" id="AlbumPart">--}}
-                    {{--<div class="panel panel-default">--}}
-                        {{--<div class="panel-heading">--}}
-                            {{--<h4 class="panel-title">--}}
-                                {{--<a data-toggle="collapse" data-parent="#AlbumPart"--}}
-                                   {{--href="#AlbumOne">--}}
-                                    {{--@lang('default.album_photo')--}}
-                                {{--</a>--}}
-                            {{--</h4>--}}
-                        {{--</div>--}}
-                        {{--<div id="AlbumOne" class="panel-collapse collapse in">--}}
-
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
                 <div id="DeleteModel" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <!-- Modal content-->

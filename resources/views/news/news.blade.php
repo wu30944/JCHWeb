@@ -128,18 +128,15 @@
 
                     @include('category.categoryTreeview')
 
-                    <!-- Side Widget Well -->
-    {{--                 <div class="well" >
-                        <h4>Side Widget Well</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
-                    </div> --}}
-
                 </div>
 
             </div>
             <!-- /.row -->
     </div>
 </section>
+@stop
+@section('js')
+<script src="../js/treeview.js"></script>
 <script>
     $('#btnSend').on('click', function() {
           $.ajax({
@@ -181,14 +178,6 @@
 
             });
     });
-
-    // $(window).load(function(){
-    //     alert('load');
-    // });
-    // $(window).ready(function()
-    //     {
-    //         alert('ready');
-    //     });
 
 </script>
 @stop

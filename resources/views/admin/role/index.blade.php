@@ -13,7 +13,7 @@
         <div class="col-md-6 text-right">
             @if(Gate::forUser(auth('admin')->user())->check('admin.role.create'))
                 <a href="/admin/role/create" class="btn btn-success btn-md">
-                    <i class="fa fa-plus-circle"></i> 添加角色
+                    <i class="fa fa-plus-circle"></i> @lang('default.add_role')
                 </a>
             @endif
         </div>

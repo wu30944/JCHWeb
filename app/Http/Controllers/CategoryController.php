@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Models\Category;
-use App\Repositories\fellowshipRepository;
+use App\Repositories\FellowshipRepository;
 
 use App\Repositories\CategoryRepository;
 
@@ -16,7 +16,7 @@ class CategoryController extends Controller
     private $categories;
     private $dtCategory;
 
-    public function __construct(fellowshipRepository $fellowshipRepository,CategoryRepository $CategoryRepository)
+    public function __construct(FellowshipRepository $fellowshipRepository,CategoryRepository $CategoryRepository)
     {
         $this->fellowshipRepository=$fellowshipRepository;
         $this->dtCategory=$CategoryRepository;

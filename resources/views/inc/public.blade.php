@@ -28,17 +28,36 @@
 <link rel="stylesheet" href="{{ asset('css/DateStyle.css')}}" >
 
     {{--<link rel="stylesheet" href="{{ asset('css/screen.css')}}" >--}}
-{{-- 2017/08/28 新增使用ajax也是可以使用上一頁下一頁 --}}
-{{-- <script src="../js/history.js"></script> --}}
-
-<script src="../js/jquery.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/jquery.dataTables.min.js"></script>
-<script src="../js/jquery.ui.js"></script>
 
 
 {{--2017/09/20 從AdminLET拉過來的 載入畫面 loding--}}
 <link href="/dist/css/load/load.css" rel="stylesheet">
+
+<title>
+@if(isset($page_title))
+		{{$page_title}}| 建成教會
+	@else
+         @yield('title') | 建成教會
+    @endif
+</title>
+
+@yield('css')
+</head>
+
+<body>
+
+<!-- navigation為導覽 -->
+@include('inc.navigation')
+
+@include('inc.loading')
+<!-- content就是我們點選後，要顯示的內容 -->
+@yield('content')
+
+@include('inc.footer')
+
+
+{{-- 2017/08/28 新增使用ajax也是可以使用上一頁下一頁 --}}
+{{-- <script src="../js/history.js"></script> --}}
 <script src="/dist/js/common.js"></script>
     {{--20170913 下方js是載入畫面轉轉轉的部分--}}
 {{-- <script src="../loading/spin.js"></script> --}}
@@ -51,12 +70,12 @@
 <!-- Script to Activate the Carousel -->
 @include('inc.initialjs')
 
-<title>
-@if(isset($page_title))
-		{{$page_title}}| 建成教會
-	@else
-         @yield('title') | 建成教會
-    @endif
-</title>
+<script src="../js/jquery.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery.dataTables.min.js"></script>
+<script src="../js/jquery.ui.js"></script>
 
-</head>
+@yield('js')
+
+</body>
+</html>

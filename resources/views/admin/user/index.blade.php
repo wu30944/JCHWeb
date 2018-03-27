@@ -14,7 +14,7 @@
         <div class="col-md-6 text-right">
             @if(Gate::forUser(auth('admin')->user())->check('admin.user.create'))
                 <a href="/admin/user/create" class="btn btn-success btn-md">
-                    <i class="fa fa-plus-circle"></i> 添加用户
+                    <i class="fa fa-plus-circle"></i> @lang('default.add_user')
                 </a>
             @endif
         </div>
@@ -37,11 +37,11 @@
                         <thead>
                         <tr>
                             <th data-sortable="false" class="hidden-sm"></th>
-                            <th class="hidden-sm">用户名</th>
-                            <th class="hidden-sm">E-mail</th>
-                            <th class="hidden-md">角色創建日期</th>
-                            <th class="hidden-md">角色修改日期</th>
-                            <th data-sortable="false">操作</th>
+                            <th class="hidden-sm">@lang('default.user_name')</th>
+                            <th class="hidden-sm">@lang('default.email')</th>
+                            <th class="hidden-md">@lang('default.create_date')</th>
+                            <th class="hidden-md">@lang('default.modify_date')</th>
+                            <th data-sortable="false">@lang('default.option')</th>
                         </tr>
                         </thead>
                         <tbody>

@@ -71,6 +71,8 @@
             <ol class="indicator"></ol>
         </div>
     </section>
+@stop
+@section('js')
     <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
     <script>
         //        $('.SlideShow').cycle();

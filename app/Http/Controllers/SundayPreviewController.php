@@ -8,7 +8,7 @@ use Validator;
 use Response;
 
 use  App\Repositories\SundayPreviewRepository;
-use  App\Repositories\fellowshipRepository;
+use  App\Repositories\FellowshipRepository;
 use  App\Repositories\dtControlRepository;
 use  App\Repositories\codtbldRepository;
 
@@ -19,7 +19,7 @@ class SundayPreviewController extends Controller
     private $TableControl;
     private $Codtble;
 
-    public function __construct(fellowshipRepository $fellowshipRepository,SundayPreviewRepository $SundayPreviewRepository,dtControlRepository $dtControlRepository,codtbldRepository $codtbldRepository)
+    public function __construct(FellowshipRepository $fellowshipRepository,SundayPreviewRepository $SundayPreviewRepository,dtControlRepository $dtControlRepository,codtbldRepository $codtbldRepository)
     {
         $this->SundayPreview = $SundayPreviewRepository;
         $this->Fellowship = $fellowshipRepository;

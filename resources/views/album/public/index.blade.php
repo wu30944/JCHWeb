@@ -63,8 +63,9 @@
             </div>
         </div>
     </section>
+@stop
+@section('js')
     <script>
-//        $('.SlideShow').cycle();
         $('.SlideShow').cycle();
     </script>
 @stop

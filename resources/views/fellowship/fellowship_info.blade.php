@@ -1,4 +1,4 @@
-@if(isset($fellowship_info) and count($fellowship_info)===1)
+@if(isset($fellowship_info))
 
         @extends('TmpView.tmp')
 

@@ -10,7 +10,7 @@ use Input;
 use DB;
 
 
-use App\Repositories\fellowshipRepository;
+use App\Repositories\FellowshipRepository;
 use App\Repositories\NewsRepository;
 use App\Repositories\CategoryRepository;
 
@@ -21,7 +21,7 @@ class NewsController extends Controller
     private $dtNews;
     private $categories;
 
-    public function __construct(fellowshipRepository $fellowshipRepository
+    public function __construct(FellowshipRepository $fellowshipRepository
                                 ,NewsRepository $NewsRepository
                                 ,CategoryRepository $CategoryRepository)
     {

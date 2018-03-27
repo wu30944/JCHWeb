@@ -8,7 +8,7 @@ use Input;
 use DB;
 
 use App\Repositories\MoreYoutubeRepository;
-use App\Repositories\fellowshipRepository;
+use App\Repositories\FellowshipRepository;
 use App\Repositories\codtbldRepository;
 
 class MoreYoutubeController extends Controller
@@ -17,7 +17,7 @@ class MoreYoutubeController extends Controller
 	private $fellowship;
     private $codtbld;
 
-    public function __construct(fellowshipRepository $fellowshipRepository,MoreYoutubeRepository $MoreYoutubeRepository,codtbldRepository $codtbldRepository)
+    public function __construct(FellowshipRepository $fellowshipRepository,MoreYoutubeRepository $MoreYoutubeRepository,codtbldRepository $codtbldRepository)
     {
         $this->fellowship=$fellowshipRepository;
         $this->videos=$MoreYoutubeRepository;

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class SearchController extends Controller
 {
 
-    public function __construct(fellowshipRepository $fellowshipRepository)
+    public function __construct(FellowshipRepository $fellowshipRepository)
     {
         $this->fellowshipRepository=$fellowshipRepository;
     }

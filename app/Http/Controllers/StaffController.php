@@ -9,9 +9,9 @@ use Input;
 use DB;
 use Models\dtControl;
 
-use App\Repositories\fellowshipRepository;
+use App\Repositories\FellowshipRepository;
 
-use  App\Repositories\staffRepository;
+use  App\Repositories\StaffRepository;
 
 use  App\Repositories\codtbldRepository;
 
@@ -21,7 +21,7 @@ class StaffController extends Controller
     private $staff;
     private $codtbld;
 
-    public function __construct(fellowshipRepository $fellowshipRepository,staffRepository $staffRepository,codtbldRepository $codtbldRepository)
+    public function __construct(FellowshipRepository $fellowshipRepository,StaffRepository $staffRepository,codtbldRepository $codtbldRepository)
     {
         $this->fellowshipRepository=$fellowshipRepository;
         $this->staff=$staffRepository;

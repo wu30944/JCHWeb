@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 
 //2017/06/26 新增action_photo資料表，將活動照片連結存放近來
 use App\Repositories\ActionPhotosRepository;
-use App\Repositories\fellowshipRepository;
+use App\Repositories\FellowshipRepository;
 
 
 class ActionPhotoController extends Controller
 {	
 	private $ActionPhoto;
 	private $Fellowship;
-    public function __construct(ActionPhotosRepository $ActionPhotosRepository,fellowshipRepository $fellowshipRepository)
+    public function __construct(ActionPhotosRepository $ActionPhotosRepository,FellowshipRepository $fellowshipRepository)
     {
         $this->ActionPhoto=$ActionPhotosRepository;
         $this->Fellowship=$fellowshipRepository;
