@@ -134,15 +134,15 @@
 
                 // \Debugbar::info($id);
                 $objMeegingInfo = new \Models\MeetingInfo;
-                if (count($this->dtFellowship->find($id)) > 0
-                    && count($objMeegingInfo::where('fellowship_id', '=', $id)) > 0) {
+                if (!empty($this->dtFellowship->find($id))
+                    && !empty($objMeegingInfo::where('fellowship_id', '=', $id)) ) {
                     DB::connection()->getPdo()->beginTransaction();
 
                     $this->dtFellowship->find($id)->delete();
                     $objMeegingInfo::where('fellowship_id', '=', $id)->delete();
                     /*\Debugbar::info(count($this->dtFellowship->find($id)));
                     \Debugbar::info(count($objMeegingInfo::where('fellowship_id','=',$id)));*/
-                    if (count($this->dtFellowship_d->where('fellowship_id', '=', $id)) > 0) {
+                    if (!empty($this->dtFellowship_d->where('fellowship_id', '=', $id)) ) {
 
                         /*
                         * 團契照片名稱都是該資料烈的id，所以要取出刪除照片名稱就是取出ＩＤ
