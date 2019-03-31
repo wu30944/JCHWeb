@@ -253,14 +253,14 @@
 
         /*
         上傳圖片的function
-        2017/05/13 
+        2017/05/13
+        2019/03/31    因為新增資料並沒有ID，導致在新增時，會發生錯誤，後來改成ID都從外面傳入，直接使用。
         */
-        public function PhotoUpload(Request $request)
+        public function PhotoUpload(Request $request,$id)
         {
             $file = $request->file('image');
             // $file = $request->file('image');
 
-            $id=$request->id;
 
             //$catalog = '/staff';
 
@@ -272,7 +272,6 @@
 
             $validator = \Validator::make($input, $rules);
             if ( $validator->fails() ) {
-                \debug('1');
                 return collect(['ServerNo'=>'404','Result' =>$validator->getMessageBag()->toArray()]);
 
             }else{
